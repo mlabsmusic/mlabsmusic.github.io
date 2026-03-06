@@ -330,6 +330,47 @@ body {
   padding-left: 18px;
 }
 
+.framework-map {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.map-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface-soft);
+  padding: 16px;
+}
+
+.map-card h3 {
+  margin: 0 0 7px;
+  font-size: 1.04rem;
+}
+
+.map-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.58;
+  font-size: .94rem;
+}
+
+.ia-tagline {
+  margin-top: 12px;
+  border: 1px solid #d3e4ff;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #f6fbff, #eff6ff);
+  padding: 14px;
+}
+
+.ia-tagline p {
+  margin: 0;
+  font-size: clamp(1.02rem, 2.1vw, 1.24rem);
+  line-height: 1.5;
+  color: #1e3f77;
+  font-weight: 620;
+}
+
 .price {
   margin: 2px 0 8px;
   font-size: clamp(1.9rem, 4vw, 2.45rem);
@@ -577,6 +618,7 @@ body {
   .pillars,
   .apps-grid,
   .gallery-grid,
+  .framework-map,
   .two-col {
     grid-template-columns: 1fr;
   }
