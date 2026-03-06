@@ -3,164 +3,358 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mlabs Music | MTOOLS</title>
-  <meta name="description" content="MTOOLS es la suite de micro apps de Mlabs Music para DJs y operaciones de librería musical." />
+  <title>MTOOLS | Mlabs Music</title>
+  <meta name="description" content="MTOOLS: suite de micro apps para DJs. FolderToTunes, AISessionGenerator, Logoconta y DuplicatesControl." />
   <style>
     :root {
-      --bg: #0b1220;
-      --bg2: #131f38;
-      --card: #141f35;
-      --line: #2a3d63;
-      --text: #e7efff;
-      --muted: #9eb0d4;
-      --ok: #43d39e;
-      --beta: #4ea1ff;
-      --mvp: #f3b34d;
+      --bg: #f5f5f7;
+      --surface: #ffffff;
+      --surface-soft: #fbfbfd;
+      --line: #e2e2e7;
+      --text: #1d1d1f;
+      --muted: #6e6e73;
+      --blue: #0071e3;
+      --green: #00a86b;
+      --orange: #c77700;
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
     }
 
     * { box-sizing: border-box; }
 
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
+      background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-      background:
-        radial-gradient(1000px 700px at -15% -10%, #20345a 0%, transparent 60%),
-        radial-gradient(900px 650px at 120% 0%, #17355c 0%, transparent 58%),
-        linear-gradient(160deg, var(--bg), var(--bg2));
-      min-height: 100vh;
-      padding: 24px;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Helvetica, Arial, sans-serif;
     }
 
-    .wrap {
-      max-width: 980px;
+    .container {
+      width: min(1200px, 100% - 40px);
       margin: 0 auto;
     }
 
     .hero {
-      border: 1px solid var(--line);
-      background: rgba(20, 31, 53, 0.82);
-      backdrop-filter: blur(6px);
-      border-radius: 20px;
-      padding: 28px;
-      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.35);
-      margin-bottom: 18px;
+      margin: 16px auto 14px;
+      border-radius: var(--radius-xl);
+      padding: clamp(34px, 6vw, 72px) clamp(22px, 5vw, 70px);
+      background:
+        radial-gradient(1200px 480px at 15% -30%, #dcecff 0%, transparent 60%),
+        radial-gradient(700px 380px at 110% 0%, #e8fff6 0%, transparent 60%),
+        linear-gradient(180deg, #ffffff, #f7f9fc);
+      border: 1px solid #e7edf8;
+      text-align: center;
     }
 
-    .badge {
-      display: inline-block;
-      font-size: 12px;
+    .eyebrow {
+      margin: 0;
+      font-size: 13px;
+      letter-spacing: .08em;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      border: 1px solid #37629d;
-      border-radius: 999px;
-      color: #b7d5ff;
-      padding: 6px 10px;
-      margin-bottom: 12px;
+      color: #4b4b52;
+      font-weight: 600;
     }
 
     h1 {
-      margin: 0 0 10px;
-      font-size: clamp(1.8rem, 5vw, 3rem);
+      margin: 10px 0 10px;
+      font-size: clamp(2.1rem, 6vw, 4.5rem);
       line-height: 1.05;
+      letter-spacing: -0.03em;
     }
 
-    p {
-      margin: 0;
+    .lead {
+      margin: 0 auto;
+      max-width: 860px;
+      font-size: clamp(1.06rem, 2vw, 1.35rem);
+      line-height: 1.6;
       color: var(--muted);
-      line-height: 1.65;
     }
 
-    .cards {
+    .band {
+      margin-top: 10px;
+      border-radius: var(--radius-xl);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      padding: clamp(24px, 4vw, 40px);
+    }
+
+    .band h2 {
+      margin: 0 0 8px;
+      font-size: clamp(1.55rem, 3vw, 2.3rem);
+      letter-spacing: -0.02em;
+    }
+
+    .sub {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 1.03rem;
+      line-height: 1.62;
+    }
+
+    .apps {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 14px;
     }
 
-    .card {
+    .app {
       border: 1px solid var(--line);
-      border-radius: 16px;
-      background: var(--card);
-      padding: 16px;
+      border-radius: var(--radius-lg);
+      background: var(--surface-soft);
+      padding: 18px;
+      min-height: 172px;
     }
 
-    .card h2 {
-      margin: 0 0 8px;
-      font-size: 1.15rem;
+    .app h3 {
+      margin: 6px 0 8px;
+      font-size: 1.22rem;
+      letter-spacing: -0.01em;
+    }
+
+    .app p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: .98rem;
     }
 
     .status {
       display: inline-block;
-      font-size: 11px;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
       border-radius: 999px;
-      padding: 5px 8px;
-      margin-bottom: 8px;
+      padding: 5px 10px;
+      font-size: 11px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      font-weight: 700;
       border: 1px solid transparent;
     }
 
-    .stable { color: #d7ffe9; background: rgba(67, 211, 158, 0.16); border-color: rgba(67, 211, 158, 0.45); }
-    .beta { color: #ddeeff; background: rgba(78, 161, 255, 0.16); border-color: rgba(78, 161, 255, 0.45); }
-    .mvp { color: #fff0d9; background: rgba(243, 179, 77, 0.14); border-color: rgba(243, 179, 77, 0.45); }
+    .stable { background: #e9fbf3; color: #0a6f4a; border-color: #b8eed8; }
+    .beta { background: #eaf3ff; color: #0a4f97; border-color: #c4dcff; }
+    .mvp { background: #fff4e7; color: #8b4f00; border-color: #ffd6a8; }
 
-    .footer {
-      margin-top: 16px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 14px 16px;
-      color: var(--muted);
-      background: rgba(10, 18, 33, 0.48);
-      font-size: 14px;
+    .split {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: 1.3fr .9fr;
+      gap: 12px;
     }
 
-    @media (max-width: 760px) {
-      body { padding: 16px; }
-      .hero { padding: 20px; }
-      .cards { grid-template-columns: 1fr; }
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--surface-soft);
+      padding: 18px;
+    }
+
+    .panel h3 {
+      margin: 0 0 8px;
+      font-size: 1.16rem;
+      letter-spacing: -0.01em;
+    }
+
+    .panel ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .price {
+      margin: 2px 0 6px;
+      font-size: clamp(2rem, 4vw, 2.6rem);
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+    }
+
+    .price small {
+      display: block;
+      margin-top: 4px;
+      font-size: .9rem;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .buy {
+      width: 100%;
+      border: 0;
+      border-radius: 980px;
+      padding: 12px 18px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .buy:hover { filter: brightness(1.05); }
+
+    .small {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.45;
+    }
+
+    .footer {
+      margin: 12px 0 20px;
+      text-align: center;
+      color: #7a7a82;
+      font-size: 13px;
+      padding: 12px;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, .36);
+      backdrop-filter: blur(4px);
+    }
+
+    .modal {
+      width: min(540px, 100%);
+      background: #fff;
+      border: 1px solid #d6d6dc;
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, .18);
+    }
+
+    .modal h3 {
+      margin: 0 0 8px;
+      font-size: 1.35rem;
+      letter-spacing: -0.01em;
+    }
+
+    .modal p {
+      margin: 0 0 10px;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .modal .close {
+      border: 1px solid #d4d4db;
+      background: #fff;
+      color: #222;
+      border-radius: 10px;
+      padding: 9px 12px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 920px) {
+      .apps { grid-template-columns: 1fr; }
+      .split { grid-template-columns: 1fr; }
+      .container { width: calc(100% - 24px); }
+      .hero, .band { border-radius: 20px; }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <main class="container">
     <section class="hero">
-      <span class="badge">Mlabs Music</span>
-      <h1>MTOOLS: micro apps para flujo musical profesional</h1>
-      <p>
-        MTOOLS es una suite macOS de micro apps orientada a DJs y operaciones de librería musical.
-        Cada módulo resuelve una tarea específica del workflow, con enfoque práctico y automatización.
+      <p class="eyebrow">Mlabs Music</p>
+      <h1>MTOOLS</h1>
+      <p class="lead">
+        La suite de micro apps para DJs que convierte tareas técnicas en flujo operativo:
+        importación en Music, asistencia IA, contabilidad offline y control de duplicados.
       </p>
     </section>
 
-    <section class="cards" aria-label="Micro apps de MTOOLS">
-      <article class="card">
-        <span class="status stable">Stable</span>
-        <h2>FolderToTunes</h2>
-        <p>Convierte jerarquías de carpetas en carpetas y playlists dentro de Apple Music con flujo guiado y progreso en vivo.</p>
-      </article>
+    <section class="band">
+      <h2>Micro apps de la plataforma</h2>
+      <p class="sub">Información consolidada del producto MTOOLS para uso profesional.</p>
 
-      <article class="card">
-        <span class="status beta">Beta</span>
-        <h2>AISessionGenerator</h2>
-        <p>Genera prompts de sesión DJ con IA, interpreta respuestas y prepara la importación de playlists en Music.</p>
-      </article>
+      <div class="apps">
+        <article class="app">
+          <span class="status stable">Stable</span>
+          <h3>FolderToTunes</h3>
+          <p>Convierte estructuras de carpetas en carpetas y playlists dentro de Apple Music con validación previa y progreso en vivo.</p>
+        </article>
 
-      <article class="card">
-        <span class="status mvp">MVP</span>
-        <h2>Logoconta (QuickBooks offline)</h2>
-        <p>Contabilidad local para DJ/freelancer con backups `.lca`, restore, integridad SHA-256 y export/import CSV.</p>
-      </article>
+        <article class="app">
+          <span class="status beta">Beta</span>
+          <h3>AISessionGenerator</h3>
+          <p>Genera prompts de sesión DJ con IA, interpreta respuestas y prepara la importación de playlists desde archivos locales.</p>
+        </article>
 
-      <article class="card">
-        <span class="status mvp">MVP</span>
-        <h2>DuplicatesControl</h2>
-        <p>Escanea bibliotecas de audio, detecta duplicados por fingerprint y facilita la limpieza segura de archivos redundantes.</p>
-      </article>
+        <article class="app">
+          <span class="status mvp">MVP</span>
+          <h3>Logoconta (QuickBooks offline)</h3>
+          <p>Módulo de contabilidad local con backups `.lca`, restore con integridad SHA-256 y compatibilidad CSV.</p>
+        </article>
+
+        <article class="app">
+          <span class="status mvp">MVP</span>
+          <h3>DuplicatesControl</h3>
+          <p>Escanea librerías de audio, detecta duplicados por fingerprint y facilita limpieza segura de archivos redundantes.</p>
+        </article>
+      </div>
+
+      <div class="split">
+        <section class="panel">
+          <h3>Especificaciones y calidad</h3>
+          <ul>
+            <li>macOS 12+ en Apple Silicon e Intel.</li>
+            <li>Integración con Apple Music y System Events.</li>
+            <li>Arquitectura por dominios y ownership por mini app.</li>
+            <li>Build y tests automatizados en CI.</li>
+            <li>Pipeline de release para artefacto DMG.</li>
+          </ul>
+        </section>
+
+        <section class="panel">
+          <h3>Licencia y compra</h3>
+          <p class="price">99,99 €<small>Pago único · simulación de checkout</small></p>
+          <button class="buy" id="buyBtn">Comprar MTOOLS</button>
+          <p class="small">Este flujo es demostrativo: no procesa pagos reales todavía.</p>
+        </section>
+      </div>
     </section>
 
-    <section class="footer">
-      Mlabs Music · Suite MTOOLS · Web informativa de micro apps
-    </section>
+    <footer class="footer">
+      Mlabs Music · Sitio oficial informativo de MTOOLS
+    </footer>
+  </main>
+
+  <div class="modal-backdrop" id="checkoutModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+      <h3 id="checkoutTitle">Checkout simulado</h3>
+      <p>Producto: <strong>MTOOLS</strong></p>
+      <p>Precio: <strong>99,99 €</strong></p>
+      <p>
+        Simulación activa. El sitio está preparado para integrar pasarela de pago real en un siguiente paso.
+      </p>
+      <button class="close" id="closeModal">Cerrar</button>
+    </div>
   </div>
+
+  <script>
+    const modal = document.getElementById('checkoutModal');
+    document.getElementById('buyBtn').addEventListener('click', () => {
+      modal.style.display = 'flex';
+      modal.setAttribute('aria-hidden', 'false');
+    });
+
+    function closeModal() {
+      modal.style.display = 'none';
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) closeModal();
+    });
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeModal();
+    });
+  </script>
 </body>
 </html>
