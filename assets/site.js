@@ -147,6 +147,22 @@
   let revealObserver = null;
   let navigating = false;
 
+  function normalizeSingleLayout() {
+    const wraps = [...document.querySelectorAll('.page-wrap')];
+    if (wraps.length > 1) {
+      for (let i = 0; i < wraps.length - 1; i += 1) {
+        wraps[i].remove();
+      }
+    }
+
+    const headers = [...document.querySelectorAll('.site-header')];
+    if (headers.length > 1) {
+      for (let i = 0; i < headers.length - 1; i += 1) {
+        headers[i].remove();
+      }
+    }
+  }
+
   function markEntered() {
     requestAnimationFrame(() => {
       document.body.classList.add('is-entered');
@@ -403,6 +419,7 @@
   }
 
   function initPageFeatures() {
+    normalizeSingleLayout();
     setupHeaderOverlayState();
     setupResponsiveMenu();
     setupRevealOnScroll();
@@ -425,8 +442,13 @@
       const doc = new DOMParser().parseFromString(html, 'text/html');
 
       const nextMain = doc.querySelector('.page-wrap');
-      const currentMain = document.querySelector('.page-wrap');
+      const currentMains = [...document.querySelectorAll('.page-wrap')];
+      const currentMain = currentMains[currentMains.length - 1];
       if (!nextMain || !currentMain) throw new Error('Main container not found');
+
+      if (currentMains.length > 1) {
+        currentMains.slice(0, -1).forEach((el) => el.remove());
+      }
 
       currentMain.replaceWith(nextMain);
       document.title = doc.title || document.title;
@@ -451,6 +473,7 @@
       }
 
       initPageFeatures();
+      normalizeSingleLayout();
 
       requestAnimationFrame(() => {
         document.body.classList.remove('is-leaving');
