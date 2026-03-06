@@ -178,6 +178,7 @@
   if (prefersReducedMotion) return;
 
   const menuLinks = document.querySelectorAll('.menu a[href]');
+  let isNavigating = false;
   for (const link of menuLinks) {
     const href = link.getAttribute('href');
     if (!href || href.startsWith('#')) continue;
@@ -187,20 +188,15 @@
       if (destination.origin !== window.location.origin) return;
       if (destination.href === window.location.href) return;
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      if (isNavigating) return;
 
       event.preventDefault();
-
-      if (document.startViewTransition) {
-        document.startViewTransition(() => {
-          window.location.href = destination.href;
-        });
-        return;
-      }
+      isNavigating = true;
 
       document.body.classList.add('is-leaving');
       window.setTimeout(() => {
         window.location.href = destination.href;
-      }, 210);
+      }, 390);
     });
   }
 })();

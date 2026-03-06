@@ -44,47 +44,20 @@ body {
   margin: 0 auto;
   position: relative;
   z-index: 1;
-  animation: pageIntro .32s ease both;
-  transition: opacity .22s ease;
+  animation: pageIntro .56s cubic-bezier(.2, .72, .18, 1) both;
+  transition: opacity .4s cubic-bezier(.2, .72, .18, 1);
 }
 
 body.is-leaving .page-wrap {
   opacity: 0;
 }
 
+body.is-leaving .mesh-background {
+  opacity: 0;
+  transition: opacity .4s cubic-bezier(.2, .72, .18, 1);
+}
+
 @keyframes pageIntro {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@supports (view-transition-name: root) {
-  :root {
-    view-transition-name: root;
-  }
-
-  ::view-transition-old(root) {
-    animation: oldView .2s ease both;
-  }
-
-  ::view-transition-new(root) {
-    animation: newView .3s ease both;
-  }
-}
-
-@keyframes oldView {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes newView {
   from {
     opacity: 0;
   }
