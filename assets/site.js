@@ -173,6 +173,38 @@
   });
 })();
 
+(function setupPageTransitions() {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) return;
+
+  const menuLinks = document.querySelectorAll('.menu a[href]');
+  for (const link of menuLinks) {
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('#')) continue;
+
+    link.addEventListener('click', (event) => {
+      const destination = new URL(link.href, window.location.href);
+      if (destination.origin !== window.location.origin) return;
+      if (destination.href === window.location.href) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+      event.preventDefault();
+
+      if (document.startViewTransition) {
+        document.startViewTransition(() => {
+          window.location.href = destination.href;
+        });
+        return;
+      }
+
+      document.body.classList.add('is-leaving');
+      window.setTimeout(() => {
+        window.location.href = destination.href;
+      }, 290);
+    });
+  }
+})();
+
 (function setupReserveModal() {
   const modal = document.getElementById('reserveModal');
   const openBtn = document.getElementById('reserveDemoBtn');
@@ -213,6 +245,7 @@
   function closeModal() {
     modal.classList.remove('is-open');
     modal.setAttribute('aria-hidden', 'true');
+    image.classList.remove('is-visible');
     image.src = '';
     image.alt = '';
     title.textContent = '';
@@ -226,7 +259,14 @@
     const imageTitle = figure.getAttribute('data-title') || 'Captura MTOOLS';
     const imageDescription = figure.getAttribute('data-description') || 'Vista de producto MTOOLS.';
 
+    image.classList.remove('is-visible');
+    image.onload = () => {
+      image.classList.add('is-visible');
+    };
     image.src = src;
+    if (image.complete) {
+      image.classList.add('is-visible');
+    }
     image.alt = imageTitle;
     title.textContent = imageTitle;
     description.textContent = imageDescription;
