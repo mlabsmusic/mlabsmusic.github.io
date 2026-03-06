@@ -5,6 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MTOOLS | Mlabs Music</title>
   <meta name="description" content="MTOOLS: suite de micro apps para DJs. FolderToTunes, AISessionGenerator, Logoconta y DuplicatesControl." />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <meta name="theme-color" content="#071327" />
+  <link rel="canonical" href="https://www.mlabsmusic.com/" />
+  <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Mlabs Music" />
+  <meta property="og:title" content="MTOOLS | Mlabs Music" />
+  <meta property="og:description" content="Suite profesional de micro apps para DJs: flujo, testing, diagnostico y operacion en un solo ecosistema." />
+  <meta property="og:url" content="https://www.mlabsmusic.com/" />
+  <meta property="og:image" content="https://www.mlabsmusic.com/assets/mtools-beta-v2/optimized/01-hub-overview.jpg" />
+  <meta property="og:image:width" content="1720" />
+  <meta property="og:image:height" content="1100" />
+  <meta property="og:image:alt" content="Vista general del hub de MTOOLS" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="MTOOLS | Mlabs Music" />
+  <meta name="twitter:description" content="Micro apps para DJs con foco en productividad, calidad y legibilidad para cliente y equipo." />
+  <meta name="twitter:image" content="https://www.mlabsmusic.com/assets/mtools-beta-v2/optimized/01-hub-overview.jpg" />
+  <script>
+    // Canonical host guard in case apex starts serving this file.
+    if (window.location.hostname === 'mlabsmusic.com') {
+      window.location.replace(`https://www.mlabsmusic.com${window.location.pathname}${window.location.search}${window.location.hash}`);
+    }
+  </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "MTOOLS",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "macOS 12+",
+      "description": "Suite de micro apps para DJs con modulos de flujo operativo, testing y diagnostico.",
+      "offers": {
+        "@type": "Offer",
+        "price": "99.99",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/PreOrder"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Mlabs Music",
+        "url": "https://www.mlabsmusic.com",
+        "email": "info@mlabsmusic.com"
+      }
+    }
+  </script>
   <style>
     :root {
       --bg: #071327;
@@ -136,6 +181,13 @@
     .shot:hover {
       transform: translateY(-2px);
       box-shadow: 0 10px 24px rgba(12, 22, 45, 0.18);
+    }
+
+    .shot:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 2px;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(12, 22, 45, 0.22);
     }
 
     .shot img {
@@ -467,64 +519,64 @@
       <p class="sub">Vista real de la experiencia MTOOLS en su estado beta actual.</p>
 
       <div class="gallery-grid" id="betaGallery">
-        <figure class="shot" data-shot="assets/mtools-beta-v2/01-hub-overview.png" data-title="Hub · Vista general" data-description="Centro operativo de MTOOLS con acceso inmediato a micro apps por categoría, priorizando descubrimiento rápido y flujo de trabajo continuo.">
-          <img loading="lazy" src="assets/mtools-beta-v2/01-hub-overview.png" alt="MTOOLS hub vista general" />
+        <figure class="shot" role="button" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/01-hub-overview.jpg" data-title="Hub · Vista general" data-description="Centro operativo de MTOOLS con acceso inmediato a micro apps por categoría, priorizando descubrimiento rápido y flujo de trabajo continuo.">
+          <img loading="lazy" decoding="async" src="assets/mtools-beta-v2/thumbs/01-hub-overview.jpg" width="1720" height="1100" alt="MTOOLS hub vista general" />
           <figcaption><strong>Hub · Vista general</strong><span>Centro operativo de MTOOLS con navegación modular y acceso inmediato a cada flujo.</span></figcaption>
         </figure>
-        <figure class="shot" data-shot="assets/mtools-beta-v2/02-foldertotunes-main.png" data-title="FolderToTunes · Vista principal" data-description="Asistente en 4 pasos para convertir estructuras de carpetas en playlists de Apple Music con validación visual y progreso en tiempo real.">
-          <img loading="lazy" src="assets/mtools-beta-v2/02-foldertotunes-main.png" alt="FolderToTunes vista principal" />
+        <figure class="shot" role="button" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/02-foldertotunes-main.jpg" data-title="FolderToTunes · Vista principal" data-description="Asistente en 4 pasos para convertir estructuras de carpetas en playlists de Apple Music con validación visual y progreso en tiempo real.">
+          <img loading="lazy" decoding="async" src="assets/mtools-beta-v2/thumbs/02-foldertotunes-main.jpg" width="1720" height="1100" alt="FolderToTunes vista principal" />
           <figcaption><strong>FolderToTunes · Vista principal</strong><span>Importación guiada a Music con control de estructura, estado y ejecución.</span></figcaption>
         </figure>
-        <figure class="shot" data-shot="assets/mtools-beta-v2/03-aisessiongenerator-main.png" data-title="AISessionGenerator · Vista principal" data-description="Módulo de preparación creativa que genera prompts de sesión DJ con IA y orienta la transición desde la idea hasta la importación.">
-          <img loading="lazy" src="assets/mtools-beta-v2/03-aisessiongenerator-main.png" alt="AISessionGenerator vista principal" />
+        <figure class="shot" role="button" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/03-aisessiongenerator-main.jpg" data-title="AISessionGenerator · Vista principal" data-description="Módulo de preparación creativa que genera prompts de sesión DJ con IA y orienta la transición desde la idea hasta la importación.">
+          <img loading="lazy" decoding="async" src="assets/mtools-beta-v2/thumbs/03-aisessiongenerator-main.jpg" width="1720" height="1100" alt="AISessionGenerator vista principal" />
           <figcaption><strong>AISessionGenerator · Vista principal</strong><span>IA aplicada a la preproducción de sesiones para acelerar decisiones musicales.</span></figcaption>
         </figure>
-        <figure class="shot" data-shot="assets/mtools-beta-v2/04-logoconta-quickbooks-main.png" data-title="Logoconta (QuickBooks offline) · Vista principal" data-description="Área financiera offline para DJs y freelancers: clientes, gigs, movimientos y backups verificables sin depender de servicios bancarios en línea.">
-          <img loading="lazy" src="assets/mtools-beta-v2/04-logoconta-quickbooks-main.png" alt="Logoconta QuickBooks offline vista principal" />
+        <figure class="shot" role="button" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/04-logoconta-quickbooks-main.jpg" data-title="Logoconta (QuickBooks offline) · Vista principal" data-description="Área financiera offline para DJs y freelancers: clientes, gigs, movimientos y backups verificables sin depender de servicios bancarios en línea.">
+          <img loading="lazy" decoding="async" src="assets/mtools-beta-v2/thumbs/04-logoconta-quickbooks-main.jpg" width="1720" height="1100" alt="Logoconta QuickBooks offline vista principal" />
           <figcaption><strong>Logoconta (QuickBooks offline) · Vista principal</strong><span>Gestión contable local con enfoque en control, continuidad y privacidad.</span></figcaption>
         </figure>
-        <figure class="shot" data-shot="assets/mtools-beta-v2/05-test-runner-main.png" data-title="Test Runner · Vista principal" data-description="Panel interno para ejecutar build y suites de test de forma centralizada, con trazabilidad del estado y lectura clara para equipo técnico.">
-          <img loading="lazy" src="assets/mtools-beta-v2/05-test-runner-main.png" alt="Test Runner vista principal" />
+        <figure class="shot" role="button" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/05-test-runner-main.jpg" data-title="Test Runner · Vista principal" data-description="Panel interno para ejecutar build y suites de test de forma centralizada, con trazabilidad del estado y lectura clara para equipo técnico.">
+          <img loading="lazy" decoding="async" src="assets/mtools-beta-v2/thumbs/05-test-runner-main.jpg" width="1720" height="1100" alt="Test Runner vista principal" />
           <figcaption><strong>Test Runner · Vista principal</strong><span>Calidad integrada al producto: pruebas visibles, repetibles y accionables.</span></figcaption>
         </figure>
-        <figure class="shot" data-shot="assets/mtools-beta-v2/06-diagnostics-main.png" data-title="Diagnóstico · Vista principal" data-description="Consola de diagnóstico para observabilidad operativa: ayuda a identificar incidencias y reforzar confiabilidad en escenarios reales.">
-          <img loading="lazy" src="assets/mtools-beta-v2/06-diagnostics-main.png" alt="Diagnostico vista principal" />
+        <figure class="shot" role="button" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/06-diagnostics-main.jpg" data-title="Diagnóstico · Vista principal" data-description="Consola de diagnóstico para observabilidad operativa: ayuda a identificar incidencias y reforzar confiabilidad en escenarios reales.">
+          <img loading="lazy" decoding="async" src="assets/mtools-beta-v2/thumbs/06-diagnostics-main.jpg" width="1720" height="1100" alt="Diagnostico vista principal" />
           <figcaption><strong>Diagnóstico · Vista principal</strong><span>Observabilidad pensada para soporte ágil y mejora continua del producto.</span></figcaption>
         </figure>
-        <figure class="shot" data-shot="assets/mtools-beta-v2/11-duplicates-control-main.png" data-title="DuplicatesControl · Vista principal" data-description="Módulo de higiene de librería que detecta duplicados por huella digital y facilita decisiones seguras antes de limpieza.">
-          <img loading="lazy" src="assets/mtools-beta-v2/11-duplicates-control-main.png" alt="DuplicatesControl vista principal" />
+        <figure class="shot" role="button" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/11-duplicates-control-main.jpg" data-title="DuplicatesControl · Vista principal" data-description="Módulo de higiene de librería que detecta duplicados por huella digital y facilita decisiones seguras antes de limpieza.">
+          <img loading="lazy" decoding="async" src="assets/mtools-beta-v2/thumbs/11-duplicates-control-main.jpg" width="1720" height="1100" alt="DuplicatesControl vista principal" />
           <figcaption><strong>DuplicatesControl · Vista principal</strong><span>Reducción de ruido en librerías grandes sin comprometer activos críticos.</span></figcaption>
         </figure>
-        <figure class="shot" data-shot="assets/mtools-beta-v2/07-tags-editor-ai-placeholder.png" data-title="Editor de Tags IA · Placeholder actual" data-description="Línea de producto en preparación para normalización de metadatos mediante IA y reglas consistentes de catalogación.">
-          <img loading="lazy" src="assets/mtools-beta-v2/07-tags-editor-ai-placeholder.png" alt="Editor de Tags IA placeholder" />
+        <figure class="shot" role="button" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/07-tags-editor-ai-placeholder.jpg" data-title="Editor de Tags IA · Placeholder actual" data-description="Línea de producto en preparación para normalización de metadatos mediante IA y reglas consistentes de catalogación.">
+          <img loading="lazy" decoding="async" src="assets/mtools-beta-v2/thumbs/07-tags-editor-ai-placeholder.jpg" width="1720" height="1100" alt="Editor de Tags IA placeholder" />
           <figcaption><strong>Editor de Tags IA · Placeholder</strong><span>Roadmap activo para automatizar etiquetado y consistencia del catálogo.</span></figcaption>
         </figure>
-        <figure class="shot" data-shot="assets/mtools-beta-v2/08-stems-generator-placeholder.png" data-title="Generador de Stems · Placeholder actual" data-description="Vista preliminar del módulo orientado a separación de stems y preparación técnica para performance y edición.">
-          <img loading="lazy" src="assets/mtools-beta-v2/08-stems-generator-placeholder.png" alt="Generador de Stems placeholder" />
+        <figure class="shot" role="button" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/08-stems-generator-placeholder.jpg" data-title="Generador de Stems · Placeholder actual" data-description="Vista preliminar del módulo orientado a separación de stems y preparación técnica para performance y edición.">
+          <img loading="lazy" decoding="async" src="assets/mtools-beta-v2/thumbs/08-stems-generator-placeholder.jpg" width="1720" height="1100" alt="Generador de Stems placeholder" />
           <figcaption><strong>Generador de Stems · Placeholder</strong><span>Preparado para ampliar capacidades creativas en directo y postproducción.</span></figcaption>
         </figure>
-        <figure class="shot" data-shot="assets/mtools-beta-v2/09-cue-controller-ai-placeholder.png" data-title="Controlador CUE IA · Placeholder actual" data-description="Interfaz en fase de diseño para asistencia inteligente sobre puntos CUE y estructura de sesión orientada a rendimiento.">
-          <img loading="lazy" src="assets/mtools-beta-v2/09-cue-controller-ai-placeholder.png" alt="Controlador CUE IA placeholder" />
+        <figure class="shot" role="button" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/09-cue-controller-ai-placeholder.jpg" data-title="Controlador CUE IA · Placeholder actual" data-description="Interfaz en fase de diseño para asistencia inteligente sobre puntos CUE y estructura de sesión orientada a rendimiento.">
+          <img loading="lazy" decoding="async" src="assets/mtools-beta-v2/thumbs/09-cue-controller-ai-placeholder.jpg" width="1720" height="1100" alt="Controlador CUE IA placeholder" />
           <figcaption><strong>Controlador CUE IA · Placeholder</strong><span>Próximo módulo de apoyo táctico para performance más precisa y rápida.</span></figcaption>
         </figure>
-        <figure class="shot" data-shot="assets/mtools-beta-v2/10-whats-next-widget-ai-placeholder.png" data-title="Whats Next Widget IA · Placeholder actual" data-description="Componente en roadmap para sugerencias de siguiente pista con contexto de sesión y continuidad energética.">
-          <img loading="lazy" src="assets/mtools-beta-v2/10-whats-next-widget-ai-placeholder.png" alt="Whats Next Widget IA placeholder" />
+        <figure class="shot" role="button" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/10-whats-next-widget-ai-placeholder.jpg" data-title="Whats Next Widget IA · Placeholder actual" data-description="Componente en roadmap para sugerencias de siguiente pista con contexto de sesión y continuidad energética.">
+          <img loading="lazy" decoding="async" src="assets/mtools-beta-v2/thumbs/10-whats-next-widget-ai-placeholder.jpg" width="1720" height="1100" alt="Whats Next Widget IA placeholder" />
           <figcaption><strong>Whats Next Widget IA · Placeholder</strong><span>Asistencia predictiva para mantener narrativa musical en tiempo real.</span></figcaption>
         </figure>
-        <figure class="shot" data-shot="assets/mtools-beta-v2/12-rekordbox-tools-placeholder.png" data-title="Herramientas Rekordbox · Placeholder actual" data-description="Suite futura para validar, preparar y exportar recursos compatibles con flujos de trabajo basados en Rekordbox.">
-          <img loading="lazy" src="assets/mtools-beta-v2/12-rekordbox-tools-placeholder.png" alt="Herramientas Rekordbox placeholder" />
+        <figure class="shot" role="button" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/12-rekordbox-tools-placeholder.jpg" data-title="Herramientas Rekordbox · Placeholder actual" data-description="Suite futura para validar, preparar y exportar recursos compatibles con flujos de trabajo basados en Rekordbox.">
+          <img loading="lazy" decoding="async" src="assets/mtools-beta-v2/thumbs/12-rekordbox-tools-placeholder.jpg" width="1720" height="1100" alt="Herramientas Rekordbox placeholder" />
           <figcaption><strong>Herramientas Rekordbox · Placeholder</strong><span>Interoperabilidad en desarrollo para cabinas y bibliotecas mixtas.</span></figcaption>
         </figure>
-        <figure class="shot" data-shot="assets/mtools-beta-v2/13-serato-tools-placeholder.png" data-title="Herramientas Serato · Placeholder actual" data-description="Módulo previsto para orden, validación y automatización en entornos Serato orientados a productividad.">
-          <img loading="lazy" src="assets/mtools-beta-v2/13-serato-tools-placeholder.png" alt="Herramientas Serato placeholder" />
+        <figure class="shot" role="button" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/13-serato-tools-placeholder.jpg" data-title="Herramientas Serato · Placeholder actual" data-description="Módulo previsto para orden, validación y automatización en entornos Serato orientados a productividad.">
+          <img loading="lazy" decoding="async" src="assets/mtools-beta-v2/thumbs/13-serato-tools-placeholder.jpg" width="1720" height="1100" alt="Herramientas Serato placeholder" />
           <figcaption><strong>Herramientas Serato · Placeholder</strong><span>Pipeline planificado para mantener consistencia entre plataformas.</span></figcaption>
         </figure>
-        <figure class="shot" data-shot="assets/mtools-beta-v2/14-traktor-tools-placeholder.png" data-title="Herramientas Traktor · Placeholder actual" data-description="Espacio de evolución para incorporar automatizaciones enfocadas en performance y organización sobre Traktor.">
-          <img loading="lazy" src="assets/mtools-beta-v2/14-traktor-tools-placeholder.png" alt="Herramientas Traktor placeholder" />
+        <figure class="shot" role="button" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/14-traktor-tools-placeholder.jpg" data-title="Herramientas Traktor · Placeholder actual" data-description="Espacio de evolución para incorporar automatizaciones enfocadas en performance y organización sobre Traktor.">
+          <img loading="lazy" decoding="async" src="assets/mtools-beta-v2/thumbs/14-traktor-tools-placeholder.jpg" width="1720" height="1100" alt="Herramientas Traktor placeholder" />
           <figcaption><strong>Herramientas Traktor · Placeholder</strong><span>Extensión roadmap para un stack DJ multiplataforma más sólido.</span></figcaption>
         </figure>
-        <figure class="shot" data-shot="assets/mtools-beta-v2/15-more-apps-card.png" data-title="Hub · Sección Más apps" data-description="Vista del pipeline de expansión del producto: nuevos módulos en evaluación para ampliar el alcance operativo de MTOOLS.">
-          <img loading="lazy" src="assets/mtools-beta-v2/15-more-apps-card.png" alt="Hub seccion mas apps" />
+        <figure class="shot" role="button" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/15-more-apps-card.jpg" data-title="Hub · Sección Más apps" data-description="Vista del pipeline de expansión del producto: nuevos módulos en evaluación para ampliar el alcance operativo de MTOOLS.">
+          <img loading="lazy" decoding="async" src="assets/mtools-beta-v2/thumbs/15-more-apps-card.jpg" width="1720" height="1100" alt="Hub seccion mas apps" />
           <figcaption><strong>Hub · Sección Más apps</strong><span>Roadmap visible de crecimiento y lanzamiento progresivo de capacidades.</span></figcaption>
         </figure>
       </div>
@@ -603,11 +655,11 @@
   </main>
 
   <div class="modal-backdrop" id="checkoutModal" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle" aria-describedby="checkoutDescription">
       <h3 id="checkoutTitle">Checkout simulado</h3>
       <p>Producto: <strong>MTOOLS</strong></p>
       <p>Precio: <strong>99,99 €</strong></p>
-      <p>
+      <p id="checkoutDescription">
         Simulación activa. El sitio está preparado para integrar pasarela de pago real en un siguiente paso.
       </p>
       <button class="close" id="closeModal">Cerrar</button>
@@ -615,7 +667,7 @@
   </div>
 
   <div class="modal-backdrop" id="shotModal" aria-hidden="true">
-    <div class="shot-modal-content" role="dialog" aria-modal="true" aria-labelledby="shotTitle">
+    <div class="shot-modal-content" role="dialog" aria-modal="true" aria-labelledby="shotTitle" aria-describedby="shotDescription">
       <button class="shot-modal-close-icon" id="closeShotModalIcon" aria-label="Cerrar imagen ampliada">×</button>
       <img id="shotImage" src="" alt="" />
       <p id="shotTitle" class="shot-modal-title"></p>
@@ -624,39 +676,67 @@
   </div>
 
   <script>
-    const modal = document.getElementById('checkoutModal');
-    document.getElementById('buyBtn').addEventListener('click', () => {
-      modal.classList.add('is-open');
-      modal.setAttribute('aria-hidden', 'false');
-    });
-
-    function closeModal() {
-      modal.classList.remove('is-open');
-      modal.setAttribute('aria-hidden', 'true');
-    }
-
-    document.getElementById('closeModal').addEventListener('click', closeModal);
-    modal.addEventListener('click', (event) => {
-      if (event.target === modal) closeModal();
-    });
-
+    const checkoutModal = document.getElementById('checkoutModal');
+    const checkoutDialog = checkoutModal.querySelector('.modal');
     const shotModal = document.getElementById('shotModal');
+    const shotDialog = shotModal.querySelector('.shot-modal-content');
     const shotImage = document.getElementById('shotImage');
     const shotTitle = document.getElementById('shotTitle');
     const shotDescription = document.getElementById('shotDescription');
+    const betaGallery = document.getElementById('betaGallery');
+    const focusableSelector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    let activeBackdrop = null;
+    let lastFocusedElement = null;
 
-    function closeShotModal() {
-      shotModal.classList.remove('is-open');
-      shotModal.setAttribute('aria-hidden', 'true');
-      shotImage.src = '';
-      shotImage.alt = '';
-      shotTitle.textContent = '';
-      shotDescription.textContent = '';
+    function getFocusableElements(container) {
+      return Array.from(container.querySelectorAll(focusableSelector))
+        .filter((el) => !el.hasAttribute('disabled') && el.tabIndex !== -1);
     }
 
-    document.getElementById('betaGallery').addEventListener('click', (event) => {
-      const figure = event.target.closest('.shot');
-      if (!figure) return;
+    function openBackdrop(backdrop, dialog, invoker) {
+      lastFocusedElement = invoker || document.activeElement;
+      activeBackdrop = backdrop;
+      backdrop.classList.add('is-open');
+      backdrop.setAttribute('aria-hidden', 'false');
+      const focusable = getFocusableElements(dialog);
+      if (focusable.length > 0) {
+        focusable[0].focus();
+      } else {
+        dialog.setAttribute('tabindex', '-1');
+        dialog.focus();
+      }
+    }
+
+    function closeBackdrop(backdrop) {
+      backdrop.classList.remove('is-open');
+      backdrop.setAttribute('aria-hidden', 'true');
+      if (activeBackdrop === backdrop) activeBackdrop = null;
+      if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+        lastFocusedElement.focus();
+      }
+    }
+
+    function trapFocus(event) {
+      if (event.key !== 'Tab' || !activeBackdrop) return;
+      const dialog = activeBackdrop.querySelector('[role="dialog"]');
+      if (!dialog) return;
+      const focusable = getFocusableElements(dialog);
+      if (focusable.length === 0) {
+        event.preventDefault();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    function openShotModal(figure, invoker) {
       const src = figure.getAttribute('data-shot');
       const title = figure.getAttribute('data-title') || 'Captura beta MTOOLS';
       const description = figure.getAttribute('data-description') || 'Vista funcional del ecosistema MTOOLS en estado beta.';
@@ -664,18 +744,57 @@
       shotImage.alt = title;
       shotTitle.textContent = title;
       shotDescription.textContent = description;
-      shotModal.classList.add('is-open');
-      shotModal.setAttribute('aria-hidden', 'false');
+      openBackdrop(shotModal, shotDialog, invoker);
+    }
+
+    function closeShotModal() {
+      closeBackdrop(shotModal);
+      shotImage.src = '';
+      shotImage.alt = '';
+      shotTitle.textContent = '';
+      shotDescription.textContent = '';
+    }
+
+    function closeCheckoutModal() {
+      closeBackdrop(checkoutModal);
+    }
+
+    document.getElementById('buyBtn').addEventListener('click', (event) => {
+      openBackdrop(checkoutModal, checkoutDialog, event.currentTarget);
+    });
+    document.getElementById('closeModal').addEventListener('click', closeCheckoutModal);
+    checkoutModal.addEventListener('click', (event) => {
+      if (event.target === checkoutModal) closeCheckoutModal();
+    });
+
+    betaGallery.querySelectorAll('.shot').forEach((figure) => {
+      const title = figure.getAttribute('data-title') || 'Captura beta MTOOLS';
+      figure.setAttribute('aria-label', `Ampliar captura: ${title}`);
+    });
+
+    betaGallery.addEventListener('click', (event) => {
+      const figure = event.target.closest('.shot');
+      if (!figure) return;
+      openShotModal(figure, figure);
+    });
+    betaGallery.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      const figure = event.target.closest('.shot');
+      if (!figure) return;
+      event.preventDefault();
+      openShotModal(figure, figure);
     });
 
     document.getElementById('closeShotModalIcon').addEventListener('click', closeShotModal);
     shotModal.addEventListener('click', (event) => {
       if (event.target === shotModal) closeShotModal();
     });
+    document.addEventListener('keydown', trapFocus);
     window.addEventListener('keydown', (event) => {
-      if (event.key !== 'Escape') return;
-      closeModal();
-      closeShotModal();
+      if (event.key === 'Escape') {
+        if (shotModal.classList.contains('is-open')) closeShotModal();
+        if (checkoutModal.classList.contains('is-open')) closeCheckoutModal();
+      }
     });
 
     // MTOOLS-inspired mesh particles background.

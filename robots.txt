@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.mlabsmusic.com/sitemap.xml
+Host: www.mlabsmusic.com
