@@ -200,6 +200,36 @@
       line-height: 1.45;
     }
 
+    .announce {
+      margin-top: 12px;
+      border: 1px solid #d6e5ff;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(180deg, #f7fbff, #f2f7ff);
+      padding: 18px;
+    }
+
+    .announce h3 {
+      margin: 0 0 8px;
+      font-size: 1.2rem;
+      letter-spacing: -0.01em;
+    }
+
+    .announce p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.62;
+    }
+
+    .contact-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .contact-link:hover { text-decoration: underline; }
+
     .footer {
       margin: 12px 0 20px;
       text-align: center;
@@ -305,7 +335,8 @@
             <li>macOS 12+ en Apple Silicon e Intel.</li>
             <li>Integración con Apple Music y System Events.</li>
             <li>Arquitectura por dominios y ownership por mini app.</li>
-            <li>Build y tests automatizados en CI.</li>
+            <li>Framework interno con app de Testing y app de Diagnóstico.</li>
+            <li>Build, tests automatizados y validación funcional en CI.</li>
             <li>Pipeline de release para artefacto DMG.</li>
           </ul>
         </section>
@@ -317,6 +348,16 @@
           <p class="small">Este flujo es demostrativo: no procesa pagos reales todavía.</p>
         </section>
       </div>
+
+      <section class="announce">
+        <h3>¿Quieres formar parte del proyecto?</h3>
+        <p>
+          En Mlabs Music estamos incorporando perfiles de <strong>desarrollo</strong> y <strong>testing</strong>.
+          Nuestro framework incluye mini apps internas de Testing y Diagnóstico para garantizar que MTOOLS
+          sea cada vez más legible, confiable y mantenible tanto para el cliente final como para el equipo que lo construye.
+        </p>
+        <a class="contact-link" href="mailto:info@mlabsmusic.com">Contactar: info@mlabsmusic.com</a>
+      </section>
     </section>
 
     <footer class="footer">
