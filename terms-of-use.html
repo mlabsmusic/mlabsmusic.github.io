@@ -9,28 +9,35 @@
   <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="assets/site.css" />
 </head>
-<body>
+<body class="legal-page">
   <canvas id="meshBackground" class="mesh-background" aria-hidden="true"></canvas>
 
   <main class="page-wrap">
-    <header class="site-header">
+    <header class="site-header reveal">
       <p class="brand">Mlabs Music</p>
       <nav class="menu" aria-label="Main">
         <a href="/">Home</a>
         <a href="about.html">About</a>
         <a href="projects.html">Projects</a>
       </nav>
+      <a class="menu-cta" href="mailto:info@mlabsmusic.com">Contact</a>
     </header>
 
-    <section class="section-card">
-      <h1 class="section-title">Terms of Use</h1>
-      <p class="section-sub">Last updated: March 6, 2026</p>
+    <section class="hero hero-legal reveal">
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-content">
+        <p class="kicker">Legal</p>
+        <h1 class="hero-title">Terms of Use</h1>
+        <p class="hero-copy">Last updated: March 6, 2026</p>
+      </div>
+    </section>
 
+    <section class="section-card reveal legal-content">
       <h3>1. Scope</h3>
-      <p class="section-sub">These terms govern the use of MTOOLS information and demo reservation channels provided by Mlabs Music.</p>
+      <p>These terms govern the use of MTOOLS information and demo reservation channels provided by Mlabs Music.</p>
 
       <h3>2. Intellectual Property</h3>
-      <p class="section-sub">MTOOLS is closed-source software with active patent strategy. Unauthorized copy, redistribution, reverse engineering, or derivative misuse may trigger legal actions.</p>
+      <p>MTOOLS is closed-source software with active patent strategy. Unauthorized copy, redistribution, reverse engineering, or derivative misuse may trigger legal actions.</p>
 
       <h3>3. Demo Access</h3>
       <ul>
@@ -40,11 +47,11 @@
       </ul>
 
       <h3>4. Contact</h3>
-      <p class="section-sub">Legal and product inquiries: <a href="mailto:info@mlabsmusic.com">info@mlabsmusic.com</a>.</p>
+      <p>Legal and product inquiries: <a href="mailto:info@mlabsmusic.com">info@mlabsmusic.com</a>.</p>
     </section>
 
-    <footer class="footer">
-      Mlabs Music · Terms of Use
+    <footer class="footer reveal">
+      Mlabs Music - Terms of Use
       <nav class="legal-links" aria-label="Legal">
         <a href="privacy-policy.html">Privacy Policy</a>
         <a href="eula.html">EULA</a>

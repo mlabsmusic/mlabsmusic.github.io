@@ -9,7 +9,7 @@
   <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="assets/site.css" />
 </head>
-<body>
+<body class="home-page">
   <canvas id="meshBackground" class="mesh-background" aria-hidden="true"></canvas>
 
   <main class="page-wrap">
@@ -25,10 +25,10 @@
 
     <section class="hero hero-home reveal">
       <div class="hero-overlay" aria-hidden="true"></div>
-      <div class="hero-inner">
-        <p class="kicker">Mlabs Music · Product Platform</p>
+      <div class="hero-content">
+        <p class="kicker">Mlabs Music - Product Platform</p>
         <h1 class="hero-title">
-          Disenamos y construimos
+          We design and build
           <span class="hero-word-stack emph" aria-label="products, experiences, diagnostics, testing, IA modules, DJ tools">
             <span>products</span>
             <span>experiences</span>
@@ -37,11 +37,11 @@
             <span>IA modules</span>
             <span>DJ micro apps</span>
           </span>
-          que hacen crecer operaciones reales.
+          that help operations grow.
         </h1>
         <p class="hero-copy">
           MTOOLS integra libreria, automatizacion, QA, diagnostico e inteligencia operativa en una suite modular,
-          pensada para la misma exigencia visual y tecnica de una product company global.
+          con foco en legibilidad para cliente final y trazabilidad para equipo tecnico.
         </p>
         <div class="hero-actions">
           <button class="btn btn-primary" id="reserveDemoBtn">Haga su reserva de la demo</button>
@@ -52,52 +52,75 @@
 
     <section class="section-card dark statement reveal">
       <h2 class="statement-lines">
-        <span>Construimos una plataforma global para DJs.</span>
-        <span>Combinamos creatividad y tecnologia operativa.</span>
-        <span>Diseñamos para cliente final y equipo tecnico.</span>
-        <span>MTOOLS convierte complejidad en claridad.</span>
+        <span>Plataforma modular para DJs y equipos de producto.</span>
+        <span>Testing y diagnostico integrados en el framework.</span>
+        <span>IA transversal construida para todos los modulos.</span>
+        <span>Calidad visual y tecnica con enfoque enterprise.</span>
       </h2>
     </section>
 
     <section class="section-card reveal how-we-do">
       <h2 class="section-title">How we <span class="emph">do</span> it</h2>
       <p class="section-sub">
-        Convertimos ideas en experiencias de producto legibles, sostenibles y listas para escalar.
+        Convertimos ideas en experiencias de producto legibles, estables y listas para escalar.
       </p>
       <div class="reason-cards stack-gap">
         <article class="reason-card">
           <div class="reason-icon">01</div>
-          <h3>Entendemos tu flujo real</h3>
-          <p>Diseñamos cada modulo en funcion del trabajo diario de DJs, operaciones y equipos de producto.</p>
+          <h3>Conocemos el flujo real</h3>
+          <p>Disenamos cada micro app desde uso operativo real, no desde demos aisladas.</p>
         </article>
         <article class="reason-card">
           <div class="reason-icon">02</div>
           <h3>Definimos calidad desde el inicio</h3>
-          <p>Testing y diagnostico forman parte del framework, no una capa tardia al final del desarrollo.</p>
+          <p>Testing y diagnostico son parte nativa del framework y de cada release.</p>
         </article>
         <article class="reason-card">
           <div class="reason-icon">03</div>
-          <h3>Escalamos sin perder claridad</h3>
-          <p>Arquitectura modular, ownership por dominio y una interfaz que mantiene coherencia entre herramientas.</p>
+          <h3>Escalamos con coherencia</h3>
+          <p>Arquitectura modular, ownership claro y una interfaz consistente entre dominios.</p>
         </article>
       </div>
     </section>
 
-    <section class="section-card dark reveal showcase">
-      <h2 class="section-title">Beta Preview · Capturas de producto</h2>
+    <section class="section-card dark reveal">
+      <h2 class="section-title">Framework + IA compartida</h2>
       <p class="section-sub">
-        Vistas reales de MTOOLS en estado beta actual. Haz click para ampliar.
+        El framework de MTOOLS se construye como una arquitectura conectada: cada herramienta complementa a la otra
+        y alimenta un modelo IA personal para cada DJ dentro de la plataforma.
       </p>
+      <div class="framework-map stack-gap">
+        <article class="map-card">
+          <h3>Datos operativos conectados</h3>
+          <p>Las micro apps intercambian contexto para evitar islas de informacion.</p>
+        </article>
+        <article class="map-card">
+          <h3>Motor IA comun</h3>
+          <p>Un asistente transversal para preparacion, ejecucion y revision de sesiones.</p>
+        </article>
+        <article class="map-card">
+          <h3>Perfil IA por DJ</h3>
+          <p>Aprende lo que tocas y para quien tocas para recomendaciones mas precisas.</p>
+        </article>
+      </div>
+      <div class="ia-tagline">
+        <p>No es solo una IA. Es una inteligencia que evoluciona con tu sonido y tu audiencia.</p>
+      </div>
+    </section>
+
+    <section class="section-card dark reveal showcase">
+      <h2 class="section-title">Beta Preview - Capturas de producto</h2>
+      <p class="section-sub">Vistas reales de MTOOLS beta. Haz click para ampliar.</p>
       <div class="gallery-grid stack-gap" id="betaGallery">
         <figure class="shot" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/01-hub-overview.jpg" data-title="MTOOLS Hub" data-description="Centro operativo con todas las micro apps conectadas en una sola vista.">
           <img loading="lazy" src="assets/mtools-beta-v2/thumbs/01-hub-overview.jpg" alt="MTOOLS Hub" />
-          <figcaption><strong>Hub Overview</strong>Centro de control de toda la suite.</figcaption>
+          <figcaption><strong>Hub Overview</strong>Control central del framework completo.</figcaption>
         </figure>
         <figure class="shot" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/05-test-runner-main.jpg" data-title="Test Runner" data-description="Panel de calidad para prevenir regresiones y controlar estabilidad de release.">
           <img loading="lazy" src="assets/mtools-beta-v2/thumbs/05-test-runner-main.jpg" alt="Test Runner" />
-          <figcaption><strong>Test Runner</strong>Calidad integrada en el ciclo de producto.</figcaption>
+          <figcaption><strong>Test Runner</strong>Validacion continua integrada al producto.</figcaption>
         </figure>
-        <figure class="shot" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/06-diagnostics-main.jpg" data-title="Diagnostics" data-description="Consola de diagnostico para observabilidad, soporte y decisiones tecnicas con contexto.">
+        <figure class="shot" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/06-diagnostics-main.jpg" data-title="Diagnostics" data-description="Consola de diagnostico para observabilidad y soporte tecnico con contexto.">
           <img loading="lazy" src="assets/mtools-beta-v2/thumbs/06-diagnostics-main.jpg" alt="Diagnostics" />
           <figcaption><strong>Diagnostics</strong>Observabilidad para soporte avanzado.</figcaption>
         </figure>
@@ -107,25 +130,25 @@
     <section class="section-card reveal">
       <div class="two-col">
         <article class="panel">
-          <h3>IA transversal del framework</h3>
+          <h3>Reserva de demo</h3>
           <p>
-            No es una IA generica. Se esta construyendo un modelo comun para todos los modulos, capaz de aprender tu
-            estilo, el contexto de cada sesion y el tipo de audiencia para mejorar decisiones en toda la plataforma.
+            Validamos stack, volumen de libreria y objetivo operativo para preparar una demo guiada.
           </p>
+          <a class="contact-link" href="mailto:info@mlabsmusic.com?subject=Reserva%20Demo%20MTOOLS">info@mlabsmusic.com</a>
         </article>
         <article class="panel">
           <h3>Licencia y propiedad intelectual</h3>
-          <p class="small">MTOOLS se distribuye bajo licencia comercial cerrada.</p>
+          <p class="small">Acceso por evaluacion y reserva oficial.</p>
           <div class="legal-notice">
-            Codigo cerrado, cobertura de patente activa y defensa legal ante plagio o reproduccion no autorizada.
+            MTOOLS se distribuye bajo licencia de codigo cerrado y patente activa.
+            El intento de plagio activa procesos legales.
           </div>
-          <a class="contact-link" href="mailto:info@mlabsmusic.com?subject=Reserva%20Demo%20MTOOLS">info@mlabsmusic.com</a>
         </article>
       </div>
     </section>
 
     <footer class="footer reveal">
-      Mlabs Music · Sitio oficial informativo de MTOOLS
+      Mlabs Music - Sitio oficial informativo de MTOOLS
       <nav class="legal-links" aria-label="Legal">
         <a href="terms-of-use.html">Terms of Use</a>
         <a href="privacy-policy.html">Privacy Policy</a>
@@ -137,7 +160,7 @@
 
   <div class="modal-backdrop" id="reserveModal" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="reserveTitle">
-      <h3 id="reserveTitle">Reserva de demo · MTOOLS</h3>
+      <h3 id="reserveTitle">Reserva de demo - MTOOLS</h3>
       <p>
         Envia por email tu escenario de uso, volumen de libreria y objetivo operativo.
         El equipo de Mlabs Music te respondera con disponibilidad y formato recomendado.
