@@ -89,13 +89,13 @@ body.is-leaving .mesh-background {
   top: 12px;
   left: 50%;
   transform: translateX(-50%);
-  width: min(1448px, calc(100% - 28px));
+  width: min(1280px, calc(100% - 24px));
   z-index: 60;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 12px 14px;
+  gap: 16px;
+  padding: 12px 16px;
   border-radius: 999px;
   border: 1px solid var(--line-light);
   background: linear-gradient(180deg, rgba(6, 18, 42, 0.68), rgba(5, 14, 32, 0.32));
@@ -113,7 +113,7 @@ body.is-leaving .mesh-background {
   margin: 0;
   white-space: nowrap;
   color: #ecf3ff;
-  font-size: .83rem;
+  font-size: .9rem;
   letter-spacing: .12em;
   text-transform: uppercase;
   font-weight: 700;
@@ -123,7 +123,8 @@ body.is-leaving .mesh-background {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  justify-self: center;
+  gap: 10px;
 }
 
 .menu-toggle {
@@ -174,13 +175,13 @@ body.is-leaving .mesh-background {
 .menu a {
   text-decoration: none;
   color: #becbdf;
-  font-size: .75rem;
-  letter-spacing: .1em;
+  font-size: .82rem;
+  letter-spacing: .08em;
   text-transform: uppercase;
   font-weight: 700;
   border-radius: 999px;
   border: 1px solid transparent;
-  padding: 9px 14px;
+  padding: 10px 16px;
   transition: all .3s var(--ease-premium);
 }
 
@@ -199,13 +200,13 @@ body.is-leaving .mesh-background {
 .menu-cta {
   text-decoration: none;
   color: #ffffff;
-  font-size: .76rem;
+  font-size: .82rem;
   letter-spacing: .08em;
   text-transform: uppercase;
   font-weight: 700;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.55);
-  padding: 10px 20px;
+  padding: 10px 18px;
   transition: all .3s var(--ease-premium);
 }
 
@@ -864,7 +865,7 @@ body.is-leaving .mesh-background {
 
 @media (max-width: 1120px) {
   .site-header {
-    width: calc(100% - 20px);
+    width: calc(100% - 16px);
     top: 8px;
     border-radius: 18px;
     display: grid;
@@ -900,9 +901,9 @@ body.is-leaving .mesh-background {
   }
 
   .menu a {
-    text-align: left;
+    text-align: center;
     border-radius: 12px;
-    padding: 11px 12px;
+    padding: 11px 14px;
   }
 
   .site-header.menu-open .menu {
