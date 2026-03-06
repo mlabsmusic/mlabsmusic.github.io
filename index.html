@@ -52,6 +52,51 @@
       z-index: 1;
     }
 
+    .site-header {
+      margin: 16px auto 10px;
+      border-radius: 18px;
+      border: 1px solid #29426a;
+      background: rgba(8, 20, 44, 0.72);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+    }
+
+    .brand {
+      margin: 0;
+      color: #eef4ff;
+      font-size: 1rem;
+      letter-spacing: .03em;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .menu {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .menu a {
+      text-decoration: none;
+      color: #d8e5ff;
+      font-size: .82rem;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 8px 11px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: border-color .15s ease, background-color .15s ease;
+    }
+
+    .menu a:hover {
+      border-color: #5a7cb3;
+      background: rgba(255, 255, 255, .08);
+    }
+
     .hero {
       margin: 16px auto 14px;
       border-radius: var(--radius-xl);
@@ -322,6 +367,33 @@
       padding: 12px;
     }
 
+    .legal-links {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .legal-links a {
+      text-decoration: none;
+      color: #41659b;
+      border: 1px solid #d4def0;
+      background: #f8faff;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: .74rem;
+      letter-spacing: .05em;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .legal-links a:hover {
+      border-color: #aac0e5;
+      color: #1b4f96;
+    }
+
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -379,6 +451,20 @@
       padding: 9px 12px;
       cursor: pointer;
     }
+
+    .modal .action-link {
+      display: inline-block;
+      margin: 2px 0 10px;
+      border-radius: 999px;
+      padding: 9px 14px;
+      background: var(--blue);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: .95rem;
+    }
+
+    .modal .action-link:hover { filter: brightness(1.05); }
 
     .shot-modal-content {
       width: min(1100px, 100%);
@@ -446,6 +532,16 @@
       .split { grid-template-columns: 1fr; }
       .container { width: calc(100% - 24px); }
       .hero, .band { border-radius: 20px; }
+      .site-header {
+        border-radius: 14px;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+      }
+      .menu {
+        width: 100%;
+        overflow-x: auto;
+      }
     }
   </style>
 </head>
@@ -453,7 +549,16 @@
   <canvas id="meshBackground" class="mesh-background" aria-hidden="true"></canvas>
 
   <main class="container">
-    <section class="hero">
+    <header class="site-header">
+      <p class="brand">Mlabs Music</p>
+      <nav class="menu" aria-label="Main">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+      </nav>
+    </header>
+
+    <section class="hero" id="home">
       <p class="eyebrow">Mlabs Music</p>
       <h1>MTOOLS</h1>
       <p class="lead">
@@ -462,7 +567,7 @@
       </p>
     </section>
 
-    <section class="band">
+    <section class="band" id="projects">
       <h2>Beta Preview · Capturas de producto</h2>
       <p class="sub">Vista real de la experiencia MTOOLS en su estado beta actual.</p>
 
@@ -530,7 +635,7 @@
       </div>
     </section>
 
-    <section class="band">
+    <section class="band" id="about">
       <h2>Micro apps de la plataforma</h2>
       <p class="sub">Información consolidada del producto MTOOLS para uso profesional.</p>
 
@@ -574,10 +679,10 @@
         </section>
 
         <section class="panel">
-          <h3>Licencia y compra</h3>
-          <p class="price">99,99 €<small>Pago único · simulación de checkout</small></p>
-          <button class="buy" id="buyBtn">Comprar MTOOLS</button>
-          <p class="small">Este flujo es demostrativo: no procesa pagos reales todavía.</p>
+          <h3>Licencia y reserva de demo</h3>
+          <p class="price">99,99 €<small>Licencia comercial estimada · demo bajo reserva</small></p>
+          <button class="buy" id="reserveDemoBtn">Haga su reserva de la demo</button>
+          <p class="small">Reserva de demo activa: coordinamos acceso beta y validación de caso real por email.</p>
           <div class="legal-notice">
             MTOOLS se distribuye bajo licencia de <strong>código cerrado</strong> y está limitado por
             <strong>patente activa</strong>. Cualquier intento de plagio, copia no autorizada o uso indebido
@@ -599,17 +704,24 @@
 
     <footer class="footer">
       Mlabs Music · Sitio oficial informativo de MTOOLS
+      <nav class="legal-links" aria-label="Legal">
+        <a href="terms-of-use.html">Terms of Use</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="eula.html">EULA</a>
+        <a href="mailto:info@mlabsmusic.com">Contacto Email</a>
+      </nav>
     </footer>
   </main>
 
   <div class="modal-backdrop" id="checkoutModal" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
-      <h3 id="checkoutTitle">Checkout simulado</h3>
+      <h3 id="checkoutTitle">Reserva de demo · MTOOLS</h3>
       <p>Producto: <strong>MTOOLS</strong></p>
-      <p>Precio: <strong>99,99 €</strong></p>
+      <p>Licencia comercial prevista: <strong>99,99 €</strong></p>
       <p>
-        Simulación activa. El sitio está preparado para integrar pasarela de pago real en un siguiente paso.
+        Solicita tu demo enviando datos de uso, equipo y volumen de librería. Respuesta por email en el mismo hilo.
       </p>
+      <a class="action-link" href="mailto:info@mlabsmusic.com?subject=Reserva%20Demo%20MTOOLS">Enviar reserva por email</a>
       <button class="close" id="closeModal">Cerrar</button>
     </div>
   </div>
@@ -625,7 +737,7 @@
 
   <script>
     const modal = document.getElementById('checkoutModal');
-    document.getElementById('buyBtn').addEventListener('click', () => {
+    document.getElementById('reserveDemoBtn').addEventListener('click', () => {
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
     });
