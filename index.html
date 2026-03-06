@@ -440,12 +440,13 @@
       border-radius: 18px;
       padding: 12px;
       box-shadow: 0 18px 45px rgba(0, 0, 0, .18);
-      display: grid;
+      display: flex;
+      flex-direction: column;
       gap: 8px;
       transform: scale(.96);
       transition: transform .2s ease;
       position: relative;
-      overflow: hidden;
+      overflow-y: auto;
     }
 
     .modal-backdrop.is-open .shot-modal-content {
@@ -453,9 +454,11 @@
     }
 
     .shot-modal-content img {
-      width: 100%;
+      width: auto;
+      max-width: 100%;
+      height: auto;
       max-height: calc(88vh - 150px);
-      object-fit: contain;
+      align-self: center;
       border-radius: 12px;
       background: #f2f4f9;
     }
@@ -510,24 +513,30 @@
         border-radius: 14px;
       }
       .shot-modal-content {
-        width: 100%;
-        max-height: 90dvh;
+        width: min(94vw, 760px);
+        max-height: 88dvh;
         padding: 10px;
         border-radius: 14px;
         gap: 6px;
+        overflow-y: auto;
       }
       .shot-modal-content img {
-        max-height: min(54dvh, 420px);
+        width: auto;
+        max-width: 100%;
+        height: auto;
+        max-height: min(52dvh, 380px);
         border-radius: 10px;
       }
       .shot-modal-title {
         font-size: .95rem !important;
         line-height: 1.3 !important;
+        width: 100%;
       }
       .shot-modal-description {
         font-size: .86rem !important;
         line-height: 1.38 !important;
-        max-height: 16dvh;
+        width: 100%;
+        max-height: 14dvh;
         overflow: auto;
         padding-right: 2px;
       }
@@ -540,8 +549,12 @@
     }
 
     @media (max-width: 520px) {
+      .shot-modal-content {
+        width: calc(100vw - 16px);
+        max-height: 86dvh;
+      }
       .shot-modal-content img {
-        max-height: min(50dvh, 360px);
+        max-height: min(48dvh, 320px);
       }
     }
   </style>
