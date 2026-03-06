@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Mlabs Music | Projects</title>
-  <meta name="description" content="MTOOLS projects: beta captures, micro apps, and a testing + diagnostics framework for DJ operations." />
+  <meta name="description" content="MTOOLS projects: beta captures, modular products, and a testing + diagnostics framework for DJ operations." />
   <link rel="canonical" href="https://www.mlabsmusic.com/projects.html" />
   <link rel="alternate" hreflang="en" href="https://www.mlabsmusic.com/projects.html" />
   <link rel="alternate" hreflang="es" href="https://www.mlabsmusic.com/es/projects.html" />
@@ -20,9 +20,9 @@
       <a class="brand" href="/">Mlabs Music</a>
       <nav class="menu" aria-label="Main">
         <a href="/">Home</a>
-        <a href="/about.html">About</a>
         <a class="is-active" href="/projects.html">Projects</a>
-        <a href="/app/">App</a>
+        <a href="/about.html">About</a>
+        <a class="menu-lang" href="mailto:info@mlabsmusic.com">Contact</a>
       </nav>
       <a class="menu-cta" href="mailto:info@mlabsmusic.com">Contact</a>
     </header>
@@ -31,7 +31,7 @@
       <div class="hero-overlay" aria-hidden="true"></div>
       <div class="hero-content">
         <p class="kicker">Projects</p>
-        <h1 class="hero-title">MTOOLS Micro Apps in <span class="emph">Beta</span>.</h1>
+        <h1 class="hero-title">MTOOLS Modules in <span class="emph">Beta</span>.</h1>
         <p class="hero-copy">
           This section is the proof layer: real modules, real UI, and current build status.
           Every screen is clickable for closer inspection.
@@ -45,9 +45,12 @@
     <section class="section-card reveal">
       <h2 class="section-title">Beta Evidence - Product captures</h2>
       <p class="section-sub">Current implementation snapshots across the active module set.</p>
+      <p class="section-sub carousel-hint">Swipe or use arrows to navigate.</p>
 
-      <div class="gallery-grid stack-gap" id="betaGallery">
-        <figure class="shot" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/01-hub-overview.jpg" data-title="Hub Overview" data-description="Central MTOOLS view with the complete micro-app map and quick access by functional domain.">
+      <div class="beta-carousel" data-beta-carousel>
+        <button class="carousel-btn prev" type="button" aria-label="Previous captures" data-carousel-prev>&lt;</button>
+        <div class="gallery-grid stack-gap carousel-track" id="betaGallery" data-beta-track>
+        <figure class="shot" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/01-hub-overview.jpg" data-title="Hub Overview" data-description="Central MTOOLS view with the complete module map and quick access by functional domain.">
           <img loading="lazy" src="assets/mtools-beta-v2/thumbs/01-hub-overview.jpg" alt="Hub Overview" />
           <figcaption><strong>Hub Overview</strong>Operational center for the full suite.</figcaption>
         </figure>
@@ -103,10 +106,12 @@
           <img loading="lazy" src="assets/mtools-beta-v2/thumbs/14-traktor-tools-placeholder.jpg" alt="Traktor Tools" />
           <figcaption><strong>Traktor Tools</strong>Connectivity with Traktor stack.</figcaption>
         </figure>
-        <figure class="shot" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/15-more-apps-card.jpg" data-title="More Apps" data-description="Expansion view of the portfolio with new micro apps in roadmap.">
-          <img loading="lazy" src="assets/mtools-beta-v2/thumbs/15-more-apps-card.jpg" alt="More Apps" />
-          <figcaption><strong>More Apps</strong>Roadmap growth of the ecosystem.</figcaption>
+        <figure class="shot" tabindex="0" data-shot="assets/mtools-beta-v2/optimized/15-more-apps-card.jpg" data-title="More Modules" data-description="Expansion view of the portfolio with new modules in roadmap.">
+          <img loading="lazy" src="assets/mtools-beta-v2/thumbs/15-more-apps-card.jpg" alt="More Modules" />
+          <figcaption><strong>More Modules</strong>Roadmap growth of the ecosystem.</figcaption>
         </figure>
+        </div>
+        <button class="carousel-btn next" type="button" aria-label="Next captures" data-carousel-next>&gt;</button>
       </div>
     </section>
 
@@ -133,6 +138,35 @@
           <span class="status mvp">MVP</span>
           <h3>Diagnostics + Testing</h3>
           <p>MVP quality layer for validation, observability, and release safety.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-card dark reveal">
+      <h2 class="section-title">Private Access and Paid Plans</h2>
+      <p class="section-sub">
+        This is now integrated into Projects. The page covers both beta product evidence and the private-access roadmap.
+      </p>
+      <div class="apps-grid stack-gap">
+        <article class="app-card">
+          <span class="status beta">Next</span>
+          <h3>Login</h3>
+          <p>User authentication for private access.</p>
+        </article>
+        <article class="app-card">
+          <span class="status beta">Next</span>
+          <h3>Plans</h3>
+          <p>Paid plan visibility per account.</p>
+        </article>
+        <article class="app-card">
+          <span class="status mvp">Later</span>
+          <h3>Billing</h3>
+          <p>Subscription management and invoices.</p>
+        </article>
+        <article class="app-card">
+          <span class="status mvp">Later</span>
+          <h3>Dashboard</h3>
+          <p>Usage and tools access by user profile.</p>
         </article>
       </div>
     </section>

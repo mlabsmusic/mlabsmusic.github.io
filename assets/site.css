@@ -855,193 +855,71 @@ body.is-leaving .mesh-background {
   font-size: .88rem;
 }
 
-.testimonials-grid {
-  display: grid;
-  gap: 12px;
-  margin-top: 20px;
+.carousel-hint {
+  margin-top: 6px;
+  font-size: .84rem;
+  opacity: .9;
 }
 
-.testimonial-card {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: stretch;
-  border-radius: 18px;
-  border: 1px solid var(--line-soft);
-  background: var(--surface-soft);
-  overflow: hidden;
-}
-
-.testimonial-card.is-reverse .testimonial-media {
-  order: 2;
-}
-
-.testimonial-card.is-reverse .testimonial-copy {
-  order: 1;
-}
-
-.testimonial-media {
-  min-height: 250px;
-  background: #061734;
-}
-
-.testimonial-media img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.testimonial-copy {
-  padding: 20px;
-  display: grid;
-  align-content: center;
-  gap: 8px;
-}
-
-.testimonial-copy h5 {
-  margin: 0;
-  color: #2f88ff;
-  font-size: .76rem;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  font-weight: 800;
-}
-
-.testimonial-copy h3 {
-  margin: 0;
-  color: #142443;
-  font-size: clamp(1.25rem, 2vw, 2rem);
-  line-height: 1.15;
-}
-
-.testimonial-copy p {
-  margin: 0;
-  color: var(--text-muted);
-  font-size: .98rem;
-  line-height: 1.6;
-}
-
-.dark .testimonial-card {
-  border-color: rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.dark .testimonial-copy h5 {
-  color: #82ccff;
-}
-
-.dark .testimonial-copy h3 {
-  color: #edf4ff;
-}
-
-.dark .testimonial-copy p {
-  color: #c0d2ee;
-}
-
-.team-feature {
+.beta-carousel {
   position: relative;
-  overflow: hidden;
-  border-color: rgba(164, 196, 239, 0.45);
-  background:
-    radial-gradient(520px 240px at 0% -20%, rgba(126, 220, 255, 0.16), transparent 68%),
-    radial-gradient(560px 300px at 100% 120%, rgba(74, 137, 250, 0.16), transparent 72%),
-    linear-gradient(180deg, rgba(8, 22, 47, 0.9), rgba(5, 15, 35, 0.92));
-}
-
-.team-feature .section-title {
-  color: #edf4ff;
-}
-
-.team-kicker {
-  margin: 0 0 8px;
-  color: #7ed7ff;
-  font-size: .74rem;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  font-weight: 800;
-}
-
-.team-feature .testimonials-grid {
   margin-top: 14px;
 }
 
-.team-feature .founder-card {
-  grid-template-columns: minmax(280px, .95fr) minmax(0, 1.05fr);
-  border-color: rgba(198, 223, 255, 0.34);
-  background: linear-gradient(140deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03));
-  box-shadow: 0 24px 44px rgba(0, 8, 24, 0.34);
-}
-
-.team-feature .testimonial-media {
-  min-height: 340px;
-  position: relative;
-}
-
-.team-feature .testimonial-media::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(0deg, rgba(5, 15, 35, 0.36), transparent 42%);
-  pointer-events: none;
-}
-
-.team-feature .testimonial-copy {
-  padding: 26px 24px;
-  gap: 12px;
-}
-
-.team-feature .testimonial-copy h5 {
-  color: #9edbff;
-}
-
-.team-feature .testimonial-copy h3 {
-  color: #f5f9ff;
-  font-size: clamp(1.5rem, 3vw, 2.45rem);
-  letter-spacing: -.02em;
-}
-
-.profile-links {
+.beta-carousel .carousel-track {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-wrap: nowrap;
+  gap: 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 4px 44px;
+  margin: 0;
 }
 
-.profile-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 34px;
-  padding: 0 12px;
+.beta-carousel .carousel-track::-webkit-scrollbar {
+  height: 8px;
+}
+
+.beta-carousel .carousel-track::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  border: 1px solid rgba(208, 228, 251, 0.62);
-  background: rgba(255, 255, 255, 0.08);
-  color: #f5fbff;
-  text-decoration: none;
-  font-size: .74rem;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  font-weight: 800;
-  transition: border-color .24s var(--ease-premium), background .24s var(--ease-premium), transform .24s var(--ease-premium);
+  background: rgba(120, 152, 198, 0.45);
 }
 
-.profile-link:hover {
-  border-color: rgba(223, 238, 255, 0.98);
-  background: rgba(126, 186, 255, 0.28);
-  transform: translateY(-1px);
+.beta-carousel .carousel-track .shot {
+  flex: 0 0 clamp(250px, 34vw, 420px);
+  scroll-snap-align: start;
 }
 
-.profile-link:focus-visible {
-  outline: 2px solid rgba(148, 211, 255, 0.95);
-  outline-offset: 2px;
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 4;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(170, 203, 245, 0.82);
+  background: linear-gradient(180deg, rgba(16, 42, 84, 0.86), rgba(10, 26, 56, 0.82));
+  color: #ecf5ff;
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(2, 12, 30, 0.34);
 }
 
-.founder-quote {
-  margin: 2px 0 0;
-  padding-left: 12px;
-  border-left: 2px solid rgba(143, 190, 255, 0.72);
-  color: #d4e4fb;
-  font-size: 1rem;
-  line-height: 1.62;
+.carousel-btn.prev {
+  left: 6px;
+}
+
+.carousel-btn.next {
+  right: 6px;
+}
+
+.carousel-btn:disabled {
+  opacity: .35;
+  cursor: not-allowed;
 }
 
 .small {
@@ -1557,8 +1435,7 @@ body.is-leaving .mesh-background {
   .framework-map,
   .apps-grid,
   .gallery-grid,
-  .two-col,
-  .testimonial-card {
+  .two-col {
     grid-template-columns: 1fr;
   }
 
@@ -1571,15 +1448,6 @@ body.is-leaving .mesh-background {
   .audience-tab {
     width: 100%;
     justify-content: center;
-  }
-
-  .team-feature .testimonial-media {
-    min-height: 280px;
-  }
-
-  .testimonial-card.is-reverse .testimonial-media,
-  .testimonial-card.is-reverse .testimonial-copy {
-    order: initial;
   }
 
   .hero-word-stack {
@@ -1634,16 +1502,12 @@ body.is-leaving .mesh-background {
     padding: 0 10px;
   }
 
-  .testimonial-copy {
-    padding: 16px;
+  .beta-carousel .carousel-track {
+    padding: 4px 10px 10px;
   }
 
-  .team-feature .testimonial-copy {
-    padding: 18px;
-  }
-
-  .team-feature .testimonial-media {
-    min-height: 220px;
+  .carousel-btn {
+    display: none;
   }
 
   .footer {
