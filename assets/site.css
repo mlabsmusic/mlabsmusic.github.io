@@ -44,29 +44,20 @@ body {
   margin: 0 auto;
   position: relative;
   z-index: 1;
-  animation: pageIntro .46s cubic-bezier(.2, .72, .18, 1) both;
-  transition:
-    opacity .3s cubic-bezier(.4, .06, .2, 1),
-    transform .3s cubic-bezier(.4, .06, .2, 1),
-    filter .3s cubic-bezier(.4, .06, .2, 1);
+  animation: pageIntro .32s ease both;
+  transition: opacity .22s ease;
 }
 
 body.is-leaving .page-wrap {
   opacity: 0;
-  transform: translateY(-10px) scale(.995);
-  filter: blur(5px);
 }
 
 @keyframes pageIntro {
   from {
     opacity: 0;
-    filter: blur(8px);
-    transform: translateY(14px) scale(.996);
   }
   to {
     opacity: 1;
-    filter: blur(0);
-    transform: translateY(0) scale(1);
   }
 }
 
@@ -76,37 +67,29 @@ body.is-leaving .page-wrap {
   }
 
   ::view-transition-old(root) {
-    animation: oldView .32s cubic-bezier(.4, .06, .2, 1) both;
+    animation: oldView .2s ease both;
   }
 
   ::view-transition-new(root) {
-    animation: newView .46s cubic-bezier(.2, .72, .18, 1) both;
+    animation: newView .3s ease both;
   }
 }
 
 @keyframes oldView {
   from {
     opacity: 1;
-    filter: blur(0);
-    transform: translateY(0) scale(1);
   }
   to {
     opacity: 0;
-    filter: blur(6px);
-    transform: translateY(-10px) scale(.996);
   }
 }
 
 @keyframes newView {
   from {
     opacity: 0;
-    filter: blur(8px);
-    transform: translateY(14px) scale(.996);
   }
   to {
     opacity: 1;
-    filter: blur(0);
-    transform: translateY(0) scale(1);
   }
 }
 

@@ -200,7 +200,7 @@
       document.body.classList.add('is-leaving');
       window.setTimeout(() => {
         window.location.href = destination.href;
-      }, 290);
+      }, 210);
     });
   }
 })();
