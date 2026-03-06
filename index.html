@@ -117,6 +117,38 @@
       gap: 14px;
     }
 
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .shot {
+      margin: 0;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+      cursor: zoom-in;
+    }
+
+    .shot img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      background: #eef2f9;
+    }
+
+    .shot figcaption {
+      padding: 10px 11px;
+      color: var(--muted);
+      font-size: .88rem;
+      line-height: 1.4;
+      background: #f8f9fd;
+      border-top: 1px solid #ececf2;
+    }
+
     .app {
       border: 1px solid var(--line);
       border-radius: var(--radius-lg);
@@ -297,7 +329,35 @@
       cursor: pointer;
     }
 
+    .shot-modal-content {
+      width: min(1100px, 100%);
+      max-height: min(88vh, 940px);
+      background: #fff;
+      border: 1px solid #d6d6dc;
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, .18);
+      display: grid;
+      gap: 8px;
+    }
+
+    .shot-modal-content img {
+      width: 100%;
+      max-height: calc(88vh - 110px);
+      object-fit: contain;
+      border-radius: 12px;
+      background: #f2f4f9;
+    }
+
+    .shot-modal-content p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .94rem;
+      line-height: 1.45;
+    }
+
     @media (max-width: 920px) {
+      .gallery-grid { grid-template-columns: 1fr; }
       .apps { grid-template-columns: 1fr; }
       .split { grid-template-columns: 1fr; }
       .container { width: calc(100% - 24px); }
@@ -316,6 +376,74 @@
         La suite de micro apps para DJs que convierte tareas técnicas en flujo operativo:
         importación en Music, asistencia IA, contabilidad offline y control de duplicados.
       </p>
+    </section>
+
+    <section class="band">
+      <h2>Beta Preview · Capturas de producto</h2>
+      <p class="sub">Vista real de la experiencia MTOOLS en su estado beta actual.</p>
+
+      <div class="gallery-grid" id="betaGallery">
+        <figure class="shot" data-shot="assets/mtools-beta/01-home.png" data-title="Home · Vista general">
+          <img loading="lazy" src="assets/mtools-beta/01-home.png" alt="MTOOLS home vista general" />
+          <figcaption>Home · Vista general</figcaption>
+        </figure>
+        <figure class="shot" data-shot="assets/mtools-beta/02-home-cards.png" data-title="Home · Cards de apps">
+          <img loading="lazy" src="assets/mtools-beta/02-home-cards.png" alt="MTOOLS cards de apps" />
+          <figcaption>Home · Cards de apps</figcaption>
+        </figure>
+        <figure class="shot" data-shot="assets/mtools-beta/03-home-footer-controls.png" data-title="Home · Controles globales">
+          <img loading="lazy" src="assets/mtools-beta/03-home-footer-controls.png" alt="MTOOLS controles globales" />
+          <figcaption>Home · Controles globales</figcaption>
+        </figure>
+        <figure class="shot" data-shot="assets/mtools-beta/04-foldertotunes-step1.png" data-title="FolderToTunes · Step 1">
+          <img loading="lazy" src="assets/mtools-beta/04-foldertotunes-step1.png" alt="FolderToTunes paso 1" />
+          <figcaption>FolderToTunes · Step 1</figcaption>
+        </figure>
+        <figure class="shot" data-shot="assets/mtools-beta/05-foldertotunes-step2-preview.png" data-title="FolderToTunes · Step 2">
+          <img loading="lazy" src="assets/mtools-beta/05-foldertotunes-step2-preview.png" alt="FolderToTunes paso 2" />
+          <figcaption>FolderToTunes · Step 2</figcaption>
+        </figure>
+        <figure class="shot" data-shot="assets/mtools-beta/06-foldertotunes-step3-import.png" data-title="FolderToTunes · Step 3">
+          <img loading="lazy" src="assets/mtools-beta/06-foldertotunes-step3-import.png" alt="FolderToTunes paso 3" />
+          <figcaption>FolderToTunes · Step 3</figcaption>
+        </figure>
+        <figure class="shot" data-shot="assets/mtools-beta/07-foldertotunes-step4-progress.png" data-title="FolderToTunes · Step 4">
+          <img loading="lazy" src="assets/mtools-beta/07-foldertotunes-step4-progress.png" alt="FolderToTunes paso 4" />
+          <figcaption>FolderToTunes · Step 4</figcaption>
+        </figure>
+        <figure class="shot" data-shot="assets/mtools-beta/08-step1-buttons-detail.png" data-title="Step 1 · Controles principales">
+          <img loading="lazy" src="assets/mtools-beta/08-step1-buttons-detail.png" alt="Step 1 controles" />
+          <figcaption>Step 1 · Controles principales</figcaption>
+        </figure>
+        <figure class="shot" data-shot="assets/mtools-beta/13-step1-sidebar-actions.png" data-title="Step 1 · Acciones laterales">
+          <img loading="lazy" src="assets/mtools-beta/13-step1-sidebar-actions.png" alt="Step 1 acciones laterales" />
+          <figcaption>Step 1 · Acciones laterales</figcaption>
+        </figure>
+        <figure class="shot" data-shot="assets/mtools-beta/09-step2-buttons-detail.png" data-title="Step 2 · Controles principales">
+          <img loading="lazy" src="assets/mtools-beta/09-step2-buttons-detail.png" alt="Step 2 controles" />
+          <figcaption>Step 2 · Controles principales</figcaption>
+        </figure>
+        <figure class="shot" data-shot="assets/mtools-beta/14-step2-sidebar-actions.png" data-title="Step 2 · Acciones laterales">
+          <img loading="lazy" src="assets/mtools-beta/14-step2-sidebar-actions.png" alt="Step 2 acciones laterales" />
+          <figcaption>Step 2 · Acciones laterales</figcaption>
+        </figure>
+        <figure class="shot" data-shot="assets/mtools-beta/10-step3-buttons-detail.png" data-title="Step 3 · Controles principales">
+          <img loading="lazy" src="assets/mtools-beta/10-step3-buttons-detail.png" alt="Step 3 controles" />
+          <figcaption>Step 3 · Controles principales</figcaption>
+        </figure>
+        <figure class="shot" data-shot="assets/mtools-beta/15-step3-sidebar-actions.png" data-title="Step 3 · Acciones laterales">
+          <img loading="lazy" src="assets/mtools-beta/15-step3-sidebar-actions.png" alt="Step 3 acciones laterales" />
+          <figcaption>Step 3 · Acciones laterales</figcaption>
+        </figure>
+        <figure class="shot" data-shot="assets/mtools-beta/11-step4-buttons-detail.png" data-title="Step 4 · Progreso y acciones">
+          <img loading="lazy" src="assets/mtools-beta/11-step4-buttons-detail.png" alt="Step 4 progreso y acciones" />
+          <figcaption>Step 4 · Progreso y acciones</figcaption>
+        </figure>
+        <figure class="shot" data-shot="assets/mtools-beta/12-step4-tree-zoom-controls.png" data-title="Step 4 · Zoom del árbol">
+          <img loading="lazy" src="assets/mtools-beta/12-step4-tree-zoom-controls.png" alt="Step 4 zoom del arbol" />
+          <figcaption>Step 4 · Zoom del árbol</figcaption>
+        </figure>
+      </div>
     </section>
 
     <section class="band">
@@ -397,6 +525,14 @@
     </div>
   </div>
 
+  <div class="modal-backdrop" id="shotModal" aria-hidden="true">
+    <div class="shot-modal-content" role="dialog" aria-modal="true" aria-labelledby="shotTitle">
+      <img id="shotImage" src="" alt="" />
+      <p id="shotTitle"></p>
+      <button class="close" id="closeShotModal">Cerrar</button>
+    </div>
+  </div>
+
   <script>
     const modal = document.getElementById('checkoutModal');
     document.getElementById('buyBtn').addEventListener('click', () => {
@@ -413,8 +549,39 @@
     modal.addEventListener('click', (event) => {
       if (event.target === modal) closeModal();
     });
+
+    const shotModal = document.getElementById('shotModal');
+    const shotImage = document.getElementById('shotImage');
+    const shotTitle = document.getElementById('shotTitle');
+
+    function closeShotModal() {
+      shotModal.style.display = 'none';
+      shotModal.setAttribute('aria-hidden', 'true');
+      shotImage.src = '';
+      shotImage.alt = '';
+      shotTitle.textContent = '';
+    }
+
+    document.getElementById('betaGallery').addEventListener('click', (event) => {
+      const figure = event.target.closest('.shot');
+      if (!figure) return;
+      const src = figure.getAttribute('data-shot');
+      const title = figure.getAttribute('data-title') || 'Captura beta MTOOLS';
+      shotImage.src = src;
+      shotImage.alt = title;
+      shotTitle.textContent = title;
+      shotModal.style.display = 'flex';
+      shotModal.setAttribute('aria-hidden', 'false');
+    });
+
+    document.getElementById('closeShotModal').addEventListener('click', closeShotModal);
+    shotModal.addEventListener('click', (event) => {
+      if (event.target === shotModal) closeShotModal();
+    });
     window.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') closeModal();
+      if (event.key !== 'Escape') return;
+      closeModal();
+      closeShotModal();
     });
 
     // MTOOLS-inspired mesh particles background.
