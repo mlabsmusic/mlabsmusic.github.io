@@ -25,7 +25,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Pages
+      - name: Setup Pages (auto-enable with PAT)
+        if: ${{ secrets.PAGES_ADMIN_PAT != '' }}
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+          token: ${{ secrets.PAGES_ADMIN_PAT }}
+
+      - name: Setup Pages (default token)
+        if: ${{ secrets.PAGES_ADMIN_PAT == '' }}
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
