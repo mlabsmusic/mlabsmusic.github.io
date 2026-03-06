@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mlabs Music | About</title>
+  <meta name="description" content="About Mlabs Music and the MTOOLS framework." />
+  <link rel="canonical" href="https://www.mlabsmusic.com/about.html" />
+  <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+  <canvas id="meshBackground" class="mesh-background" aria-hidden="true"></canvas>
+
+  <main class="page-wrap">
+    <header class="site-header">
+      <p class="brand">Mlabs Music</p>
+      <nav class="menu" aria-label="Main">
+        <a href="/">Home</a>
+        <a class="is-active" href="about.html">About</a>
+        <a href="projects.html">Projects</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="kicker">About</p>
+      <h1 class="hero-title">Product company mindset</h1>
+      <p class="hero-copy">
+        Mlabs Music desarrolla MTOOLS con foco en usabilidad profesional, operaciones reproducibles y codigo mantenible.
+        Disenamos para dos audiencias al mismo tiempo: el cliente final y el equipo que construye el software.
+      </p>
+    </section>
+
+    <section class="section-card">
+      <h2 class="section-title">Framework interno de calidad</h2>
+      <p class="section-sub">
+        El framework de MTOOLS incorpora apps de Testing y Diagnostico para anunciar y sostener un objetivo clave:
+        que la plataforma sea cada vez mas legible para negocio y desarrollo.
+      </p>
+      <div class="pillars">
+        <article class="pillar">
+          <h3>Testing App</h3>
+          <p>Ejecucion centralizada de suites funcionales para detectar regresiones antes de release.</p>
+        </article>
+        <article class="pillar">
+          <h3>Diagnostics App</h3>
+          <p>Observabilidad operativa para resolver incidencias con contexto y trazabilidad real.</p>
+        </article>
+        <article class="pillar">
+          <h3>CI + release control</h3>
+          <p>Build automatizada, validacion continua y control de calidad previo al artefacto final.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <div class="two-col">
+        <article class="panel">
+          <h3>Unete al proyecto</h3>
+          <p>
+            Estamos incorporando perfiles de <strong>desarrollo</strong> y <strong>testing</strong>.
+            Si quieres participar en el crecimiento de MTOOLS, escribe al equipo.
+          </p>
+          <a class="contact-link" href="mailto:info@mlabsmusic.com?subject=Quiero%20formar%20parte%20de%20MTOOLS">info@mlabsmusic.com</a>
+        </article>
+        <article class="panel">
+          <h3>Reserva demo para tu equipo</h3>
+          <p class="small">
+            Evaluamos tus necesidades y preparamos una sesion de demo orientada a tu flujo de trabajo.
+          </p>
+          <button class="btn btn-primary" id="reserveDemoBtn">Haga su reserva de la demo</button>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      Mlabs Music · About
+      <nav class="legal-links" aria-label="Legal">
+        <a href="terms-of-use.html">Terms of Use</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="eula.html">EULA</a>
+        <a href="mailto:info@mlabsmusic.com">Contacto Email</a>
+      </nav>
+    </footer>
+  </main>
+
+  <div class="modal-backdrop" id="reserveModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="reserveTitle">
+      <h3 id="reserveTitle">Reserva de demo · MTOOLS</h3>
+      <p>Licencia comercial prevista: <strong>99,99 €</strong></p>
+      <p>
+        Comparte stack, volumen de libreria y objetivo de negocio.
+        Te devolvemos disponibilidad y formato de demo.
+      </p>
+      <a class="action-link" href="mailto:info@mlabsmusic.com?subject=Reserva%20Demo%20MTOOLS">Enviar reserva por email</a>
+      <button class="close" id="closeReserveModal">Cerrar</button>
+    </div>
+  </div>
+
+  <script src="assets/site.js"></script>
+</body>
+</html>

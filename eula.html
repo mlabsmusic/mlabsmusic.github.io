@@ -5,78 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>EULA | Mlabs Music</title>
   <meta name="description" content="End User License Agreement for MTOOLS by Mlabs Music." />
-  <style>
-    :root {
-      --bg: #071327;
-      --surface: #ffffff;
-      --line: #d9e2f2;
-      --text: #1d1d1f;
-      --muted: #5f6c81;
-      --blue: #1f66c2;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Helvetica, Arial, sans-serif;
-      background: radial-gradient(1400px 700px at 15% -20%, #173565 0%, transparent 60%), var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 22px 14px;
-    }
-    .wrap {
-      width: min(900px, 100%);
-      margin: 0 auto;
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: clamp(18px, 4vw, 34px);
-    }
-    h1 { margin: 0 0 8px; font-size: clamp(1.8rem, 5vw, 2.6rem); }
-    h2 { margin: 18px 0 8px; font-size: 1.1rem; }
-    p, li { color: var(--muted); line-height: 1.62; }
-    ul { margin: 8px 0 0; padding-left: 18px; }
-    .meta { margin: 0 0 16px; color: var(--muted); }
-    .top-link {
-      display: inline-block;
-      margin-top: 10px;
-      text-decoration: none;
-      color: var(--blue);
-      font-weight: 600;
-    }
-  </style>
+  <link rel="canonical" href="https://www.mlabsmusic.com/eula.html" />
+  <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/site.css" />
 </head>
 <body>
-  <main class="wrap">
-    <h1>End User License Agreement (EULA)</h1>
-    <p class="meta">Last updated: March 6, 2026</p>
+  <canvas id="meshBackground" class="mesh-background" aria-hidden="true"></canvas>
 
-    <h2>1. License Grant</h2>
-    <p>
-      Subject to payment and approval terms, Mlabs Music grants a limited, non-exclusive, non-transferable license to use MTOOLS for internal business workflows.
-    </p>
+  <main class="page-wrap">
+    <header class="site-header">
+      <p class="brand">Mlabs Music</p>
+      <nav class="menu" aria-label="Main">
+        <a href="/">Home</a>
+        <a href="about.html">About</a>
+        <a href="projects.html">Projects</a>
+      </nav>
+    </header>
 
-    <h2>2. Restrictions</h2>
-    <ul>
-      <li>No reverse engineering, decompiling, disassembly, or source extraction.</li>
-      <li>No unauthorized redistribution, sublicensing, or resale.</li>
-      <li>No removal or alteration of proprietary notices.</li>
-      <li>No use that violates patent rights, trademarks, or copyright claims.</li>
-    </ul>
+    <section class="section-card">
+      <h1 class="section-title">End User License Agreement (EULA)</h1>
+      <p class="section-sub">Last updated: March 6, 2026</p>
 
-    <h2>3. Ownership</h2>
-    <p>
-      MTOOLS and all related intellectual property remain the exclusive property of Mlabs Music.
-    </p>
+      <h3>1. License Grant</h3>
+      <p class="section-sub">Mlabs Music grants a limited, non-exclusive, non-transferable license to use MTOOLS under agreed commercial terms.</p>
 
-    <h2>4. Termination</h2>
-    <p>
-      License rights may be terminated immediately if any EULA term is breached.
-    </p>
+      <h3>2. Restrictions</h3>
+      <ul>
+        <li>No reverse engineering, decompiling, or source extraction.</li>
+        <li>No unauthorized redistribution, sublicensing, or resale.</li>
+        <li>No alteration of proprietary notices.</li>
+      </ul>
 
-    <h2>5. Contact</h2>
-    <p>Licensing inquiries: <a href="mailto:info@mlabsmusic.com">info@mlabsmusic.com</a>.</p>
+      <h3>3. Ownership</h3>
+      <p class="section-sub">MTOOLS and related intellectual property remain the exclusive property of Mlabs Music.</p>
 
-    <a class="top-link" href="/">Back to Home</a>
+      <h3>4. Termination</h3>
+      <p class="section-sub">License rights may be terminated if EULA terms are breached.</p>
+
+      <h3>5. Contact</h3>
+      <p class="section-sub">Licensing inquiries: <a href="mailto:info@mlabsmusic.com">info@mlabsmusic.com</a>.</p>
+    </section>
+
+    <footer class="footer">
+      Mlabs Music · EULA
+      <nav class="legal-links" aria-label="Legal">
+        <a href="terms-of-use.html">Terms of Use</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="mailto:info@mlabsmusic.com">Contacto Email</a>
+      </nav>
+    </footer>
   </main>
+
+  <script src="assets/site.js"></script>
 </body>
 </html>

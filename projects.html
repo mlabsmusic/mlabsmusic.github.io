@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mlabs Music | Projects</title>
+  <meta name="description" content="MTOOLS projects, micro apps and beta product captures." />
+  <link rel="canonical" href="https://www.mlabsmusic.com/projects.html" />
+  <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="assets/site.css" />
+</head>
+<body>
+  <canvas id="meshBackground" class="mesh-background" aria-hidden="true"></canvas>
+
+  <main class="page-wrap">
+    <header class="site-header">
+      <p class="brand">Mlabs Music</p>
+      <nav class="menu" aria-label="Main">
+        <a href="/">Home</a>
+        <a href="about.html">About</a>
+        <a class="is-active" href="projects.html">Projects</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="kicker">Projects</p>
+      <h1 class="hero-title">MTOOLS Micro Apps</h1>
+      <p class="hero-copy">
+        Vista informativa del portfolio actual: modulos en produccion, beta y roadmap.
+        Capturas reales de beta para revisar UX, profundidad funcional y direccion del producto.
+      </p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" id="reserveDemoBtn">Haga su reserva de la demo</button>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <h2 class="section-title">Beta Preview · Capturas de producto</h2>
+      <p class="section-sub">Capturas reales del estado beta de MTOOLS.</p>
+
+      <div class="gallery-grid" id="betaGallery">
+        <figure class="shot" data-shot="assets/mtools-beta-v2/01-hub-overview.png" data-title="Hub · Vista general" data-description="Centro operativo de MTOOLS con acceso modular por categoria.">
+          <img loading="lazy" src="assets/mtools-beta-v2/01-hub-overview.png" alt="MTOOLS hub" />
+          <figcaption><strong>Hub · Vista general</strong>Centro operativo con acceso inmediato a micro apps.</figcaption>
+        </figure>
+        <figure class="shot" data-shot="assets/mtools-beta-v2/02-foldertotunes-main.png" data-title="FolderToTunes · Vista principal" data-description="Asistente de importacion en pasos para Apple Music.">
+          <img loading="lazy" src="assets/mtools-beta-v2/02-foldertotunes-main.png" alt="FolderToTunes" />
+          <figcaption><strong>FolderToTunes</strong>Importacion guiada de carpetas a playlists.</figcaption>
+        </figure>
+        <figure class="shot" data-shot="assets/mtools-beta-v2/03-aisessiongenerator-main.png" data-title="AISessionGenerator · Vista principal" data-description="Preparacion creativa de sesiones con apoyo IA.">
+          <img loading="lazy" src="assets/mtools-beta-v2/03-aisessiongenerator-main.png" alt="AISessionGenerator" />
+          <figcaption><strong>AISessionGenerator</strong>Prompts y estructura de sesion con IA.</figcaption>
+        </figure>
+        <figure class="shot" data-shot="assets/mtools-beta-v2/04-logoconta-quickbooks-main.png" data-title="Logoconta · Vista principal" data-description="Control contable local con enfoque operativo.">
+          <img loading="lazy" src="assets/mtools-beta-v2/04-logoconta-quickbooks-main.png" alt="Logoconta" />
+          <figcaption><strong>Logoconta</strong>Gestion contable offline para entorno profesional.</figcaption>
+        </figure>
+        <figure class="shot" data-shot="assets/mtools-beta-v2/05-test-runner-main.png" data-title="Test Runner · Vista principal" data-description="Panel interno de build y suites de prueba.">
+          <img loading="lazy" src="assets/mtools-beta-v2/05-test-runner-main.png" alt="Test Runner" />
+          <figcaption><strong>Test Runner</strong>Calidad integrada al proceso de producto.</figcaption>
+        </figure>
+        <figure class="shot" data-shot="assets/mtools-beta-v2/06-diagnostics-main.png" data-title="Diagnostico · Vista principal" data-description="Consola de observabilidad para soporte y fiabilidad.">
+          <img loading="lazy" src="assets/mtools-beta-v2/06-diagnostics-main.png" alt="Diagnostico" />
+          <figcaption><strong>Diagnostico</strong>Observabilidad para mejora continua.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <h2 class="section-title">Estado del portfolio</h2>
+      <p class="section-sub">Resumen de micro apps priorizadas en MTOOLS.</p>
+
+      <div class="apps-grid">
+        <article class="app-card">
+          <span class="status stable">Stable</span>
+          <h3>FolderToTunes</h3>
+          <p>Convierte estructuras de carpetas en playlists dentro de Apple Music con validacion previa.</p>
+        </article>
+
+        <article class="app-card">
+          <span class="status beta">Beta</span>
+          <h3>AISessionGenerator</h3>
+          <p>Genera prompts de sesion DJ con IA y prepara ejecucion desde archivos locales.</p>
+        </article>
+
+        <article class="app-card">
+          <span class="status mvp">MVP</span>
+          <h3>Logoconta</h3>
+          <p>Modulo de contabilidad local con backup/restauracion y control de integridad.</p>
+        </article>
+
+        <article class="app-card">
+          <span class="status mvp">MVP</span>
+          <h3>DuplicatesControl</h3>
+          <p>Deteccion de duplicados por fingerprint para limpieza segura de librerias de audio.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <div class="two-col">
+        <article class="panel">
+          <h3>Licencia y marco legal</h3>
+          <p class="price">99,99 €<small>Licencia comercial estimada</small></p>
+          <div class="legal-notice">
+            MTOOLS se distribuye bajo licencia de <strong>codigo cerrado</strong> con proteccion de
+            <strong>patente activa</strong>. El plagio activa procesos legales.
+          </div>
+        </article>
+        <article class="panel">
+          <h3>Contacto de demo</h3>
+          <p>Solicita tu demo oficial en:</p>
+          <a class="contact-link" href="mailto:info@mlabsmusic.com?subject=Reserva%20Demo%20MTOOLS">info@mlabsmusic.com</a>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      Mlabs Music · Projects
+      <nav class="legal-links" aria-label="Legal">
+        <a href="terms-of-use.html">Terms of Use</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="eula.html">EULA</a>
+        <a href="mailto:info@mlabsmusic.com">Contacto Email</a>
+      </nav>
+    </footer>
+  </main>
+
+  <div class="modal-backdrop" id="reserveModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="reserveTitle">
+      <h3 id="reserveTitle">Reserva de demo · MTOOLS</h3>
+      <p>Licencia comercial prevista: <strong>99,99 €</strong></p>
+      <p>
+        Envia tu escenario de uso y coordinamos una demo orientada a resultados.
+      </p>
+      <a class="action-link" href="mailto:info@mlabsmusic.com?subject=Reserva%20Demo%20MTOOLS">Enviar reserva por email</a>
+      <button class="close" id="closeReserveModal">Cerrar</button>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="shotModal" aria-hidden="true">
+    <div class="shot-modal-content" role="dialog" aria-modal="true" aria-labelledby="shotTitle" aria-describedby="shotDescription">
+      <button class="shot-modal-close-icon" id="closeShotModalIcon" aria-label="Cerrar imagen ampliada">X</button>
+      <img id="shotImage" src="" alt="" />
+      <p id="shotTitle" class="shot-modal-title"></p>
+      <p id="shotDescription" class="shot-modal-description"></p>
+    </div>
+  </div>
+
+  <script src="assets/site.js"></script>
+</body>
+</html>
