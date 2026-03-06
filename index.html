@@ -591,7 +591,6 @@
       <button class="shot-modal-close-icon" id="closeShotModalIcon" aria-label="Cerrar imagen ampliada">×</button>
       <img id="shotImage" src="" alt="" />
       <p id="shotTitle"></p>
-      <button class="close" id="closeShotModal">Cerrar</button>
     </div>
   </div>
 
@@ -636,7 +635,6 @@
       shotModal.setAttribute('aria-hidden', 'false');
     });
 
-    document.getElementById('closeShotModal').addEventListener('click', closeShotModal);
     document.getElementById('closeShotModalIcon').addEventListener('click', closeShotModal);
     shotModal.addEventListener('click', (event) => {
       if (event.target === shotModal) closeShotModal();
