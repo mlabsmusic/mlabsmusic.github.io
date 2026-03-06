@@ -1,90 +1,166 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mlabs Music</title>
-  <meta name="description" content="Mlabs Music builds AI-powered and automation-first tools for DJs and music-library operations." />
+  <title>Mlabs Music | MTOOLS</title>
+  <meta name="description" content="MTOOLS es la suite de micro apps de Mlabs Music para DJs y operaciones de librería musical." />
   <style>
     :root {
       --bg: #0b1220;
-      --card: #111a2b;
-      --text: #e5edf9;
-      --muted: #94a6c7;
-      --accent: #3ecf8e;
-      --accent2: #4ea1ff;
+      --bg2: #131f38;
+      --card: #141f35;
+      --line: #2a3d63;
+      --text: #e7efff;
+      --muted: #9eb0d4;
+      --ok: #43d39e;
+      --beta: #4ea1ff;
+      --mvp: #f3b34d;
     }
+
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-      background: radial-gradient(circle at 20% 20%, #162440 0%, var(--bg) 45%), var(--bg);
       color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background:
+        radial-gradient(1000px 700px at -15% -10%, #20345a 0%, transparent 60%),
+        radial-gradient(900px 650px at 120% 0%, #17355c 0%, transparent 58%),
+        linear-gradient(160deg, var(--bg), var(--bg2));
       min-height: 100vh;
-      display: grid;
-      place-items: center;
       padding: 24px;
     }
-    main {
-      width: min(900px, 100%);
-      background: color-mix(in oklab, var(--card) 92%, black 8%);
-      border: 1px solid #243552;
-      border-radius: 18px;
-      padding: 32px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
     }
-    h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0 0 8px; }
-    p { color: var(--muted); line-height: 1.6; margin: 0 0 16px; }
-    .tag {
+
+    .hero {
+      border: 1px solid var(--line);
+      background: rgba(20, 31, 53, 0.82);
+      backdrop-filter: blur(6px);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.35);
+      margin-bottom: 18px;
+    }
+
+    .badge {
       display: inline-block;
-      font-size: .8rem;
-      letter-spacing: .08em;
+      font-size: 12px;
       text-transform: uppercase;
-      color: #b4f5d8;
-      background: rgba(62, 207, 142, .15);
-      border: 1px solid rgba(62, 207, 142, .35);
+      letter-spacing: 0.08em;
+      border: 1px solid #37629d;
       border-radius: 999px;
+      color: #b7d5ff;
       padding: 6px 10px;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
-    .links {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 20px;
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      line-height: 1.05;
     }
-    a {
-      text-decoration: none;
-      border: 1px solid #2c4468;
-      color: var(--text);
-      padding: 10px 14px;
-      border-radius: 10px;
-      background: linear-gradient(180deg, rgba(78,161,255,.15), rgba(78,161,255,.04));
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
     }
-    a.primary {
-      border-color: rgba(62,207,142,.45);
-      background: linear-gradient(180deg, rgba(62,207,142,.25), rgba(62,207,142,.08));
-      color: #dffcec;
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--card);
+      padding: 16px;
+    }
+
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+    }
+
+    .status {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      padding: 5px 8px;
+      margin-bottom: 8px;
+      border: 1px solid transparent;
+    }
+
+    .stable { color: #d7ffe9; background: rgba(67, 211, 158, 0.16); border-color: rgba(67, 211, 158, 0.45); }
+    .beta { color: #ddeeff; background: rgba(78, 161, 255, 0.16); border-color: rgba(78, 161, 255, 0.45); }
+    .mvp { color: #fff0d9; background: rgba(243, 179, 77, 0.14); border-color: rgba(243, 179, 77, 0.45); }
+
+    .footer {
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      color: var(--muted);
+      background: rgba(10, 18, 33, 0.48);
+      font-size: 14px;
+    }
+
+    @media (max-width: 760px) {
+      body { padding: 16px; }
+      .hero { padding: 20px; }
+      .cards { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <main>
-    <span class="tag">Mlabs Music</span>
-    <h1>Automation tools for DJs and music workflows.</h1>
-    <p>
-      Mlabs Music builds AI-powered and automation-first products for music-library operations,
-      playlist workflows, and creator productivity.
-    </p>
-    <p>
-      Our flagship product is <strong>MTOOLS</strong>, a macOS suite with focused mini-apps for
-      import, AI-assisted session prep, bookkeeping, and duplicate control.
-    </p>
-    <div class="links">
-      <a class="primary" href="https://github.com/mlabsmusic/MTOOLS">Open MTOOLS</a>
-      <a href="https://github.com/mlabsmusic/media">Media Assets</a>
-      <a href="https://github.com/mlabsmusic">GitHub Organization</a>
-    </div>
-  </main>
+  <div class="wrap">
+    <section class="hero">
+      <span class="badge">Mlabs Music</span>
+      <h1>MTOOLS: micro apps para flujo musical profesional</h1>
+      <p>
+        MTOOLS es una suite macOS de micro apps orientada a DJs y operaciones de librería musical.
+        Cada módulo resuelve una tarea específica del workflow, con enfoque práctico y automatización.
+      </p>
+    </section>
+
+    <section class="cards" aria-label="Micro apps de MTOOLS">
+      <article class="card">
+        <span class="status stable">Stable</span>
+        <h2>FolderToTunes</h2>
+        <p>Convierte jerarquías de carpetas en carpetas y playlists dentro de Apple Music con flujo guiado y progreso en vivo.</p>
+      </article>
+
+      <article class="card">
+        <span class="status beta">Beta</span>
+        <h2>AISessionGenerator</h2>
+        <p>Genera prompts de sesión DJ con IA, interpreta respuestas y prepara la importación de playlists en Music.</p>
+      </article>
+
+      <article class="card">
+        <span class="status mvp">MVP</span>
+        <h2>Logoconta (QuickBooks offline)</h2>
+        <p>Contabilidad local para DJ/freelancer con backups `.lca`, restore, integridad SHA-256 y export/import CSV.</p>
+      </article>
+
+      <article class="card">
+        <span class="status mvp">MVP</span>
+        <h2>DuplicatesControl</h2>
+        <p>Escanea bibliotecas de audio, detecta duplicados por fingerprint y facilita la limpieza segura de archivos redundantes.</p>
+      </article>
+    </section>
+
+    <section class="footer">
+      Mlabs Music · Suite MTOOLS · Web informativa de micro apps
+    </section>
+  </div>
 </body>
 </html>
