@@ -6,59 +6,27 @@
   if (!ctx) return;
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const seedValue = 0xF017A8A5D15EA5En;
-  const seeds = [];
-  const colors = [];
-  const maxSeedCount = 56;
+  const particles = [];
+  const seed = 64;
 
-  class SeededRandom {
-    constructor(seed) {
-      this.state = seed === 0n ? 0xBADC0FFEE0DDF00Dn : seed;
-    }
-    next() {
-      this.state ^= this.state >> 12n;
-      this.state ^= this.state << 25n;
-      this.state ^= this.state >> 27n;
-      return (this.state * 0x2545F4914F6CDD1Dn) & ((1n << 64n) - 1n);
-    }
-    float() {
-      const n = this.next() >> 11n;
-      return Number(n) / 9007199254740991;
-    }
+  function makeParticle(index) {
+    const base = index / seed;
+    return {
+      x: Math.random(),
+      y: Math.random(),
+      vx: (Math.sin(base * 90) * 0.35) + ((Math.random() - 0.5) * 0.2),
+      vy: (Math.cos(base * 110) * 0.35) + ((Math.random() - 0.5) * 0.2),
+      r: 1 + Math.random() * 1.8,
+      color: {
+        r: 115 + Math.floor(Math.random() * 65),
+        g: 200 + Math.floor(Math.random() * 45),
+        b: 245 + Math.floor(Math.random() * 10)
+      }
+    };
   }
 
-  function lerp(a, b, t) {
-    return a + (b - a) * t;
-  }
-
-  function reflectedPosition(start, velocity, time, limit) {
-    if (limit <= 0) return 0;
-    const period = limit * 2;
-    let value = (start + velocity * time) % period;
-    if (value < 0) value += period;
-    if (value > limit) value = period - value;
-    return value;
-  }
-
-  function makeSeeds() {
-    const rng = new SeededRandom(seedValue);
-    for (let i = 0; i < maxSeedCount; i += 1) {
-      const colorMix = rng.float();
-      const warm = colorMix;
-      const cool = 1 - colorMix;
-      colors.push({
-        r: Math.round((0.33 + (0.18 * warm)) * 255),
-        g: Math.round((0.84 + (0.12 * cool)) * 255),
-        b: Math.round((0.9 + (0.09 * warm)) * 255)
-      });
-      seeds.push({
-        xFactor: rng.float(),
-        yFactor: rng.float(),
-        velocityX: lerp(-34, 34, rng.float()),
-        velocityY: lerp(-30, 30, rng.float()),
-        size: lerp(1.1, 2.5, rng.float())
-      });
-    }
+  for (let i = 0; i < seed; i += 1) {
+    particles.push(makeParticle(i));
   }
 
   function resize() {
@@ -70,48 +38,53 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
-  function draw(nowMs) {
-    const width = window.innerWidth || 1;
-    const height = window.innerHeight || 1;
-    const time = prefersReducedMotion ? 0 : nowMs / 1000;
-
+  function drawBackground(width, height) {
     const gradient = ctx.createLinearGradient(0, 0, width, height);
-    gradient.addColorStop(0, 'rgb(8,20,44)');
-    gradient.addColorStop(0.55, 'rgb(7,24,52)');
-    gradient.addColorStop(1, 'rgb(6,17,38)');
+    gradient.addColorStop(0, 'rgb(5,13,31)');
+    gradient.addColorStop(0.5, 'rgb(6,18,42)');
+    gradient.addColorStop(1, 'rgb(4,11,24)');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
 
-    const topGlow = { x: width * 0.2, y: height * 0.23 };
-    const bottomGlow = { x: width * 0.78, y: height * 0.78 };
-
-    const glowA = ctx.createRadialGradient(topGlow.x, topGlow.y, 0, topGlow.x, topGlow.y, 220);
-    glowA.addColorStop(0, 'rgba(135,217,247,0.2)');
-    glowA.addColorStop(1, 'rgba(135,217,247,0)');
+    const glowA = ctx.createRadialGradient(width * 0.13, height * 0.2, 0, width * 0.13, height * 0.2, 260);
+    glowA.addColorStop(0, 'rgba(122,230,255,0.16)');
+    glowA.addColorStop(1, 'rgba(122,230,255,0)');
     ctx.fillStyle = glowA;
     ctx.beginPath();
-    ctx.arc(topGlow.x, topGlow.y, 220, 0, Math.PI * 2);
+    ctx.arc(width * 0.13, height * 0.2, 260, 0, Math.PI * 2);
     ctx.fill();
 
-    const glowB = ctx.createRadialGradient(bottomGlow.x, bottomGlow.y, 0, bottomGlow.x, bottomGlow.y, 260);
-    glowB.addColorStop(0, 'rgba(117,230,194,0.16)');
-    glowB.addColorStop(1, 'rgba(117,230,194,0)');
+    const glowB = ctx.createRadialGradient(width * 0.84, height * 0.82, 0, width * 0.84, height * 0.82, 320);
+    glowB.addColorStop(0, 'rgba(72,142,255,0.17)');
+    glowB.addColorStop(1, 'rgba(72,142,255,0)');
     ctx.fillStyle = glowB;
     ctx.beginPath();
-    ctx.arc(bottomGlow.x, bottomGlow.y, 260, 0, Math.PI * 2);
+    ctx.arc(width * 0.84, height * 0.82, 320, 0, Math.PI * 2);
     ctx.fill();
+  }
 
-    const targetCount = Math.floor((width + height) / 62);
-    const particleCount = Math.max(22, Math.min(seeds.length, targetCount));
-    const linkRadius = (width / 16) + (height / 9);
-    const linkRadiusSquared = linkRadius * linkRadius;
+  function reflected(value, velocity, t) {
+    const travel = value + (velocity * t);
+    const period = 2;
+    let wrapped = travel % period;
+    if (wrapped < 0) wrapped += period;
+    return wrapped > 1 ? (2 - wrapped) : wrapped;
+  }
 
+  function drawFrame(timeSeconds) {
+    const width = window.innerWidth || 1;
+    const height = window.innerHeight || 1;
+
+    drawBackground(width, height);
+
+    const motion = prefersReducedMotion ? 0 : timeSeconds;
+    const linkDistance = Math.min(220, Math.max(140, width * 0.13));
     const points = [];
-    for (let i = 0; i < particleCount; i += 1) {
-      const seed = seeds[i];
-      const x = reflectedPosition(seed.xFactor * width, seed.velocityX, time, width);
-      const y = reflectedPosition(seed.yFactor * height, seed.velocityY, time, height);
-      points.push({ x, y, size: seed.size, color: colors[i] });
+
+    for (const p of particles) {
+      const x = reflected(p.x, p.vx * 0.015, motion) * width;
+      const y = reflected(p.y, p.vy * 0.015, motion) * height;
+      points.push({ x, y, r: p.r, color: p.color });
     }
 
     for (let i = 0; i < points.length; i += 1) {
@@ -120,14 +93,11 @@
         const to = points[j];
         const dx = from.x - to.x;
         const dy = from.y - to.y;
-        const distanceSquared = (dx * dx) + (dy * dy);
-        if (distanceSquared > linkRadiusSquared) continue;
-        const distance = Math.sqrt(distanceSquared);
-        const opacity = Math.max(0, 1 - (distance / linkRadius));
-        if (opacity <= 0) continue;
-        ctx.strokeStyle = `rgba(255,255,255,${0.015 + opacity * 0.13})`;
-        ctx.lineWidth = 0.34 + opacity * 0.78;
-        ctx.lineCap = 'round';
+        const distance = Math.sqrt((dx * dx) + (dy * dy));
+        if (distance > linkDistance) continue;
+        const opacity = Math.max(0, 1 - (distance / linkDistance));
+        ctx.strokeStyle = `rgba(178,216,255,${0.01 + (opacity * 0.13)})`;
+        ctx.lineWidth = 0.32 + (opacity * 0.7);
         ctx.beginPath();
         ctx.moveTo(from.x, from.y);
         ctx.lineTo(to.x, to.y);
@@ -136,89 +106,121 @@
     }
 
     for (const p of points) {
-      const glowRadius = p.size * 2.6;
-      const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowRadius);
+      const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 4);
       glow.addColorStop(0, `rgba(${p.color.r},${p.color.g},${p.color.b},0.22)`);
       glow.addColorStop(1, `rgba(${p.color.r},${p.color.g},${p.color.b},0)`);
       ctx.fillStyle = glow;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, glowRadius, 0, Math.PI * 2);
+      ctx.arc(p.x, p.y, p.r * 4, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.fillStyle = `rgba(${p.color.r},${p.color.g},${p.color.b},0.9)`;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
       ctx.fill();
     }
   }
 
-  makeSeeds();
   resize();
-  draw(0);
+  drawFrame(0);
 
-  let lastFrame = 0;
-  function loop(ts) {
-    if (prefersReducedMotion) return;
-    if (ts - lastFrame >= 1000 / 12) {
-      draw(ts);
-      lastFrame = ts;
+  if (!prefersReducedMotion) {
+    let last = 0;
+    function animate(ts) {
+      if (ts - last >= 1000 / 20) {
+        drawFrame(ts / 1000);
+        last = ts;
+      }
+      requestAnimationFrame(animate);
     }
-    requestAnimationFrame(loop);
+    requestAnimationFrame(animate);
   }
 
-  if (!prefersReducedMotion) requestAnimationFrame(loop);
   window.addEventListener('resize', () => {
     resize();
-    draw(performance.now());
+    drawFrame(performance.now() / 1000);
   });
 })();
 
-(function setupPageTransitions() {
+(function setupPageEntranceAndTransitions() {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const transitionDurationMs = 720;
+
+  window.requestAnimationFrame(() => {
+    document.body.classList.add('is-entered');
+  });
+
   if (prefersReducedMotion) return;
 
-  const menuLinks = document.querySelectorAll('.menu a[href]');
-  let isNavigating = false;
-  for (const link of menuLinks) {
+  const links = document.querySelectorAll('a[href]');
+  let navigating = false;
+
+  for (const link of links) {
     const href = link.getAttribute('href');
-    if (!href || href.startsWith('#')) continue;
+    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) continue;
 
     link.addEventListener('click', (event) => {
+      if (event.defaultPrevented) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      if (link.target && link.target !== '_self') return;
+
       const destination = new URL(link.href, window.location.href);
       if (destination.origin !== window.location.origin) return;
       if (destination.href === window.location.href) return;
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-      if (isNavigating) return;
+      if (navigating) return;
 
+      navigating = true;
       event.preventDefault();
-      isNavigating = true;
-
       document.body.classList.add('is-leaving');
       window.setTimeout(() => {
         window.location.href = destination.href;
-      }, 390);
+      }, transitionDurationMs);
     });
   }
 })();
 
+(function setupRevealOnScroll() {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const items = document.querySelectorAll('.reveal');
+  if (!items.length) return;
+
+  if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+    for (const item of items) item.classList.add('is-visible');
+    return;
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      entry.target.classList.add('is-visible');
+      io.unobserve(entry.target);
+    }
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+
+  items.forEach((item) => io.observe(item));
+})();
+
 (function setupReserveModal() {
   const modal = document.getElementById('reserveModal');
-  const openBtn = document.getElementById('reserveDemoBtn');
-  const closeBtn = document.getElementById('closeReserveModal');
-  if (!modal || !openBtn || !closeBtn) return;
-
-  function openModal() {
-    modal.classList.add('is-open');
-    modal.setAttribute('aria-hidden', 'false');
-  }
+  const openButton = document.getElementById('reserveDemoBtn');
+  const closeButton = document.getElementById('closeReserveModal');
+  if (!modal || !openButton || !closeButton) return;
 
   function closeModal() {
     modal.classList.remove('is-open');
     modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
   }
 
-  openBtn.addEventListener('click', openModal);
-  closeBtn.addEventListener('click', closeModal);
+  function openModal() {
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  openButton.addEventListener('click', openModal);
+  closeButton.addEventListener('click', closeModal);
+
   modal.addEventListener('click', (event) => {
     if (event.target === modal) closeModal();
   });
@@ -234,48 +236,88 @@
   const image = document.getElementById('shotImage');
   const title = document.getElementById('shotTitle');
   const description = document.getElementById('shotDescription');
-  const closeBtn = document.getElementById('closeShotModalIcon');
+  const closeButton = document.getElementById('closeShotModalIcon');
 
-  if (!gallery || !modal || !image || !title || !description || !closeBtn) return;
+  if (!gallery || !modal || !image || !title || !description || !closeButton) return;
+
+  let lastFocused = null;
 
   function closeModal() {
     modal.classList.remove('is-open');
     modal.setAttribute('aria-hidden', 'true');
     image.classList.remove('is-visible');
-    image.src = '';
-    image.alt = '';
+    image.removeAttribute('src');
+    image.removeAttribute('alt');
     title.textContent = '';
     description.textContent = '';
+    document.body.style.overflow = '';
+    if (lastFocused && typeof lastFocused.focus === 'function') {
+      lastFocused.focus();
+    }
   }
 
-  gallery.addEventListener('click', (event) => {
-    const figure = event.target.closest('.shot');
-    if (!figure) return;
-    const src = figure.getAttribute('data-shot');
-    const imageTitle = figure.getAttribute('data-title') || 'Captura MTOOLS';
-    const imageDescription = figure.getAttribute('data-description') || 'Vista de producto MTOOLS.';
+  function openModal(figure) {
+    const source = figure.getAttribute('data-shot');
+    const label = figure.getAttribute('data-title') || 'MTOOLS Product Capture';
+    const details = figure.getAttribute('data-description') || 'Product view from MTOOLS beta.';
 
+    if (!source) return;
+
+    lastFocused = figure;
     image.classList.remove('is-visible');
     image.onload = () => {
       image.classList.add('is-visible');
     };
-    image.src = src;
-    if (image.complete) {
-      image.classList.add('is-visible');
-    }
-    image.alt = imageTitle;
-    title.textContent = imageTitle;
-    description.textContent = imageDescription;
+
+    image.src = source;
+    image.alt = label;
+    title.textContent = label;
+    description.textContent = details;
+
     modal.classList.add('is-open');
     modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    closeButton.focus();
+  }
+
+  gallery.addEventListener('click', (event) => {
+    const figure = event.target.closest('.shot');
+    if (!figure || !gallery.contains(figure)) return;
+    openModal(figure);
   });
 
-  closeBtn.addEventListener('click', closeModal);
+  gallery.addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    const figure = event.target.closest('.shot');
+    if (!figure || !gallery.contains(figure)) return;
+    event.preventDefault();
+    openModal(figure);
+  });
+
+  closeButton.addEventListener('click', closeModal);
+
   modal.addEventListener('click', (event) => {
     if (event.target === modal) closeModal();
   });
 
   window.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeModal();
+    if (event.key === 'Escape') {
+      closeModal();
+      return;
+    }
+
+    if (event.key !== 'Tab' || !modal.classList.contains('is-open')) return;
+
+    const focusable = [closeButton];
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
   });
 })();
