@@ -20,9 +20,9 @@
       <a class="brand" href="/es/">Mlabs Music</a>
       <nav class="menu" aria-label="Principal">
         <a class="is-active" href="/es/">Inicio</a>
-        <a href="/es/about.html">Sobre</a>
         <a href="/es/projects.html">Proyectos</a>
-        <a href="/es/app/">App</a>
+        <a href="/es/about.html">Sobre</a>
+        <a class="menu-lang" href="mailto:info@mlabsmusic.com">Contacto</a>
       </nav>
       <a class="menu-cta" href="mailto:info@mlabsmusic.com">Contacto</a>
     </header>
@@ -63,28 +63,113 @@
       </h2>
     </section>
 
-    <section class="section-card reveal how-we-do">
-      <h2 class="section-title">Lo que el equipo <span class="emph">gana</span></h2>
+    <section class="section-card dark reveal audience-section" data-audience-tabs>
+      <h2 class="section-title">Audience Focus</h2>
       <p class="section-sub">
-        MTOOLS se diseña como capa operativa, no como conjunto de utilidades sueltas.
+        Una sola seccion en home con dos tabs: propuesta comercial para clientes y stack tecnico para developers.
       </p>
-      <div class="reason-cards stack-gap">
-        <article class="reason-card">
-          <div class="reason-icon">01</div>
-          <h3>Lenguaje comun de trabajo</h3>
-          <p>Producto, QA y soporte comparten el mismo modelo operativo.</p>
-        </article>
-        <article class="reason-card">
-          <div class="reason-icon">02</div>
-          <h3>Puntos de control integrados</h3>
-          <p>Validacion, diagnostico y control de release forman parte del uso diario.</p>
-        </article>
-        <article class="reason-card">
-          <div class="reason-icon">03</div>
-          <h3>Crecimiento modular estable</h3>
-          <p>Se pueden sumar nuevos modulos sin romper coherencia ni ownership.</p>
-        </article>
+      <div class="audience-tabs" role="tablist" aria-label="Tabs por audiencia">
+        <button
+          class="audience-tab is-active"
+          type="button"
+          role="tab"
+          id="audience-tab-clients-es"
+          aria-controls="audience-panel-clients-es"
+          aria-selected="true"
+          data-tab-target="audience-panel-clients-es">For Clients</button>
+        <button
+          class="audience-tab"
+          type="button"
+          role="tab"
+          id="audience-tab-devs-es"
+          aria-controls="audience-panel-devs-es"
+          aria-selected="false"
+          data-tab-target="audience-panel-devs-es">For Developers</button>
       </div>
+      <section
+        class="audience-panel is-active"
+        role="tabpanel"
+        id="audience-panel-clients-es"
+        aria-labelledby="audience-tab-clients-es"
+        data-tab-panel>
+        <div class="apps-grid stack-gap">
+          <article class="app-card">
+            <span class="status beta">Oferta</span>
+            <h3>Beta Access</h3>
+            <p>Onboarding guiado con modulos base y canal directo de feedback de producto.</p>
+            <ul class="feature-list">
+              <li>Digital Download</li>
+              <li>Compatible with Windows and Mac, including the new Apple Silicon chips</li>
+            </ul>
+          </article>
+          <article class="app-card">
+            <span class="status stable">Oferta</span>
+            <h3>Operations Plan</h3>
+            <p>Suite operativa para preparacion, QA, diagnostico y control de ejecucion por equipo.</p>
+          </article>
+          <article class="app-card">
+            <span class="status mvp">Oferta</span>
+            <h3>Growth Plan</h3>
+            <p>Automatizacion expandida e inteligencia entre modulos para equipos en escalado.</p>
+          </article>
+          <article class="app-card">
+            <span class="status mvp">Oferta</span>
+            <h3>Enterprise Plan</h3>
+            <p>Integracion custom, estandares de gobernanza y soporte dedicado de implementacion.</p>
+          </article>
+        </div>
+      </section>
+      <section
+        class="audience-panel"
+        role="tabpanel"
+        id="audience-panel-devs-es"
+        aria-labelledby="audience-tab-devs-es"
+        data-tab-panel
+        hidden>
+        <h3 class="audience-block-title">Lo que el equipo tecnico gana</h3>
+        <p class="audience-block-sub">
+          MTOOLS se diseña como capa operativa, no como conjunto de utilidades sueltas.
+        </p>
+        <div class="reason-cards stack-gap">
+          <article class="reason-card">
+            <div class="reason-icon">01</div>
+            <h3>Lenguaje comun de trabajo</h3>
+            <p>Producto, QA y soporte comparten el mismo modelo operativo.</p>
+          </article>
+          <article class="reason-card">
+            <div class="reason-icon">02</div>
+            <h3>Puntos de control integrados</h3>
+            <p>Validacion, diagnostico y control de release forman parte del uso diario.</p>
+          </article>
+          <article class="reason-card">
+            <div class="reason-icon">03</div>
+            <h3>Crecimiento modular estable</h3>
+            <p>Se pueden sumar nuevos modulos sin romper coherencia ni ownership.</p>
+          </article>
+        </div>
+        <div class="apps-grid stack-gap">
+          <article class="app-card">
+            <span class="status beta">Frontend</span>
+            <h3>Next.js App Router</h3>
+            <p>Rutas privadas bajo <strong>/app</strong>, server actions y ownership modular de UI.</p>
+          </article>
+          <article class="app-card">
+            <span class="status beta">Auth</span>
+            <h3>Auth Layer</h3>
+            <p>Acceso por cuenta con visibilidad por roles para clientes y equipo interno.</p>
+          </article>
+          <article class="app-card">
+            <span class="status beta">Billing</span>
+            <h3>Stripe Subscriptions</h3>
+            <p>Asignacion de plan, renovacion y flujo de facturacion listo para operacion real.</p>
+          </article>
+          <article class="app-card">
+            <span class="status beta">Quality</span>
+            <h3>Testing + Diagnostics</h3>
+            <p>Validacion de release y observabilidad como gates obligatorios antes de produccion.</p>
+          </article>
+        </div>
+      </section>
     </section>
 
     <section class="section-card dark reveal">
@@ -127,6 +212,27 @@
           <img loading="lazy" src="../assets/mtools-beta-v2/thumbs/06-diagnostics-main.jpg" alt="Diagnostics" />
           <figcaption><strong>Diagnostics</strong>Observabilidad para soporte avanzado.</figcaption>
         </figure>
+      </div>
+    </section>
+
+    <section class="section-card reveal testimonials team-feature">
+      <p class="team-kicker">Equipo Base</p>
+      <h2 class="section-title">TEAM</h2>
+      <div class="testimonials-grid stack-gap">
+        <article class="testimonial-card founder-card">
+          <div class="testimonial-media">
+            <img loading="lazy" decoding="async" src="https://placehold.co/1200x800/0b1e3f/eaf4ff?text=Tu+Foto+DJ" alt="Tu foto como DJ" />
+          </div>
+          <div class="testimonial-copy">
+            <h5>Mlabs Music - Fundador</h5>
+            <h3>Alejandro Lopez Aragon</h3>
+            <div class="profile-links" aria-label="Enlaces del fundador">
+              <a class="profile-link" href="https://www.linkedin.com/in/alejandrolopezaragon/" target="_blank" rel="noreferrer noopener">LinkedIn</a>
+              <a class="profile-link" href="https://github.com/marquesedition/marquesedition" target="_blank" rel="noreferrer noopener">GitHub</a>
+            </div>
+            <p class="founder-quote">"MTOOLS me da control total del workflow, desde preparacion hasta ejecucion, con menos errores y mas velocidad."</p>
+          </div>
+        </article>
       </div>
     </section>
 

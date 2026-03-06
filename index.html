@@ -20,9 +20,9 @@
       <a class="brand" href="/">Mlabs Music</a>
       <nav class="menu" aria-label="Main">
         <a class="is-active" href="/">Home</a>
-        <a href="/about.html">About</a>
         <a href="/projects.html">Projects</a>
-        <a href="/app/">App</a>
+        <a href="/about.html">About</a>
+        <a class="menu-lang" href="mailto:info@mlabsmusic.com">Contact</a>
       </nav>
       <a class="menu-cta" href="mailto:info@mlabsmusic.com">Contact</a>
     </header>
@@ -63,86 +63,113 @@
       </h2>
     </section>
 
-    <section class="section-card reveal how-we-do">
-      <h2 class="section-title">What Teams <span class="emph">get</span></h2>
+    <section class="section-card dark reveal audience-section" data-audience-tabs>
+      <h2 class="section-title">Audience Focus</h2>
       <p class="section-sub">
-        MTOOLS is designed as an operating layer, not a set of isolated utilities.
+        One home section, two views: clear product offers for clients and implementation stack for developers.
       </p>
-      <div class="reason-cards stack-gap">
-        <article class="reason-card">
-          <div class="reason-icon">01</div>
-          <h3>Shared workflow language</h3>
-          <p>Teams align on one process model across product, QA, and support.</p>
-        </article>
-        <article class="reason-card">
-          <div class="reason-icon">02</div>
-          <h3>Built-in control points</h3>
-          <p>Validation, diagnostics, and release checks are part of day-to-day usage.</p>
-        </article>
-        <article class="reason-card">
-          <div class="reason-icon">03</div>
-          <h3>Scalable modular growth</h3>
-          <p>New modules can be added without breaking consistency or team ownership.</p>
-        </article>
+      <div class="audience-tabs" role="tablist" aria-label="Audience focus tabs">
+        <button
+          class="audience-tab is-active"
+          type="button"
+          role="tab"
+          id="audience-tab-clients-en"
+          aria-controls="audience-panel-clients-en"
+          aria-selected="true"
+          data-tab-target="audience-panel-clients-en">For Clients</button>
+        <button
+          class="audience-tab"
+          type="button"
+          role="tab"
+          id="audience-tab-devs-en"
+          aria-controls="audience-panel-devs-en"
+          aria-selected="false"
+          data-tab-target="audience-panel-devs-en">For Developers</button>
       </div>
-    </section>
-
-    <section class="section-card reveal">
-      <h2 class="section-title">For Developers</h2>
-      <p class="section-sub">
-        Framework direction for the upcoming private app area and paid workflow automation.
-      </p>
-      <div class="apps-grid stack-gap">
-        <article class="app-card">
-          <span class="status beta">Frontend</span>
-          <h3>Next.js App Router</h3>
-          <p>Private routes under <strong>/app</strong>, server actions, and modular UI ownership.</p>
-        </article>
-        <article class="app-card">
-          <span class="status beta">Auth</span>
-          <h3>Auth Layer</h3>
-          <p>Account access with role-based visibility for customer and team workspaces.</p>
-        </article>
-        <article class="app-card">
-          <span class="status beta">Billing</span>
-          <h3>Stripe Subscriptions</h3>
-          <p>Plan assignment, renewal logic, and invoice-ready billing operations.</p>
-        </article>
-        <article class="app-card">
-          <span class="status beta">Quality</span>
-          <h3>Testing + Diagnostics</h3>
-          <p>Release validation and observability as mandatory gates before production.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section-card dark reveal">
-      <h2 class="section-title">For Clients</h2>
-      <p class="section-sub">
-        Commercial product lines designed for DJ teams at different maturity levels.
-      </p>
-      <div class="apps-grid stack-gap">
-        <article class="app-card">
-          <span class="status beta">Offer</span>
-          <h3>Beta Access</h3>
-          <p>Guided onboarding with core modules and direct product feedback channel.</p>
-        </article>
-        <article class="app-card">
-          <span class="status stable">Offer</span>
-          <h3>Operations Plan</h3>
-          <p>Workflow suite for prep, QA, diagnostics, and team-level execution control.</p>
-        </article>
-        <article class="app-card">
-          <span class="status mvp">Offer</span>
-          <h3>Growth Plan</h3>
-          <p>Expanded automation and cross-module intelligence for scaling teams.</p>
-        </article>
-        <article class="app-card">
-          <span class="status mvp">Offer</span>
-          <h3>Enterprise Plan</h3>
-          <p>Custom integration, governance standards, and dedicated implementation support.</p>
-        </article>
-      </div>
+      <section
+        class="audience-panel is-active"
+        role="tabpanel"
+        id="audience-panel-clients-en"
+        aria-labelledby="audience-tab-clients-en"
+        data-tab-panel>
+        <div class="apps-grid stack-gap">
+          <article class="app-card">
+            <span class="status beta">Offer</span>
+            <h3>Beta Access</h3>
+            <p>Guided onboarding with core modules and direct product feedback channel.</p>
+            <ul class="feature-list">
+              <li>Digital Download</li>
+              <li>Compatible with Windows and Mac, including the new Apple Silicon chips</li>
+            </ul>
+          </article>
+          <article class="app-card">
+            <span class="status stable">Offer</span>
+            <h3>Operations Plan</h3>
+            <p>Workflow suite for prep, QA, diagnostics, and team-level execution control.</p>
+          </article>
+          <article class="app-card">
+            <span class="status mvp">Offer</span>
+            <h3>Growth Plan</h3>
+            <p>Expanded automation and cross-module intelligence for scaling teams.</p>
+          </article>
+          <article class="app-card">
+            <span class="status mvp">Offer</span>
+            <h3>Enterprise Plan</h3>
+            <p>Custom integration, governance standards, and dedicated implementation support.</p>
+          </article>
+        </div>
+      </section>
+      <section
+        class="audience-panel"
+        role="tabpanel"
+        id="audience-panel-devs-en"
+        aria-labelledby="audience-tab-devs-en"
+        data-tab-panel
+        hidden>
+        <h3 class="audience-block-title">What Teams get</h3>
+        <p class="audience-block-sub">
+          MTOOLS is designed as an operating layer, not a set of isolated utilities.
+        </p>
+        <div class="reason-cards stack-gap">
+          <article class="reason-card">
+            <div class="reason-icon">01</div>
+            <h3>Shared workflow language</h3>
+            <p>Teams align on one process model across product, QA, and support.</p>
+          </article>
+          <article class="reason-card">
+            <div class="reason-icon">02</div>
+            <h3>Built-in control points</h3>
+            <p>Validation, diagnostics, and release checks are part of day-to-day usage.</p>
+          </article>
+          <article class="reason-card">
+            <div class="reason-icon">03</div>
+            <h3>Scalable modular growth</h3>
+            <p>New modules can be added without breaking consistency or team ownership.</p>
+          </article>
+        </div>
+        <div class="apps-grid stack-gap">
+          <article class="app-card">
+            <span class="status beta">Frontend</span>
+            <h3>Next.js App Router</h3>
+            <p>Private routes under <strong>/app</strong>, server actions, and modular UI ownership.</p>
+          </article>
+          <article class="app-card">
+            <span class="status beta">Auth</span>
+            <h3>Auth Layer</h3>
+            <p>Account access with role-based visibility for customer and team workspaces.</p>
+          </article>
+          <article class="app-card">
+            <span class="status beta">Billing</span>
+            <h3>Stripe Subscriptions</h3>
+            <p>Plan assignment, renewal logic, and invoice-ready billing operations.</p>
+          </article>
+          <article class="app-card">
+            <span class="status beta">Quality</span>
+            <h3>Testing + Diagnostics</h3>
+            <p>Release validation and observability as mandatory gates before production.</p>
+          </article>
+        </div>
+      </section>
     </section>
 
     <section class="section-card dark reveal">
@@ -185,6 +212,27 @@
           <img loading="lazy" src="assets/mtools-beta-v2/thumbs/06-diagnostics-main.jpg" alt="Diagnostics" />
           <figcaption><strong>Diagnostics</strong>Observability for advanced support.</figcaption>
         </figure>
+      </div>
+    </section>
+
+    <section class="section-card reveal testimonials team-feature">
+      <p class="team-kicker">Core Team</p>
+      <h2 class="section-title">TEAM</h2>
+      <div class="testimonials-grid stack-gap">
+        <article class="testimonial-card founder-card">
+          <div class="testimonial-media">
+            <img loading="lazy" decoding="async" src="https://placehold.co/1200x800/0b1e3f/eaf4ff?text=Tu+Foto+DJ" alt="Your DJ photo" />
+          </div>
+          <div class="testimonial-copy">
+            <h5>Mlabs Music - Founder</h5>
+            <h3>Alejandro Lopez Aragon</h3>
+            <div class="profile-links" aria-label="Founder links">
+              <a class="profile-link" href="https://www.linkedin.com/in/alejandrolopezaragon/" target="_blank" rel="noreferrer noopener">LinkedIn</a>
+              <a class="profile-link" href="https://github.com/marquesedition/marquesedition" target="_blank" rel="noreferrer noopener">GitHub</a>
+            </div>
+            <p class="founder-quote">"MTOOLS gives me full workflow control, from prep to execution, with fewer errors and faster delivery."</p>
+          </div>
+        </article>
       </div>
     </section>
 
