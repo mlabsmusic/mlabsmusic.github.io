@@ -130,6 +130,12 @@
       overflow: hidden;
       background: #fff;
       cursor: zoom-in;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+    .shot:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(12, 22, 45, 0.18);
     }
 
     .shot img {
@@ -291,12 +297,23 @@
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      display: none;
+      display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
       background: rgba(0, 0, 0, .36);
       backdrop-filter: blur(4px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .2s ease, visibility .2s ease;
+      z-index: 20;
+    }
+
+    .modal-backdrop.is-open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
     }
 
     .modal {
@@ -306,6 +323,12 @@
       border-radius: 18px;
       padding: 18px;
       box-shadow: 0 18px 45px rgba(0, 0, 0, .18);
+      transform: scale(.96);
+      transition: transform .2s ease;
+    }
+
+    .modal-backdrop.is-open .modal {
+      transform: scale(1);
     }
 
     .modal h3 {
@@ -339,6 +362,13 @@
       box-shadow: 0 18px 45px rgba(0, 0, 0, .18);
       display: grid;
       gap: 8px;
+      transform: scale(.96);
+      transition: transform .2s ease;
+      position: relative;
+    }
+
+    .modal-backdrop.is-open .shot-modal-content {
+      transform: scale(1);
     }
 
     .shot-modal-content img {
@@ -354,6 +384,21 @@
       color: var(--muted);
       font-size: .94rem;
       line-height: 1.45;
+    }
+
+    .shot-modal-close-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid #d4d6df;
+      background: rgba(255, 255, 255, .95);
+      color: #2f2f34;
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
     }
 
     @media (max-width: 920px) {
@@ -527,6 +572,7 @@
 
   <div class="modal-backdrop" id="shotModal" aria-hidden="true">
     <div class="shot-modal-content" role="dialog" aria-modal="true" aria-labelledby="shotTitle">
+      <button class="shot-modal-close-icon" id="closeShotModalIcon" aria-label="Cerrar imagen ampliada">×</button>
       <img id="shotImage" src="" alt="" />
       <p id="shotTitle"></p>
       <button class="close" id="closeShotModal">Cerrar</button>
@@ -536,12 +582,12 @@
   <script>
     const modal = document.getElementById('checkoutModal');
     document.getElementById('buyBtn').addEventListener('click', () => {
-      modal.style.display = 'flex';
+      modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
     });
 
     function closeModal() {
-      modal.style.display = 'none';
+      modal.classList.remove('is-open');
       modal.setAttribute('aria-hidden', 'true');
     }
 
@@ -570,11 +616,12 @@
       shotImage.src = src;
       shotImage.alt = title;
       shotTitle.textContent = title;
-      shotModal.style.display = 'flex';
+      shotModal.classList.add('is-open');
       shotModal.setAttribute('aria-hidden', 'false');
     });
 
     document.getElementById('closeShotModal').addEventListener('click', closeShotModal);
+    document.getElementById('closeShotModalIcon').addEventListener('click', closeShotModal);
     shotModal.addEventListener('click', (event) => {
       if (event.target === shotModal) closeShotModal();
     });
