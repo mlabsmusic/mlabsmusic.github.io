@@ -144,6 +144,10 @@
 
 (function setupApp() {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const navigationEntry = performance.getEntriesByType?.('navigation')?.[0];
+  const legacyNavigation = performance.navigation;
+  const isLegacyReload = !!legacyNavigation && legacyNavigation.type === 1;
+  const isReloadNavigation = navigationEntry?.type === 'reload' || isLegacyReload;
   let revealObserver = null;
   let navigating = false;
 
@@ -164,6 +168,12 @@
   }
 
   function markEntered() {
+    if (isReloadNavigation) {
+      document.body.classList.add('no-entry-motion');
+      document.body.classList.add('is-entered');
+      return;
+    }
+
     requestAnimationFrame(() => {
       document.body.classList.add('is-entered');
     });
@@ -210,6 +220,7 @@
 
     if (header.dataset.menuBound === '1') return;
     header.dataset.menuBound = '1';
+    document.body.classList.remove('menu-overlay-open');
 
     let toggle = header.querySelector('.menu-toggle');
     if (!toggle) {
@@ -223,14 +234,125 @@
       header.insertBefore(toggle, menu);
     }
 
+    let mobileCta = menu.querySelector('.menu-mobile-cta');
+    if (!mobileCta && cta) {
+      mobileCta = document.createElement('a');
+      mobileCta.className = 'menu-mobile-cta';
+      mobileCta.href = cta.getAttribute('href') || cta.href || '#';
+      if (cta.target) mobileCta.target = cta.target;
+      if (cta.rel) mobileCta.rel = cta.rel;
+      mobileCta.textContent = (cta.textContent || '').trim() || 'Contact';
+      menu.appendChild(mobileCta);
+    }
+
+    const menuLinks = [...menu.querySelectorAll('a')];
+    menuLinks.forEach((link, index) => {
+      link.style.setProperty('--menu-index', String(index));
+    });
+
+    let liquidIndicator = menu.querySelector('.menu-liquid-indicator');
+    if (!liquidIndicator) {
+      liquidIndicator = document.createElement('span');
+      liquidIndicator.className = 'menu-liquid-indicator';
+      liquidIndicator.setAttribute('aria-hidden', 'true');
+      menu.prepend(liquidIndicator);
+    }
+
+    let indicatorTimer = null;
+    let morphTimer = null;
+
+    function clearIndicatorTimer() {
+      if (!indicatorTimer) return;
+      window.clearTimeout(indicatorTimer);
+      indicatorTimer = null;
+    }
+
+    function clearMorphTimer() {
+      if (!morphTimer) return;
+      window.clearTimeout(morphTimer);
+      morphTimer = null;
+    }
+
+    function triggerLiquidMorph() {
+      clearMorphTimer();
+      liquidIndicator.classList.remove('is-morphing');
+      // Force reflow so repeated clicks retrigger the animation.
+      void liquidIndicator.offsetWidth;
+      liquidIndicator.classList.add('is-morphing');
+      morphTimer = window.setTimeout(() => {
+        liquidIndicator.classList.remove('is-morphing');
+      }, 620);
+    }
+
+    function moveLiquidIndicator(target, instant = false) {
+      if (!target || !menu.contains(target)) {
+        menu.classList.remove('has-liquid-target');
+        return;
+      }
+
+      const menuRect = menu.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      if (!menuRect.width || !targetRect.width) return;
+
+      const x = targetRect.left - menuRect.left;
+      const y = targetRect.top - menuRect.top;
+      const width = targetRect.width;
+      const height = targetRect.height;
+
+      if (instant) {
+        liquidIndicator.style.transition = 'none';
+      } else {
+        liquidIndicator.style.removeProperty('transition');
+      }
+
+      menu.style.setProperty('--liquid-x', `${x}px`);
+      menu.style.setProperty('--liquid-y', `${y}px`);
+      menu.style.setProperty('--liquid-w', `${width}px`);
+      menu.style.setProperty('--liquid-h', `${height}px`);
+      menu.classList.add('has-liquid-target');
+      if (!instant) triggerLiquidMorph();
+
+      if (instant) {
+        requestAnimationFrame(() => {
+          liquidIndicator.style.removeProperty('transition');
+        });
+      }
+    }
+
+    function getActiveMenuLink() {
+      return menu.querySelector('a.is-active') || menuLinks[0] || null;
+    }
+
+    function refreshLiquidIndicator(instant = false) {
+      if (window.innerWidth > 1120) {
+        menu.classList.remove('has-liquid-target');
+        return;
+      }
+      moveLiquidIndicator(getActiveMenuLink(), instant);
+    }
+
+    menu.__mlabsRefreshLiquidIndicator = refreshLiquidIndicator;
+
+    function setMenuState(isOpen) {
+      header.classList.toggle('menu-open', isOpen);
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      document.body.classList.toggle('menu-overlay-open', isOpen && window.innerWidth <= 1120);
+
+      clearIndicatorTimer();
+      if (isOpen && window.innerWidth <= 1120) {
+        requestAnimationFrame(() => refreshLiquidIndicator(true));
+        indicatorTimer = window.setTimeout(() => refreshLiquidIndicator(false), 60);
+      } else {
+        menu.classList.remove('has-liquid-target');
+      }
+    }
+
     function closeMenu() {
-      header.classList.remove('menu-open');
-      toggle.setAttribute('aria-expanded', 'false');
+      setMenuState(false);
     }
 
     function openMenu() {
-      header.classList.add('menu-open');
-      toggle.setAttribute('aria-expanded', 'true');
+      setMenuState(true);
     }
 
     toggle.addEventListener('click', () => {
@@ -244,7 +366,26 @@
     menu.addEventListener('click', (event) => {
       const link = event.target.closest('a');
       if (!link) return;
+      moveLiquidIndicator(link);
       closeMenu();
+    });
+
+    menu.addEventListener('focusin', (event) => {
+      const link = event.target.closest('a');
+      if (!link) return;
+      moveLiquidIndicator(link);
+    });
+
+    menu.addEventListener('mouseover', (event) => {
+      if (window.innerWidth > 1120) return;
+      const link = event.target.closest('a');
+      if (!link) return;
+      moveLiquidIndicator(link);
+    });
+
+    menu.addEventListener('mouseleave', () => {
+      if (window.innerWidth > 1120) return;
+      refreshLiquidIndicator(false);
     });
 
     if (cta) {
@@ -259,6 +400,9 @@
         if (!currentHeader || !currentHeader.classList.contains('menu-open')) return;
         if (currentHeader.contains(event.target)) return;
         currentHeader.classList.remove('menu-open');
+        document.body.classList.remove('menu-overlay-open');
+        const currentMenu = currentHeader.querySelector('.menu');
+        if (currentMenu) currentMenu.classList.remove('has-liquid-target');
         const currentToggle = currentHeader.querySelector('.menu-toggle');
         if (currentToggle) currentToggle.setAttribute('aria-expanded', 'false');
       });
@@ -268,17 +412,30 @@
         const currentHeader = document.querySelector('.site-header');
         if (!currentHeader || !currentHeader.classList.contains('menu-open')) return;
         currentHeader.classList.remove('menu-open');
+        document.body.classList.remove('menu-overlay-open');
+        const currentMenu = currentHeader.querySelector('.menu');
+        if (currentMenu) currentMenu.classList.remove('has-liquid-target');
         const currentToggle = currentHeader.querySelector('.menu-toggle');
         if (currentToggle) currentToggle.setAttribute('aria-expanded', 'false');
       });
 
       window.addEventListener('resize', () => {
-        if (window.innerWidth <= 1120) return;
         const currentHeader = document.querySelector('.site-header');
-        if (!currentHeader || !currentHeader.classList.contains('menu-open')) return;
-        currentHeader.classList.remove('menu-open');
-        const currentToggle = currentHeader.querySelector('.menu-toggle');
-        if (currentToggle) currentToggle.setAttribute('aria-expanded', 'false');
+        const currentMenu = currentHeader?.querySelector('.menu');
+
+        if (window.innerWidth > 1120) {
+          if (!currentHeader || !currentHeader.classList.contains('menu-open')) return;
+          currentHeader.classList.remove('menu-open');
+          document.body.classList.remove('menu-overlay-open');
+          if (currentMenu) currentMenu.classList.remove('has-liquid-target');
+          const currentToggle = currentHeader.querySelector('.menu-toggle');
+          if (currentToggle) currentToggle.setAttribute('aria-expanded', 'false');
+          return;
+        }
+
+        if (currentHeader?.classList.contains('menu-open') && currentMenu?.__mlabsRefreshLiquidIndicator) {
+          currentMenu.__mlabsRefreshLiquidIndicator(true);
+        }
       });
     }
   }
@@ -433,6 +590,7 @@
     if (navigating) return;
     navigating = true;
 
+    document.body.classList.remove('no-entry-motion');
     document.body.classList.remove('is-entered');
     document.body.classList.add('is-leaving');
 
