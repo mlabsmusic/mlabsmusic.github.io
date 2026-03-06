@@ -515,7 +515,65 @@
     if (gallery.dataset.bound === '1') return;
     gallery.dataset.bound = '1';
 
+    const isSpanish = document.documentElement.lang?.toLowerCase().startsWith('es');
+    let prevButton = modal.querySelector('[data-shot-prev]');
+    let nextButton = modal.querySelector('[data-shot-next]');
+    if (!prevButton) {
+      prevButton = document.createElement('button');
+      prevButton.type = 'button';
+      prevButton.className = 'shot-modal-nav prev';
+      prevButton.setAttribute('data-shot-prev', '1');
+      prevButton.setAttribute('aria-label', isSpanish ? 'Imagen anterior' : 'Previous image');
+      prevButton.textContent = '<';
+      modal.querySelector('.shot-modal-content')?.appendChild(prevButton);
+    }
+    if (!nextButton) {
+      nextButton = document.createElement('button');
+      nextButton.type = 'button';
+      nextButton.className = 'shot-modal-nav next';
+      nextButton.setAttribute('data-shot-next', '1');
+      nextButton.setAttribute('aria-label', isSpanish ? 'Imagen siguiente' : 'Next image');
+      nextButton.textContent = '>';
+      modal.querySelector('.shot-modal-content')?.appendChild(nextButton);
+    }
+
     let lastFocused = null;
+    let currentIndex = -1;
+
+    function getFigures() {
+      return [...gallery.querySelectorAll('.shot')];
+    }
+
+    function setFigureByIndex(index) {
+      const figures = getFigures();
+      if (!figures.length) return;
+
+      const total = figures.length;
+      currentIndex = ((index % total) + total) % total;
+      const figure = figures[currentIndex];
+      if (!figure) return;
+
+      const source = figure.getAttribute('data-shot');
+      const label = figure.getAttribute('data-title') || 'MTOOLS Product Capture';
+      const details = figure.getAttribute('data-description') || 'Product view from MTOOLS beta.';
+      if (!source) return;
+
+      image.classList.remove('is-visible');
+      image.onload = () => image.classList.add('is-visible');
+      image.src = source;
+      image.alt = label;
+      title.textContent = label;
+      description.textContent = details;
+
+      const disableNav = total < 2;
+      prevButton.disabled = disableNav;
+      nextButton.disabled = disableNav;
+    }
+
+    function stepFigure(direction) {
+      if (currentIndex < 0) return;
+      setFigureByIndex(currentIndex + direction);
+    }
 
     function closeModal() {
       modal.classList.remove('is-open');
@@ -525,6 +583,7 @@
       image.removeAttribute('alt');
       title.textContent = '';
       description.textContent = '';
+      currentIndex = -1;
       document.body.style.overflow = '';
       if (lastFocused && typeof lastFocused.focus === 'function') {
         lastFocused.focus();
@@ -532,22 +591,15 @@
     }
 
     function openModal(figure) {
-      const source = figure.getAttribute('data-shot');
-      const label = figure.getAttribute('data-title') || 'MTOOLS Product Capture';
-      const details = figure.getAttribute('data-description') || 'Product view from MTOOLS beta.';
-      if (!source) return;
+      const figures = getFigures();
+      const index = figures.indexOf(figure);
+      if (index < 0) return;
 
       lastFocused = figure;
-      image.classList.remove('is-visible');
-      image.onload = () => image.classList.add('is-visible');
-      image.src = source;
-      image.alt = label;
-      title.textContent = label;
-      description.textContent = details;
-
       modal.classList.add('is-open');
       modal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
+      setFigureByIndex(index);
       closeButton.focus();
     }
 
@@ -566,13 +618,28 @@
     });
 
     closeButton.addEventListener('click', closeModal);
+    prevButton.addEventListener('click', () => stepFigure(-1));
+    nextButton.addEventListener('click', () => stepFigure(1));
 
     modal.addEventListener('click', (event) => {
       if (event.target === modal) closeModal();
     });
 
     window.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') closeModal();
+      if (!modal.classList.contains('is-open')) return;
+      if (event.key === 'Escape') {
+        closeModal();
+        return;
+      }
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        stepFigure(-1);
+        return;
+      }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        stepFigure(1);
+      }
     });
   }
 

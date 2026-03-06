@@ -311,17 +311,6 @@ body.is-leaving .mesh-background {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.1));
 }
 
-.menu a.menu-lang {
-  border-color: rgba(168, 210, 255, 0.86);
-  background: linear-gradient(180deg, rgba(70, 145, 255, 0.5), rgba(45, 108, 212, 0.34));
-  color: #f6fbff;
-}
-
-.menu a.menu-lang:hover {
-  border-color: rgba(209, 230, 253, 0.98);
-  background: linear-gradient(180deg, rgba(82, 156, 255, 0.62), rgba(53, 116, 220, 0.46));
-}
-
 .menu-cta {
   justify-self: end;
   display: inline-flex;
@@ -1135,6 +1124,39 @@ body.is-leaving .mesh-background {
   z-index: 2;
 }
 
+.shot-modal-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid #d3d9e6;
+  background: rgba(255, 255, 255, 0.95);
+  color: #16223d;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.shot-modal-nav.prev {
+  left: 10px;
+}
+
+.shot-modal-nav.next {
+  right: 10px;
+}
+
+.shot-modal-nav:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+
 .shot-modal-content img {
   display: block;
   width: auto;
@@ -1533,6 +1555,20 @@ body.is-leaving .mesh-background {
     right: 8px;
     width: 34px;
     height: 34px;
+  }
+
+  .shot-modal-nav {
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+  }
+
+  .shot-modal-nav.prev {
+    left: 8px;
+  }
+
+  .shot-modal-nav.next {
+    right: 8px;
   }
 
   .shot-modal-content img {
