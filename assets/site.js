@@ -179,10 +179,32 @@
   }
 })();
 
+(function setupHeaderOverlayState() {
+  const header = document.querySelector('.site-header');
+  if (!header) return;
+
+  function refresh() {
+    if (window.scrollY > 20) {
+      header.classList.add('is-scrolled');
+    } else {
+      header.classList.remove('is-scrolled');
+    }
+  }
+
+  refresh();
+  window.addEventListener('scroll', refresh, { passive: true });
+})();
+
 (function setupRevealOnScroll() {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const items = document.querySelectorAll('.reveal');
   if (!items.length) return;
+
+  for (const item of items) {
+    if (item.classList.contains('site-header')) {
+      item.classList.add('is-visible');
+    }
+  }
 
   if (prefersReducedMotion || !('IntersectionObserver' in window)) {
     for (const item of items) item.classList.add('is-visible');
