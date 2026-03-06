@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mlabs Music | Sobre</title>
+  <meta name="description" content="Sobre Mlabs Music y el framework MTOOLS: testing, diagnostico e IA modular." />
+  <link rel="canonical" href="https://www.mlabsmusic.com/es/about.html" />
+  <link rel="alternate" hreflang="en" href="https://www.mlabsmusic.com/about.html" />
+  <link rel="alternate" hreflang="es" href="https://www.mlabsmusic.com/es/about.html" />
+  <link rel="alternate" hreflang="x-default" href="https://www.mlabsmusic.com/about.html" />
+  <link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../assets/site.css?v=20260306-8" />
+</head>
+<body class="inner-page">
+  <canvas id="meshBackground" class="mesh-background" aria-hidden="true"></canvas>
+
+  <main class="page-wrap">
+    <header class="site-header reveal">
+      <p class="brand">Mlabs Music</p>
+      <nav class="menu" aria-label="Principal">
+        <a href="/es/">Inicio</a>
+        <a class="is-active" href="/es/about.html">Sobre</a>
+        <a href="/es/projects.html">Proyectos</a>
+      </nav>
+      <a class="menu-cta" href="mailto:info@mlabsmusic.com">Contacto</a>
+    </header>
+
+    <section class="hero hero-inner reveal">
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-content">
+        <p class="kicker">Sobre Mlabs Music</p>
+        <h1 class="hero-title">Producto, proceso y calidad en <span class="emph">sync</span>.</h1>
+        <p class="hero-copy">
+          Mlabs Music desarrolla MTOOLS con foco en legibilidad profesional, operaciones reproducibles y codigo mantenible.
+          Disenamos para cliente final y para el equipo que construye el software.
+        </p>
+      </div>
+    </section>
+
+    <section class="section-card dark statement reveal">
+      <h2 class="statement-lines">
+        <span>Testing y diagnostico forman parte del producto.</span>
+        <span>La arquitectura modular permite evolucion continua.</span>
+        <span>Cada herramienta complementa a la siguiente.</span>
+        <span>La experiencia se optimiza para cliente y equipo tecnico.</span>
+      </h2>
+    </section>
+
+    <section class="section-card reveal how-we-do">
+      <h2 class="section-title">Nuestro framework interno</h2>
+      <p class="section-sub">
+        Framework orientado a fiabilidad, trazabilidad y velocidad de aprendizaje del producto.
+      </p>
+      <div class="reason-cards stack-gap">
+        <article class="reason-card">
+          <div class="reason-icon">QA</div>
+          <h3>Testing App</h3>
+          <p>Ejecucion centralizada de suites funcionales para detectar regresiones antes de release.</p>
+        </article>
+        <article class="reason-card">
+          <div class="reason-icon">OBS</div>
+          <h3>Diagnostics App</h3>
+          <p>Observabilidad operativa para resolver incidencias con datos reales y contexto.</p>
+        </article>
+        <article class="reason-card">
+          <div class="reason-icon">CI</div>
+          <h3>Release Control</h3>
+          <p>CI y validacion continua para asegurar calidad de build y experiencia consistente.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-card dark reveal">
+      <h2 class="section-title">Modelo IA transversal</h2>
+      <p class="section-sub">
+        Sin exponer implementacion exacta, estamos construyendo un motor IA utilizado por todos los modulos.
+        Cada herramienta alimenta conocimiento util para un perfil IA personal por DJ.
+      </p>
+      <div class="framework-map stack-gap">
+        <article class="map-card">
+          <h3>Contexto conectado</h3>
+          <p>Las micro apps comparten senales operativas para enriquecer recomendaciones.</p>
+        </article>
+        <article class="map-card">
+          <h3>Asistente unico de suite</h3>
+          <p>Un modelo comun para preparacion, ejecucion y revision en toda la plataforma.</p>
+        </article>
+        <article class="map-card">
+          <h3>Aprendizaje personal</h3>
+          <p>La plataforma aprende lo que tocas y para quien tocas para ajustarse a tu flujo real.</p>
+        </article>
+      </div>
+      <div class="ia-tagline">
+        <p>No es una IA generica. Es una inteligencia que evoluciona contigo y con tu audiencia.</p>
+      </div>
+    </section>
+
+    <section class="section-card reveal">
+      <div class="two-col">
+        <article class="panel">
+          <h3>Unete al proyecto</h3>
+          <p>Si quieres formar parte como desarrollador o tester, escribe al equipo de Mlabs Music.</p>
+          <a class="contact-link" href="mailto:info@mlabsmusic.com?subject=Quiero%20formar%20parte%20de%20MTOOLS">info@mlabsmusic.com</a>
+        </article>
+        <article class="panel">
+          <h3>Reserva demo para tu equipo</h3>
+          <p class="small">Sesion guiada con enfoque en tu operativa DJ y objetivos de negocio.</p>
+          <button class="btn btn-primary" id="reserveDemoBtn">Reserve su demo</button>
+          <div class="legal-notice">
+            MTOOLS se distribuye bajo licencia de codigo cerrado y patente activa.
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer reveal">
+      Mlabs Music - Sobre
+      <nav class="legal-links" aria-label="Legal">
+        <a href="/es/terms-of-use.html">Terminos de uso</a>
+        <a href="/es/privacy-policy.html">Politica de privacidad</a>
+        <a href="/es/eula.html">EULA</a>
+        <a href="mailto:info@mlabsmusic.com">Email de contacto</a>
+      </nav>
+    </footer>
+  </main>
+
+  <div class="modal-backdrop" id="reserveModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="reserveTitle">
+      <h3 id="reserveTitle">Reserva de demo - MTOOLS</h3>
+      <p>
+        Comparte stack, volumen de libreria y objetivo de producto.
+        Te enviaremos disponibilidad y formato de demostracion.
+      </p>
+      <a class="action-link" href="mailto:info@mlabsmusic.com?subject=Reserva%20Demo%20MTOOLS">Enviar reserva por email</a>
+      <button class="close" id="closeReserveModal">Cerrar</button>
+    </div>
+  </div>
+
+  <script src="../assets/site.js?v=20260306-8"></script>
+</body>
+</html>

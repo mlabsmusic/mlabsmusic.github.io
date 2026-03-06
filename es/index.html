@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mlabs Music | Inicio</title>
+  <meta name="description" content="MTOOLS de Mlabs Music: plataforma modular de micro apps para DJs, con testing, diagnostico e IA aplicada." />
+  <link rel="canonical" href="https://www.mlabsmusic.com/es/" />
+  <link rel="alternate" hreflang="en" href="https://www.mlabsmusic.com/" />
+  <link rel="alternate" hreflang="es" href="https://www.mlabsmusic.com/es/" />
+  <link rel="alternate" hreflang="x-default" href="https://www.mlabsmusic.com/" />
+  <link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../assets/site.css?v=20260306-8" />
+</head>
+<body class="home-page">
+  <canvas id="meshBackground" class="mesh-background" aria-hidden="true"></canvas>
+
+  <main class="page-wrap">
+    <header class="site-header reveal">
+      <p class="brand">Mlabs Music</p>
+      <nav class="menu" aria-label="Principal">
+        <a class="is-active" href="/es/">Inicio</a>
+        <a href="/es/about.html">Sobre</a>
+        <a href="/es/projects.html">Proyectos</a>
+      </nav>
+      <a class="menu-cta" href="mailto:info@mlabsmusic.com">Contacto</a>
+    </header>
+
+    <section class="hero hero-home reveal">
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-content">
+        <p class="kicker">Mlabs Music - Plataforma de producto</p>
+        <h1 class="hero-title">
+          Disenamos y construimos
+          <span class="hero-word-stack emph" aria-label="productos, experiencias, diagnostico, testing, modulos IA, apps DJ">
+            <span>productos</span>
+            <span>experiencias</span>
+            <span>diagnostico</span>
+            <span>herramientas QA</span>
+            <span>modulos IA</span>
+            <span>micro apps DJ</span>
+          </span>
+          para escalar operaciones.
+        </h1>
+        <p class="hero-copy">
+          MTOOLS integra libreria, automatizacion, QA, diagnostico e inteligencia operativa en una suite modular,
+          con foco en legibilidad para cliente final y trazabilidad para equipo tecnico.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" id="reserveDemoBtn">Reserve su demo</button>
+          <a class="btn btn-secondary" href="/es/projects.html">Ver beta preview</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-card dark statement reveal">
+      <h2 class="statement-lines">
+        <span>Plataforma modular para DJs y equipos de producto.</span>
+        <span>Testing y diagnostico integrados en el framework.</span>
+        <span>Capa de IA transversal para todos los modulos.</span>
+        <span>Calidad visual y tecnica con enfoque enterprise.</span>
+      </h2>
+    </section>
+
+    <section class="section-card reveal how-we-do">
+      <h2 class="section-title">Como lo <span class="emph">hacemos</span></h2>
+      <p class="section-sub">
+        Convertimos ideas en experiencias de producto legibles, estables y listas para escalar.
+      </p>
+      <div class="reason-cards stack-gap">
+        <article class="reason-card">
+          <div class="reason-icon">01</div>
+          <h3>Mapeamos el flujo real</h3>
+          <p>Cada micro app nace de operativa real, no de demos aisladas.</p>
+        </article>
+        <article class="reason-card">
+          <div class="reason-icon">02</div>
+          <h3>Definimos calidad desde el inicio</h3>
+          <p>Testing y diagnostico son parte nativa del framework y de cada release.</p>
+        </article>
+        <article class="reason-card">
+          <div class="reason-icon">03</div>
+          <h3>Escalamos con coherencia</h3>
+          <p>Arquitectura modular, ownership claro e interfaz consistente entre dominios.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-card dark reveal">
+      <h2 class="section-title">Framework + IA compartida</h2>
+      <p class="section-sub">
+        MTOOLS se construye como arquitectura conectada: cada herramienta complementa a la otra
+        y alimenta un modelo IA personal para cada DJ dentro de la plataforma.
+      </p>
+      <div class="framework-map stack-gap">
+        <article class="map-card">
+          <h3>Datos operativos conectados</h3>
+          <p>Las micro apps intercambian contexto para evitar islas de informacion.</p>
+        </article>
+        <article class="map-card">
+          <h3>Motor IA comun</h3>
+          <p>Un asistente transversal para preparacion, ejecucion y revision de sesiones.</p>
+        </article>
+        <article class="map-card">
+          <h3>Perfil IA por DJ</h3>
+          <p>Aprende lo que tocas y para quien tocas para recomendaciones mas precisas.</p>
+        </article>
+      </div>
+      <div class="ia-tagline">
+        <p>No es solo IA. Es inteligencia que evoluciona con tu sonido y tu audiencia.</p>
+      </div>
+    </section>
+
+    <section class="section-card dark reveal showcase">
+      <h2 class="section-title">Beta Preview - Capturas de producto</h2>
+      <p class="section-sub">Vistas reales de MTOOLS beta. Haz click para ampliar.</p>
+      <div class="gallery-grid stack-gap" id="betaGallery">
+        <figure class="shot" tabindex="0" data-shot="../assets/mtools-beta-v2/optimized/01-hub-overview.jpg" data-title="MTOOLS Hub" data-description="Centro operativo con todas las micro apps conectadas en una sola vista.">
+          <img loading="lazy" src="../assets/mtools-beta-v2/thumbs/01-hub-overview.jpg" alt="MTOOLS Hub" />
+          <figcaption><strong>Hub Overview</strong>Control central del framework completo.</figcaption>
+        </figure>
+        <figure class="shot" tabindex="0" data-shot="../assets/mtools-beta-v2/optimized/05-test-runner-main.jpg" data-title="Test Runner" data-description="Panel de calidad para prevenir regresiones y controlar estabilidad de release.">
+          <img loading="lazy" src="../assets/mtools-beta-v2/thumbs/05-test-runner-main.jpg" alt="Test Runner" />
+          <figcaption><strong>Test Runner</strong>Validacion continua integrada al producto.</figcaption>
+        </figure>
+        <figure class="shot" tabindex="0" data-shot="../assets/mtools-beta-v2/optimized/06-diagnostics-main.jpg" data-title="Diagnostics" data-description="Consola de diagnostico para observabilidad y soporte tecnico con contexto.">
+          <img loading="lazy" src="../assets/mtools-beta-v2/thumbs/06-diagnostics-main.jpg" alt="Diagnostics" />
+          <figcaption><strong>Diagnostics</strong>Observabilidad para soporte avanzado.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section-card reveal">
+      <div class="two-col">
+        <article class="panel">
+          <h3>Reserva de demo</h3>
+          <p>
+            Validamos stack, volumen de libreria y objetivo operativo para preparar una demo guiada.
+          </p>
+          <a class="contact-link" href="mailto:info@mlabsmusic.com?subject=Reserva%20Demo%20MTOOLS">info@mlabsmusic.com</a>
+        </article>
+        <article class="panel">
+          <h3>Licencia y propiedad intelectual</h3>
+          <p class="small">Acceso por evaluacion y reserva oficial.</p>
+          <div class="legal-notice">
+            MTOOLS se distribuye bajo licencia de codigo cerrado y patente activa.
+            El intento de plagio activa procesos legales.
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer reveal">
+      Mlabs Music - Sitio oficial informativo de MTOOLS
+      <nav class="legal-links" aria-label="Legal">
+        <a href="/es/terms-of-use.html">Terminos de uso</a>
+        <a href="/es/privacy-policy.html">Politica de privacidad</a>
+        <a href="/es/eula.html">EULA</a>
+        <a href="mailto:info@mlabsmusic.com">Email de contacto</a>
+      </nav>
+    </footer>
+  </main>
+
+  <div class="modal-backdrop" id="reserveModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="reserveTitle">
+      <h3 id="reserveTitle">Reserva de demo - MTOOLS</h3>
+      <p>
+        Envie por email su escenario de uso, volumen de libreria y objetivo operativo.
+        El equipo de Mlabs Music respondera con disponibilidad y formato recomendado.
+      </p>
+      <a class="action-link" href="mailto:info@mlabsmusic.com?subject=Reserva%20Demo%20MTOOLS">Enviar reserva por email</a>
+      <button class="close" id="closeReserveModal">Cerrar</button>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="shotModal" aria-hidden="true">
+    <div class="shot-modal-content" role="dialog" aria-modal="true" aria-labelledby="shotTitle" aria-describedby="shotDescription">
+      <button class="shot-modal-close-icon" id="closeShotModalIcon" aria-label="Cerrar imagen ampliada">X</button>
+      <img id="shotImage" src="" alt="" />
+      <p id="shotTitle" class="shot-modal-title"></p>
+      <p id="shotDescription" class="shot-modal-description"></p>
+    </div>
+  </div>
+
+  <script src="../assets/site.js?v=20260306-8"></script>
+</body>
+</html>

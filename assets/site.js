@@ -183,7 +183,7 @@
     const url = new URL(link.href, window.location.href);
     if (url.origin !== window.location.origin) return false;
 
-    return url.pathname === '/' || url.pathname.endsWith('.html');
+    return url.pathname === '/' || url.pathname.endsWith('/') || url.pathname.endsWith('.html');
   }
 
   function setupHeaderOverlayState() {
@@ -216,7 +216,8 @@
       toggle = document.createElement('button');
       toggle.type = 'button';
       toggle.className = 'menu-toggle';
-      toggle.setAttribute('aria-label', 'Abrir menu');
+      const isSpanish = document.documentElement.lang?.toLowerCase().startsWith('es');
+      toggle.setAttribute('aria-label', isSpanish ? 'Abrir menu' : 'Open menu');
       toggle.setAttribute('aria-expanded', 'false');
       toggle.innerHTML = '<span></span><span></span><span></span>';
       header.insertBefore(toggle, menu);
