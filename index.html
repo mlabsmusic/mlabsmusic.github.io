@@ -617,7 +617,7 @@
     const shotTitle = document.getElementById('shotTitle');
 
     function closeShotModal() {
-      shotModal.style.display = 'none';
+      shotModal.classList.remove('is-open');
       shotModal.setAttribute('aria-hidden', 'true');
       shotImage.src = '';
       shotImage.alt = '';
