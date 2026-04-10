@@ -181,7 +181,8 @@ body.is-entered .page-wrap {
 
 .brand,
 .nav-links a,
-.button {
+.button,
+.nav-toggle {
   min-height: 42px;
   display: inline-flex;
   align-items: center;
@@ -197,6 +198,54 @@ body.is-entered .page-wrap {
   background: rgba(255, 255, 255, .28);
   box-shadow: inset 0 1px rgba(255, 255, 255, .82);
   font-size: .9rem;
+}
+
+.nav-toggle {
+  position: relative;
+  justify-self: end;
+  width: 46px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, .62);
+  background: rgba(255, 255, 255, .28);
+  box-shadow: inset 0 1px rgba(255, 255, 255, .82);
+  cursor: pointer;
+  display: none;
+}
+
+.nav-toggle span {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  border-radius: 8px;
+  background: var(--black);
+  transition: transform .24s var(--ease), opacity .2s ease, top .24s var(--ease);
+}
+
+.nav-toggle span:nth-child(1) {
+  top: 14px;
+}
+
+.nav-toggle span:nth-child(2) {
+  top: 20px;
+}
+
+.nav-toggle span:nth-child(3) {
+  top: 26px;
+}
+
+.nav.is-open .nav-toggle span:nth-child(1) {
+  top: 20px;
+  transform: rotate(45deg);
+}
+
+.nav.is-open .nav-toggle span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav.is-open .nav-toggle span:nth-child(3) {
+  top: 20px;
+  transform: rotate(-45deg);
 }
 
 .nav-links {
@@ -753,15 +802,50 @@ body.is-entered .page-wrap {
     grid-template-columns: 1fr auto;
   }
 
+  .nav-toggle {
+    display: inline-flex;
+  }
+
   .nav-links {
     grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    padding: 0;
+    visibility: hidden;
+    transition: max-height .32s var(--ease), opacity .22s ease, padding .32s var(--ease), visibility .22s ease;
+  }
+
+  .nav.is-open .nav-links {
+    max-height: 280px;
+    opacity: 1;
+    padding-top: 10px;
+    visibility: visible;
+  }
+
+  .nav-links a {
     justify-content: flex-start;
-    overflow-x: auto;
-    padding-bottom: 2px;
+    min-height: 46px;
+    padding: 0 14px;
+    border: 1px solid rgba(255, 255, 255, .48);
+    background: rgba(255, 255, 255, .28);
+    box-shadow: inset 0 1px rgba(255, 255, 255, .7);
+  }
+
+  .nav > .button.primary {
+    grid-column: 1 / -1;
+    display: none;
+  }
+
+  .nav.is-open > .button.primary {
+    display: inline-flex;
   }
 
   .hero {
-    min-height: 84svh;
+    min-height: 90svh;
   }
 
   .hero h1 {
@@ -797,6 +881,17 @@ body.is-entered .page-wrap {
 }
 
 @media (max-width: 620px) {
+  .nav::after,
+  .stat::after,
+  .service-card::after,
+  .project-row::after,
+  .step::after,
+  .faq-item::after,
+  .contact-layout::after,
+  .modal::after {
+    display: none;
+  }
+
   .shell,
   .stats {
     width: calc(100% - 20px);
@@ -812,28 +907,35 @@ body.is-entered .page-wrap {
 
   .brand,
   .nav-links a,
-  .button {
+  .button,
+  .nav-toggle {
     min-height: 38px;
     padding-left: 10px;
     padding-right: 10px;
     font-size: .86rem;
   }
 
+  .nav-toggle {
+    width: 40px;
+  }
+
   .hero {
-    min-height: 82svh;
+    min-height: 92svh;
   }
 
   .hero-content {
-    padding-top: 128px;
-    padding-bottom: 42px;
+    padding-top: 136px;
+    padding-bottom: 34px;
   }
 
   .hero h1 {
-    font-size: 2.45rem;
+    font-size: 2.7rem;
+    max-width: 12ch;
   }
 
   .hero-content > p:not(.eyebrow) {
     font-size: 1rem;
+    max-width: 31ch;
   }
 
   .hero-actions,

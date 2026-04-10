@@ -1,6 +1,8 @@
 (function setupSite() {
   const body = document.body;
   const header = document.querySelector('.site-header');
+  const nav = document.querySelector('.nav');
+  const navToggle = document.querySelector('.nav-toggle');
 
   requestAnimationFrame(() => {
     body.classList.add('is-entered');
@@ -12,6 +14,25 @@
     };
     updateHeader();
     window.addEventListener('scroll', updateHeader, { passive: true });
+  }
+
+  function closeNav() {
+    if (!nav || !navToggle) return;
+    nav.classList.remove('is-open');
+    navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.setAttribute('aria-label', 'Abrir menu');
+  }
+
+  if (nav && navToggle) {
+    navToggle.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('is-open');
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+      navToggle.setAttribute('aria-label', isOpen ? 'Cerrar menu' : 'Abrir menu');
+    });
+
+    for (const link of nav.querySelectorAll('.nav-links a, .button')) {
+      link.addEventListener('click', closeNav);
+    }
   }
 
   const revealItems = [...document.querySelectorAll('.reveal')];
@@ -64,6 +85,7 @@
 
   document.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape') return;
+    closeNav();
     for (const modal of document.querySelectorAll('.modal-backdrop.is-open')) {
       closeModal(modal);
     }
