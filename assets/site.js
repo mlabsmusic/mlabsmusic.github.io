@@ -10,7 +10,9 @@
 
   if (header) {
     const updateHeader = () => {
-      header.classList.toggle('is-scrolled', window.scrollY > 20);
+      const hasScrolled = window.scrollY > 20;
+      header.classList.toggle('is-scrolled', hasScrolled);
+      body.classList.toggle('has-scrolled', hasScrolled);
     };
     updateHeader();
     window.addEventListener('scroll', updateHeader, { passive: true });

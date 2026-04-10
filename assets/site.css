@@ -401,6 +401,16 @@ body.is-entered .page-wrap {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(22px);
+  transition: opacity .45s var(--ease), transform .45s var(--ease);
+}
+
+body.has-scrolled .stats {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
 }
 
 .stat {
