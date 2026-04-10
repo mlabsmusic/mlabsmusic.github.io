@@ -1,245 +1,288 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mlabs Music | Home</title>
-  <meta name="description" content="MTOOLS by Mlabs Music: modular micro-app platform for DJs with testing, diagnostics, and applied AI." />
+  <title>MLabs Music | Webs premium para DJs, productores y artistas</title>
+  <meta name="description" content="MLabs Music crea webs, portafolios y paginas de marca para DJs, productores, artistas y proyectos musicales." />
   <link rel="canonical" href="https://www.mlabsmusic.com/" />
-  <link rel="alternate" hreflang="en" href="https://www.mlabsmusic.com/" />
-  <link rel="alternate" hreflang="es" href="https://www.mlabsmusic.com/es/" />
-  <link rel="alternate" hreflang="x-default" href="https://www.mlabsmusic.com/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="MLabs Music | Webs premium para artistas musicales" />
+  <meta property="og:description" content="Webs premium para DJs, productores y artistas: identidad digital, portfolio, musica, video y contacto profesional." />
+  <meta property="og:url" content="https://www.mlabsmusic.com/" />
+  <meta property="og:image" content="https://www.mlabsmusic.com/assets/video/mlabs-hero-poster.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="MLabs Music | Webs premium para artistas musicales" />
+  <meta name="twitter:description" content="Portafolios, landing pages y presencia digital premium para proyectos musicales." />
+  <meta name="twitter:image" content="https://www.mlabsmusic.com/assets/video/mlabs-hero-poster.jpg" />
   <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="assets/site.css?v=20260306-8" />
+  <link rel="stylesheet" href="assets/site.css?v=20260410-mlabs-reset-1" />
+  <noscript><style>.page-wrap,.reveal{opacity:1;transform:none}</style></noscript>
 </head>
-<body class="home-page">
-  <canvas id="meshBackground" class="mesh-background" aria-hidden="true"></canvas>
-
-  <main class="page-wrap">
-    <header class="site-header reveal">
-      <a class="brand" href="/">Mlabs Music</a>
-      <nav class="menu" aria-label="Main">
-        <a class="is-active" href="/">Home</a>
-        <a href="/projects.html">Projects</a>
-        <a href="/about.html">About</a>
-        <a href="mailto:info@mlabsmusic.com">Contact</a>
+<body>
+  <svg class="liquid-glass-filter" aria-hidden="true" focusable="false">
+    <filter id="liquid-glass" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.035" numOctaves="2" seed="8" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="10" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </svg>
+  <div class="page-wrap">
+    <header class="site-header">
+      <nav class="nav" aria-label="Principal">
+        <a class="brand" href="#inicio" aria-label="MLabs Music inicio">MLABS MUSIC</a>
+        <div class="nav-links">
+          <a href="#servicios">Servicios</a>
+          <a href="#portfolio">Portfolio</a>
+          <a href="#proceso">Proceso</a>
+          <a href="#contacto">Contacto</a>
+        </div>
+        <button class="button primary" type="button" data-contact-modal>Solicitar web</button>
       </nav>
-      <a class="menu-cta" href="/es/">ES</a>
     </header>
 
-    <section class="hero hero-home reveal">
-      <div class="hero-overlay" aria-hidden="true"></div>
-      <div class="hero-content">
-        <p class="kicker">MTOOLS - Platform Overview</p>
-        <h1 class="hero-title">
-          We build
-          <span class="hero-word-stack emph" aria-label="products, experiences, diagnostics, testing, AI modules, DJ tools">
-            <span>products</span>
-            <span>experiences</span>
-            <span>diagnostics</span>
-            <span>testing tools</span>
-            <span>AI modules</span>
-            <span>DJ micro apps</span>
-          </span>
-          into one operating system for DJ teams.
-        </h1>
-        <p class="hero-copy">
-          From music preparation to release control, MTOOLS gives teams one clear workspace:
-          faster decisions, fewer manual steps, and predictable execution.
-        </p>
-        <div class="hero-actions">
-          <button class="btn btn-primary" id="reserveDemoBtn">Book your demo</button>
-          <a class="btn btn-secondary" href="/projects.html">See beta preview</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-card dark statement reveal">
-      <h2 class="statement-lines">
-        <span>One platform instead of disconnected tools.</span>
-        <span>Operational clarity for both business and technical roles.</span>
-        <span>Consistent workflows across planning, execution, and review.</span>
-        <span>Built to scale from beta teams to production operations.</span>
-      </h2>
-    </section>
-
-    <section class="section-card dark reveal audience-section" data-audience-tabs>
-      <h2 class="section-title">Audience Focus</h2>
-      <p class="section-sub">
-        One home section, two views: clear product offers for clients and implementation stack for developers.
-      </p>
-      <div class="audience-tabs" role="tablist" aria-label="Audience focus tabs">
-        <button
-          class="audience-tab is-active"
-          type="button"
-          role="tab"
-          id="audience-tab-clients-en"
-          aria-controls="audience-panel-clients-en"
-          aria-selected="true"
-          data-tab-target="audience-panel-clients-en">For Clients</button>
-        <button
-          class="audience-tab"
-          type="button"
-          role="tab"
-          id="audience-tab-devs-en"
-          aria-controls="audience-panel-devs-en"
-          aria-selected="false"
-          data-tab-target="audience-panel-devs-en">For Developers</button>
-      </div>
-      <section
-        class="audience-panel is-active"
-        role="tabpanel"
-        id="audience-panel-clients-en"
-        aria-labelledby="audience-tab-clients-en"
-        data-tab-panel>
-        <div class="apps-grid stack-gap">
-          <article class="app-card">
-            <span class="status beta">Offer</span>
-            <h3>Beta Access</h3>
-            <p>Guided onboarding with core modules and direct product feedback channel.</p>
-            <ul class="feature-list">
-              <li>Digital Download</li>
-              <li>Compatible with Windows and Mac, including the new Apple Silicon chips</li>
-            </ul>
-          </article>
-          <article class="app-card">
-            <span class="status stable">Offer</span>
-            <h3>Operations Plan</h3>
-            <p>Workflow suite for prep, QA, diagnostics, and team-level execution control.</p>
-          </article>
-          <article class="app-card">
-            <span class="status mvp">Offer</span>
-            <h3>Growth Plan</h3>
-            <p>Expanded automation and cross-module intelligence for scaling teams.</p>
-          </article>
-          <article class="app-card">
-            <span class="status mvp">Offer</span>
-            <h3>Enterprise Plan</h3>
-            <p>Custom integration, governance standards, and dedicated implementation support.</p>
-          </article>
-        </div>
-      </section>
-      <section
-        class="audience-panel"
-        role="tabpanel"
-        id="audience-panel-devs-en"
-        aria-labelledby="audience-tab-devs-en"
-        data-tab-panel
-        hidden>
-        <h3 class="audience-block-title">What Teams get</h3>
-        <p class="audience-block-sub">
-          MTOOLS is designed as an operating layer, not a set of isolated utilities.
-        </p>
-        <div class="reason-cards stack-gap">
-          <article class="reason-card">
-            <div class="reason-icon">01</div>
-            <h3>Shared workflow language</h3>
-            <p>Teams align on one process model across product, QA, and support.</p>
-          </article>
-          <article class="reason-card">
-            <div class="reason-icon">02</div>
-            <h3>Built-in control points</h3>
-            <p>Validation, diagnostics, and release checks are part of day-to-day usage.</p>
-          </article>
-          <article class="reason-card">
-            <div class="reason-icon">03</div>
-            <h3>Scalable modular growth</h3>
-            <p>New modules can be added without breaking consistency or team ownership.</p>
-          </article>
-        </div>
-        <div class="apps-grid stack-gap">
-          <article class="app-card">
-            <span class="status beta">Frontend</span>
-            <h3>Next.js App Router</h3>
-            <p>Private routes under <strong>/app</strong>, server actions, and modular UI ownership.</p>
-          </article>
-          <article class="app-card">
-            <span class="status beta">Auth</span>
-            <h3>Auth Layer</h3>
-            <p>Account access with role-based visibility for customer and team workspaces.</p>
-          </article>
-          <article class="app-card">
-            <span class="status beta">Billing</span>
-            <h3>Stripe Subscriptions</h3>
-            <p>Plan assignment, renewal logic, and invoice-ready billing operations.</p>
-          </article>
-          <article class="app-card">
-            <span class="status beta">Quality</span>
-            <h3>Testing + Diagnostics</h3>
-            <p>Release validation and observability as mandatory gates before production.</p>
-          </article>
-        </div>
-      </section>
-    </section>
-
-    <section class="section-card dark reveal">
-      <h2 class="section-title">Why It Stays Connected</h2>
-      <p class="section-sub">
-        The suite is structured around continuity: data, decisions, and user context flow across modules.
-      </p>
-      <div class="framework-map stack-gap">
-        <article class="map-card">
-          <h3>Continuous context</h3>
-          <p>Each action enriches the next step instead of restarting from zero.</p>
-        </article>
-        <article class="map-card">
-          <h3>Assisted decisions</h3>
-          <p>AI support appears inside existing workflows, not outside of them.</p>
-        </article>
-        <article class="map-card">
-          <h3>Personal adaptation</h3>
-          <p>Recommendations improve over time based on actual sets and audience response.</p>
-        </article>
-      </div>
-      <div class="ia-tagline">
-        <p>Connected operations first. AI where it creates measurable value.</p>
-      </div>
-    </section>
-
-    <section class="section-card reveal">
-      <div class="two-col">
-        <article class="panel">
-          <h3>Demo reservation</h3>
+    <main id="inicio">
+      <section class="hero" aria-label="Webs premium para artistas musicales">
+        <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/video/mlabs-hero-poster.jpg" aria-hidden="true">
+          <source src="assets/video/mlabs-hero-fast.mp4" type="video/mp4" />
+          <source src="assets/video/mlabs-hero-fast.webm" type="video/webm" />
+        </video>
+        <div class="shell hero-content reveal">
+          <p class="eyebrow">Estudio digital para musica y marca artistica</p>
+          <h1>Webs premium para DJs, productores y artistas</h1>
           <p>
-            We validate your stack, library volume, and operational goals to prepare a guided demo.
+            Creamos portafolios y paginas que elevan tu imagen, muestran tu sonido y convierten visitas en oportunidades reales.
           </p>
-          <a class="contact-link" href="mailto:info@mlabsmusic.com?subject=Demo%20Reservation%20MTOOLS">info@mlabsmusic.com</a>
-        </article>
-        <article class="panel">
-          <h3>License and intellectual property</h3>
-          <p class="small">Access is managed through evaluation and official reservation.</p>
-          <div class="legal-notice">
-            MTOOLS is distributed under a closed-source license and active patent strategy.
-            Plagiarism attempts may trigger legal action.
+          <div class="hero-actions">
+            <a class="button primary" href="#portfolio">Ver proyectos</a>
+            <button class="button ghost" type="button" data-contact-modal>Solicitar web</button>
           </div>
-        </article>
+        </div>
+      </section>
+
+      <aside class="stats" aria-label="Datos destacados">
+        <div class="stat reveal">
+          <strong>Web</strong>
+          <span>portfolio, press kit y contacto profesional</span>
+        </div>
+        <div class="stat reveal">
+          <strong>Brand</strong>
+          <span>identidad visual alineada con tu sonido</span>
+        </div>
+        <div class="stat reveal">
+          <strong>Media</strong>
+          <span>musica, video, redes y agenda integradas</span>
+        </div>
+        <div class="stat reveal">
+          <strong>Booking</strong>
+          <span>rutas claras para oportunidades reales</span>
+        </div>
+      </aside>
+
+      <section class="section value-section" id="valor">
+        <div class="shell split">
+          <div class="section-head reveal">
+            <span class="section-kicker">Presencia digital</span>
+            <h2>Tu web tiene que sonar como tu proyecto.</h2>
+          </div>
+          <div class="value-copy reveal">
+            <p>
+              MLabs Music diseña presencia digital estrategica para artistas y proyectos musicales. No buscamos una plantilla bonita: buscamos una pagina que ordene tu identidad, muestre tu trabajo y facilite que promotores, sellos, marcas y colaboradores entiendan tu valor.
+            </p>
+            <p>
+              Cada proyecto nace de tu posicionamiento: club, underground, urbano, electronica, productor, label, colectivo o evento.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="servicios">
+        <div class="shell">
+          <div class="section-head reveal">
+            <span class="section-kicker">Servicios</span>
+            <h2>Webs y presencia digital para el sector musical.</h2>
+            <p>Diseño, desarrollo y contenido pensados para artistas que necesitan verse profesionales sin perder identidad.</p>
+          </div>
+          <div class="service-grid">
+            <article class="service-card reveal">
+              <figure>
+                <img src="https://images.unsplash.com/photo-1571330735066-03aaa9429d89?auto=format&amp;fit=crop&amp;w=900&amp;q=82" alt="DJ en cabina con luces de club" loading="lazy" />
+              </figure>
+              <div class="service-body">
+                <span class="tag">DJs</span>
+                <h3>Webs para DJs</h3>
+                <p>Portfolio, biografia, agenda, press kit, mixes, enlaces y contacto directo para bookings.</p>
+              </div>
+            </article>
+            <article class="service-card reveal">
+              <figure>
+                <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&amp;fit=crop&amp;w=900&amp;q=82" alt="Estudio de produccion musical" loading="lazy" />
+              </figure>
+              <div class="service-body">
+                <span class="tag">Produccion</span>
+                <h3>Portafolios para productores</h3>
+                <p>Releases, creditos, colaboraciones, sonido propio y narrativa visual para sellos y artistas.</p>
+              </div>
+            </article>
+            <article class="service-card reveal">
+              <figure>
+                <img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?auto=format&amp;fit=crop&amp;w=900&amp;q=82" alt="Publico en evento musical nocturno" loading="lazy" />
+              </figure>
+              <div class="service-body">
+                <span class="tag">Eventos</span>
+                <h3>Landing pages para eventos</h3>
+                <p>Paginas para showcases, fechas especiales, lanzamientos, clubs y campanas de venta.</p>
+              </div>
+            </article>
+            <article class="service-card reveal">
+              <figure>
+                <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&amp;fit=crop&amp;w=900&amp;q=82" alt="Artista actuando en escenario" loading="lazy" />
+              </figure>
+              <div class="service-body">
+                <span class="tag">Marca</span>
+                <h3>Branding digital para artistas</h3>
+                <p>Direccion visual, estructura de contenido y sistema digital coherente para tu identidad artistica.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section stage-band" id="portfolio">
+        <div class="shell">
+          <div class="section-head reveal">
+            <span class="section-kicker">Portfolio</span>
+            <h2>Proyectos ejemplo con mentalidad de estudio creativo.</h2>
+          </div>
+          <div class="project-list">
+            <a class="project-row reveal" href="https://nightstage-es.com/" target="_blank" rel="noreferrer">
+              <span>01</span>
+              <div>
+                <h3>Nightstage</h3>
+                <p>Web de presencia y captacion para un proyecto musical nocturno, con estructura clara, hero inmersivo y CTA directo.</p>
+              </div>
+              <strong>Ver proyecto</strong>
+            </a>
+            <a class="project-row reveal" href="https://marquesedition.com/" target="_blank" rel="noreferrer">
+              <span>02</span>
+              <div>
+                <h3>Marques Edition</h3>
+                <p>Presencia digital de marca personal con enfoque editorial, visual premium y recorrido claro para descubrir el universo del proyecto.</p>
+              </div>
+              <strong>Ver proyecto</strong>
+            </a>
+            <article class="project-row reveal">
+              <span>03</span>
+              <div>
+                <h3>Landing page para evento musical</h3>
+                <p>Campana de una noche con informacion clara, direccion visual, CTA y ruta a entradas.</p>
+              </div>
+              <strong>Conversion</strong>
+            </article>
+            <article class="project-row reveal">
+              <span>04</span>
+              <div>
+                <h3>Pagina de marca para artista urbano</h3>
+                <p>Universo visual, enlaces sociales, video, contacto y posicionamiento para colaboraciones.</p>
+              </div>
+              <strong>Imagen premium</strong>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="proceso">
+        <div class="shell">
+          <div class="section-head reveal">
+            <span class="section-kicker">Proceso</span>
+            <h2>Del brief a una web lista para moverse.</h2>
+          </div>
+          <ol class="steps">
+            <li class="step reveal"><span>01</span><h3>Brief</h3><p>Objetivos, referencias, publico, estilo musical y oportunidades que quieres activar.</p></li>
+            <li class="step reveal"><span>02</span><h3>Direccion visual</h3><p>Paleta, ritmo, imagen, tono y estructura para que la web tenga identidad propia.</p></li>
+            <li class="step reveal"><span>03</span><h3>Diseño</h3><p>Secciones, copy, jerarquia y experiencia movil pensadas para consulta rapida.</p></li>
+            <li class="step reveal"><span>04</span><h3>Desarrollo</h3><p>Construccion ligera, responsive, con SEO basico y rendimiento cuidado.</p></li>
+            <li class="step reveal"><span>05</span><h3>Revision</h3><p>Ajustes finos en textos, imagenes, enlaces, formularios y detalles visuales.</p></li>
+            <li class="step reveal"><span>06</span><h3>Entrega</h3><p>Publicacion, revision final y base preparada para crecer con el proyecto.</p></li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="section about" id="sobre-mlabs">
+        <div class="shell about-layout">
+          <figure class="about-photo reveal">
+            <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&amp;fit=crop&amp;w=1200&amp;q=82" alt="Concierto con luces y publico" loading="lazy" />
+          </figure>
+          <div class="section-head reveal">
+            <span class="section-kicker">Sobre MLabs Music</span>
+            <h2>Un estudio digital orientado al mundo musical.</h2>
+            <p>
+              Creamos webs con identidad, diseno premium y enfoque comercial para artistas, productores, DJs, eventos y marcas musicales que necesitan una presencia digital a la altura de su proyecto.
+            </p>
+            <a class="button ghost" href="#contacto">Hablemos del proyecto</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section faq" id="faq">
+        <div class="shell">
+          <div class="section-head reveal">
+            <span class="section-kicker">FAQ</span>
+            <h2>Preguntas rapidas antes de empezar.</h2>
+          </div>
+          <div class="faq-list">
+            <article class="faq-item reveal">
+              <h3>Que puede incluir una web para artista?</h3>
+              <p>Biografia, agenda, musica, video, press kit, galeria, redes, contacto, formulario y secciones personalizadas segun el objetivo.</p>
+            </article>
+            <article class="faq-item reveal">
+              <h3>Trabajais con estilos musicales concretos?</h3>
+              <p>Adaptamos direccion visual y estructura a cada posicionamiento: electronica, urbano, Afro House, club, productor, vocalista, colectivo o evento.</p>
+            </article>
+            <article class="faq-item reveal">
+              <h3>La web estara preparada para movil?</h3>
+              <p>Si. La experiencia movil es central porque muchos contactos llegan desde Instagram, WhatsApp, eventos y recomendaciones directas.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact" id="contacto">
+        <div class="shell contact-layout reveal">
+          <div>
+            <p class="eyebrow">Trabajemos juntos</p>
+            <h2>Tu musica ya tiene identidad. Ahora necesita una web a la altura.</h2>
+            <p>Envia tu nombre artistico, referencias, objetivo y fecha ideal de lanzamiento.</p>
+          </div>
+          <div class="contact-actions">
+            <a class="button primary" href="mailto:info@mlabsmusic.com?subject=Proyecto%20web%20MLabs%20Music">Escribir a MLabs Music</a>
+            <a class="button ghost" href="#servicios">Ver servicios</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell footer-inner">
+        <strong>MLabs Music</strong>
+        <nav aria-label="Footer">
+          <a href="#servicios">Servicios</a>
+          <a href="#portfolio">Portfolio</a>
+          <a href="#contacto">Contacto</a>
+          <a href="https://instagram.com" target="_blank" rel="noreferrer">Redes</a>
+        </nav>
       </div>
-    </section>
-
-    <footer class="footer reveal">
-      Mlabs Music - Official MTOOLS information site
-      <nav class="legal-links" aria-label="Legal">
-        <a href="/terms-of-use.html">Terms of Use</a>
-        <a href="/privacy-policy.html">Privacy Policy</a>
-        <a href="/eula.html">EULA</a>
-        <a href="mailto:info@mlabsmusic.com">Contact Email</a>
-      </nav>
-      <p class="footer-copy">&copy; All rights reserved.</p>
     </footer>
-  </main>
+  </div>
 
-  <div class="modal-backdrop" id="reserveModal" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="reserveTitle">
-      <h3 id="reserveTitle">Demo reservation - MTOOLS</h3>
-      <p>
-        Send your use case, library volume, and operational goals by email.
-        The Mlabs Music team will reply with availability and recommended format.
-      </p>
-      <a class="action-link" href="mailto:info@mlabsmusic.com?subject=Demo%20Reservation%20MTOOLS">Send reservation by email</a>
-      <button class="close" id="closeReserveModal">Close</button>
+  <div class="modal-backdrop" id="contactModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+      <h3 id="contactTitle">Solicitar web premium</h3>
+      <p>Cuéntanos tu proyecto musical, tu estilo y tu objetivo. Te respondemos con una propuesta clara de estructura, diseño y alcance.</p>
+      <a class="action-link" href="mailto:info@mlabsmusic.com?subject=Solicitud%20Web%20Premium%20MLabs%20Music">Escribir a MLabs Music</a>
+      <button class="close" type="button">Cerrar</button>
     </div>
   </div>
 
-  <script src="assets/site.js?v=20260306-8"></script>
+  <script src="assets/site.js?v=20260410-mlabs-reset-1"></script>
 </body>
 </html>
