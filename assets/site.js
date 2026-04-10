@@ -11,9 +11,7 @@
   if (header) {
     const updateHeader = () => {
       const headerScrolled = window.scrollY > 20;
-      const revealStats = window.scrollY > window.innerHeight * 0.18;
       header.classList.toggle('is-scrolled', headerScrolled);
-      body.classList.toggle('has-scrolled', revealStats);
     };
     updateHeader();
     window.addEventListener('scroll', updateHeader, { passive: true });

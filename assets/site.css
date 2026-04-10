@@ -128,7 +128,6 @@ body.is-entered .page-wrap {
 }
 
 .nav::before,
-.stat::before,
 .service-card::before,
 .project-row::before,
 .step::before,
@@ -149,7 +148,6 @@ body.is-entered .page-wrap {
 }
 
 .nav::after,
-.stat::after,
 .service-card::after,
 .project-row::after,
 .step::after,
@@ -169,7 +167,6 @@ body.is-entered .page-wrap {
 }
 
 .nav:hover::after,
-.stat:hover::after,
 .service-card:hover::after,
 .project-row:hover::after,
 .step:hover::after,
@@ -393,51 +390,6 @@ body.is-entered .page-wrap {
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 28px;
-}
-
-.stats {
-  width: min(1160px, calc(100% - 32px));
-  margin: -34px auto 0;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(58px) scale(.98);
-  transition: opacity .62s var(--ease), transform .62s var(--ease);
-}
-
-body.has-scrolled .stats {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0) scale(1);
-}
-
-.stat {
-  position: relative;
-  min-height: 126px;
-  padding: 22px;
-  border: 1px solid var(--glass-border);
-  border-radius: 8px;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, .62), rgba(255, 255, 255, .28)),
-    rgba(255, 255, 255, .24);
-  box-shadow: inset 0 1px rgba(255, 255, 255, .92), inset 0 -20px 48px rgba(0, 169, 183, .08), var(--glass-shadow);
-  backdrop-filter: blur(24px) saturate(1.7);
-  -webkit-backdrop-filter: blur(24px) saturate(1.7);
-  overflow: hidden;
-}
-
-.stat strong {
-  display: block;
-  font-size: 1.5rem;
-}
-
-.stat span {
-  display: block;
-  margin-top: 8px;
-  color: var(--dim);
-  line-height: 1.5;
 }
 
 .section {
@@ -867,7 +819,6 @@ body.has-scrolled .stats {
     font-size: 2.25rem;
   }
 
-  .stats,
   .service-grid,
   .steps,
   .faq-list {
@@ -892,7 +843,6 @@ body.has-scrolled .stats {
 
 @media (max-width: 620px) {
   .nav::after,
-  .stat::after,
   .service-card::after,
   .project-row::after,
   .step::after,
@@ -903,10 +853,6 @@ body.has-scrolled .stats {
   }
 
   .shell,
-  .stats {
-    width: calc(100% - 20px);
-  }
-
   .site-header {
     top: 8px;
   }
@@ -959,7 +905,6 @@ body.has-scrolled .stats {
     width: 100%;
   }
 
-  .stats,
   .service-grid,
   .steps,
   .faq-list {
