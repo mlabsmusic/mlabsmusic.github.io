@@ -102,6 +102,8 @@ body.is-entered .page-wrap {
 }
 
 .nav {
+  position: relative;
+  isolation: isolate;
   width: min(1160px, calc(100% - 24px));
   margin: 0 auto;
   display: grid;
@@ -177,6 +179,8 @@ body.is-entered .page-wrap {
 .nav-links a,
 .button,
 .nav-toggle {
+  position: relative;
+  z-index: 2;
   min-height: 42px;
   display: inline-flex;
   align-items: center;
@@ -195,7 +199,6 @@ body.is-entered .page-wrap {
 }
 
 .nav-toggle {
-  position: relative;
   justify-self: end;
   width: 46px;
   padding: 0;
@@ -749,10 +752,16 @@ body.is-entered .page-wrap {
 @media (max-width: 980px) {
   .nav {
     grid-template-columns: 1fr auto;
+    overflow: visible;
   }
 
   .nav-toggle {
     display: inline-flex;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, .92), rgba(255, 255, 255, .58)),
+      rgba(255, 255, 255, .48);
+    border-color: rgba(255, 255, 255, .82);
+    box-shadow: inset 0 1px rgba(255, 255, 255, .96), 0 12px 30px rgba(0, 0, 0, .16);
   }
 
   .nav-links {
