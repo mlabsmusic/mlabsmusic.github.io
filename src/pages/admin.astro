@@ -39,11 +39,74 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <section class="admin-panel">
           <div class="admin-panel-head">
             <div>
-              <h2>Apps del usuario</h2>
+              <h2>Datos del usuario</h2>
               <p id="selectedUserLabel">Selecciona un usuario.</p>
             </div>
           </div>
+          <form class="admin-form" id="userForm">
+            <label>
+              Email
+              <input id="userEmail" name="email" type="email" readonly />
+            </label>
+            <label>
+              Nombre visible
+              <input id="userFullName" name="full_name" type="text" placeholder="Nombre, marca o proyecto" />
+            </label>
+            <label>
+              Rol
+              <select id="userRole" name="role">
+                <option value="user">user</option>
+                <option value="admin">admin</option>
+              </select>
+            </label>
+            <button class="button primary" type="submit">Guardar usuario</button>
+          </form>
+
+          <h2 class="admin-subtitle">Apps activadas</h2>
           <div class="admin-list" id="appsList"></div>
+        </section>
+        <section class="admin-panel">
+          <div class="admin-panel-head">
+            <div>
+              <h2>Catalogo de apps</h2>
+              <p>Edita las apps disponibles en el panel privado.</p>
+            </div>
+            <button class="button ghost" id="newAppButton" type="button">Nueva app</button>
+          </div>
+          <div class="admin-list" id="catalogList"></div>
+          <form class="admin-form" id="appForm">
+            <label>
+              Nombre
+              <input id="appName" name="name" type="text" required />
+            </label>
+            <label>
+              Slug
+              <input id="appSlug" name="slug" type="text" required />
+            </label>
+            <div class="admin-form-grid">
+              <label>
+                Categoria
+                <input id="appCategory" name="category" type="text" />
+              </label>
+              <label>
+                Icono
+                <input id="appIcon" name="icon" type="text" maxlength="4" />
+              </label>
+            </div>
+            <label>
+              URL de apertura
+              <input id="appLaunchUrl" name="launch_url" type="text" placeholder="/app/" />
+            </label>
+            <label>
+              Descripcion
+              <textarea id="appDescription" name="description" rows="4"></textarea>
+            </label>
+            <label class="admin-check">
+              <input id="appActive" name="active" type="checkbox" />
+              Visible y disponible
+            </label>
+            <button class="button primary" type="submit">Guardar app</button>
+          </form>
         </section>
       </section>
     </main>
@@ -55,13 +118,37 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     const adminSummary = document.getElementById('adminSummary');
     const usersList = document.getElementById('usersList');
     const appsList = document.getElementById('appsList');
+    const catalogList = document.getElementById('catalogList');
     const selectedUserLabel = document.getElementById('selectedUserLabel');
     const signOutButton = document.getElementById('adminSignOutButton');
+    const userForm = document.getElementById('userForm');
+    const appForm = document.getElementById('appForm');
+    const newAppButton = document.getElementById('newAppButton');
 
     let users = [];
     let apps = [];
     let userApps = [];
     let selectedUserId = '';
+    let selectedAppId = '';
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function setInputValue(id, value) {
+      const input = document.getElementById(id);
+      if (input) input.value = value ?? '';
+    }
+
+    function setChecked(id, checked) {
+      const input = document.getElementById(id);
+      if (input) input.checked = Boolean(checked);
+    }
 
     function setSummary(text) {
       if (adminSummary) adminSummary.textContent = text;
@@ -120,8 +207,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       apps = appsResult.data || [];
       userApps = userAppsResult.data || [];
       selectedUserId = users[0]?.id || '';
+      selectedAppId = apps[0]?.id || '';
       renderUsers();
+      renderUserForm();
       renderApps();
+      renderCatalog();
+      renderAppForm();
     }
 
     function renderUsers() {
@@ -132,8 +223,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       setPanel(usersList, users.map((user) => `
         <button class="admin-user ${user.id === selectedUserId ? 'is-active' : ''}" type="button" data-user-id="${user.id}">
-          <span>${user.email || 'Sin email'}</span>
-          <strong>${user.role}</strong>
+          <span>
+            <strong>${escapeHtml(user.email || 'Sin email')}</strong>
+            <small>${escapeHtml(user.full_name || 'Sin nombre')}</small>
+          </span>
+          <em>${escapeHtml(user.role)}</em>
         </button>
       `).join(''));
 
@@ -141,8 +235,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         button.addEventListener('click', () => {
           selectedUserId = button.dataset.userId || '';
           renderUsers();
+          renderUserForm();
           renderApps();
         });
+      }
+    }
+
+    function renderUserForm() {
+      const selectedUser = users.find((user) => user.id === selectedUserId);
+      if (selectedUserLabel) selectedUserLabel.textContent = selectedUser?.email || 'Selecciona un usuario.';
+
+      setInputValue('userEmail', selectedUser?.email || '');
+      setInputValue('userFullName', selectedUser?.full_name || '');
+      setInputValue('userRole', selectedUser?.role || 'user');
+
+      if (userForm) {
+        for (const field of userForm.querySelectorAll('input, select, button')) {
+          field.disabled = !selectedUser;
+        }
       }
     }
 
@@ -164,8 +274,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         return `
           <label class="admin-app">
             <span>
-              <strong>${app.name}</strong>
-              <small>${app.category || 'App'} · ${app.active ? 'Activa' : 'Oculta'}</small>
+              <strong>${escapeHtml(app.name)}</strong>
+              <small>${escapeHtml(app.category || 'App')} · ${app.active ? 'Activa' : 'Oculta'}</small>
             </span>
             <input type="checkbox" data-app-id="${app.id}" ${checked} />
           </label>
@@ -195,6 +305,121 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         });
       }
     }
+
+    function renderCatalog() {
+      if (!apps.length) {
+        setPanel(catalogList, '<div class="empty-state">No hay apps en el catalogo.</div>');
+        return;
+      }
+
+      setPanel(catalogList, apps.map((app) => `
+        <button class="admin-user ${app.id === selectedAppId ? 'is-active' : ''}" type="button" data-catalog-app-id="${app.id}">
+          <span>
+            <strong>${escapeHtml(app.name)}</strong>
+            <small>${escapeHtml(app.slug)} · ${escapeHtml(app.category || 'App')}</small>
+          </span>
+          <em>${app.active ? 'visible' : 'oculta'}</em>
+        </button>
+      `).join(''));
+
+      for (const button of catalogList?.querySelectorAll('[data-catalog-app-id]') || []) {
+        button.addEventListener('click', () => {
+          selectedAppId = button.dataset.catalogAppId || '';
+          renderCatalog();
+          renderAppForm();
+        });
+      }
+    }
+
+    function renderAppForm() {
+      const selectedApp = apps.find((app) => app.id === selectedAppId);
+      setInputValue('appName', selectedApp?.name || '');
+      setInputValue('appSlug', selectedApp?.slug || '');
+      setInputValue('appCategory', selectedApp?.category || '');
+      setInputValue('appIcon', selectedApp?.icon || '');
+      setInputValue('appLaunchUrl', selectedApp?.launch_url || '');
+      setInputValue('appDescription', selectedApp?.description || '');
+      setChecked('appActive', selectedApp?.active ?? true);
+    }
+
+    userForm?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!supabase || !selectedUserId) return;
+
+      const formData = new FormData(userForm);
+      const fullName = String(formData.get('full_name') || '').trim();
+      const role = String(formData.get('role') || 'user');
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .update({ full_name: fullName, role, updated_at: new Date().toISOString() })
+        .eq('id', selectedUserId)
+        .select('id, email, full_name, role, created_at')
+        .single();
+
+      if (error) {
+        setSummary(`No se pudo guardar el usuario: ${error.message}`);
+        return;
+      }
+
+      users = users.map((user) => user.id === selectedUserId ? data : user);
+      setSummary('Usuario actualizado.');
+      renderUsers();
+      renderUserForm();
+    });
+
+    newAppButton?.addEventListener('click', () => {
+      selectedAppId = '';
+      renderCatalog();
+      renderAppForm();
+      setSummary('Creando nueva app. Completa los datos y guarda.');
+    });
+
+    appForm?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!supabase) return;
+
+      const formData = new FormData(appForm);
+      const payload = {
+        name: String(formData.get('name') || '').trim(),
+        slug: String(formData.get('slug') || '').trim(),
+        category: String(formData.get('category') || '').trim(),
+        icon: String(formData.get('icon') || '').trim(),
+        launch_url: String(formData.get('launch_url') || '').trim(),
+        description: String(formData.get('description') || '').trim(),
+        active: Boolean(formData.get('active')),
+        updated_at: new Date().toISOString(),
+      };
+
+      if (!payload.name || !payload.slug) {
+        setSummary('La app necesita nombre y slug.');
+        return;
+      }
+
+      const query = selectedAppId
+        ? supabase.from('apps').update(payload).eq('id', selectedAppId)
+        : supabase.from('apps').insert(payload);
+
+      const { data, error } = await query
+        .select('id, name, slug, description, icon, category, launch_url, active')
+        .single();
+
+      if (error) {
+        setSummary(`No se pudo guardar la app: ${error.message}`);
+        return;
+      }
+
+      if (selectedAppId) apps = apps.map((app) => app.id === selectedAppId ? data : app);
+      else {
+        apps = [...apps, data].sort((a, b) => a.name.localeCompare(b.name));
+        selectedAppId = data.id;
+      }
+
+      setSummary('App guardada.');
+      renderCatalog();
+      renderAppForm();
+      renderApps();
+    });
 
     signOutButton?.addEventListener('click', async () => {
       await supabase?.auth.signOut();

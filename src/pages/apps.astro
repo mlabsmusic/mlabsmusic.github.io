@@ -86,7 +86,7 @@ import { appCatalog } from '../data/appCatalog';
 
         const { data, error } = await supabase
           .from('user_apps')
-          .select('enabled, apps(id, name, slug, description, icon, category, launch_url, active)')
+          .select('enabled, apps!inner(id, name, slug, description, icon, category, launch_url, active)')
           .eq('user_id', session.user.id)
           .eq('enabled', true)
           .eq('apps.active', true)
