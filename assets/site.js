@@ -71,7 +71,13 @@
 
   const contactModal = document.getElementById('contactModal') || document.getElementById('reserveModal');
   for (const trigger of document.querySelectorAll('[data-contact-modal], #reserveDemoBtn')) {
-    trigger.addEventListener('click', () => openModal(contactModal));
+    trigger.addEventListener('click', () => {
+      const leadNeed = document.getElementById('leadNeed');
+      if (leadNeed && trigger.dataset.pack) {
+        leadNeed.value = trigger.dataset.pack;
+      }
+      openModal(contactModal);
+    });
   }
 
   for (const modal of document.querySelectorAll('.modal-backdrop')) {

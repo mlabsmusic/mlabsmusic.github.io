@@ -1,2 +1,7 @@
 .DS_Store
 assets/video/videoplayback.webm
+node_modules/
+dist/
+.astro/
+.env
+.env.local

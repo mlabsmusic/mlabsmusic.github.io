@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Iniciar sesion | MLabs Music"
+  description="Accede a tu cuenta de MLabs Music para ver las apps activadas."
+  canonicalPath="/login"
+  bodyClass="app-body"
+>
+  <div class="page-wrap">
+    <header class="site-header">
+      <nav class="nav" aria-label="Principal">
+        <a class="brand" href="/">MLABS MUSIC</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links" id="primaryMenu">
+          <a href="/">Inicio</a>
+          <a class="is-auth-hidden" href="/apps" data-auth-link="apps">Apps</a>
+          <a class="is-auth-hidden" href="/admin" data-auth-link="admin">Admin</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="auth-screen">
+      <section class="auth-panel reveal" aria-labelledby="loginTitle">
+        <p class="eyebrow">Cuenta MLabs</p>
+        <h1 id="loginTitle">Inicia sesion para ver tus apps activadas.</h1>
+        <p>Usa tu email y contraseña. Si todavia no tienes cuenta, puedes crearla desde aqui y el administrador activara tus apps.</p>
+
+        <form class="auth-form" id="authForm">
+          <label>
+            Email
+            <input id="email" name="email" type="email" autocomplete="email" required />
+          </label>
+          <label>
+            Contraseña
+            <input id="password" name="password" type="password" autocomplete="current-password" minlength="6" required />
+          </label>
+          <div class="auth-actions">
+            <button class="button primary" type="submit" data-auth-action="signin">Iniciar sesion</button>
+            <button class="button ghost" type="submit" data-auth-action="signup">Crear cuenta</button>
+          </div>
+          <p class="auth-message" id="authMessage" role="status"></p>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    import { supabase, isSupabaseConfigured } from '../lib/supabase';
+
+    const form = document.getElementById('authForm');
+    const message = document.getElementById('authMessage');
+    const nextUrl = new URL(window.location.href).searchParams.get('next') || '/apps';
+
+    function setMessage(text, tone = 'info') {
+      if (!message) return;
+      message.textContent = text;
+      message.dataset.tone = tone;
+    }
+
+    if (!isSupabaseConfigured || !supabase) {
+      setMessage('Faltan PUBLIC_SUPABASE_URL y PUBLIC_SUPABASE_ANON_KEY en el entorno.', 'error');
+    } else {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) window.location.assign(nextUrl);
+    }
+
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const formData = new FormData(form);
+      const email = String(formData.get('email') || '');
+      const password = String(formData.get('password') || '');
+      const submitter = event.submitter;
+      const action = submitter?.dataset?.authAction || 'signin';
+
+      if (!supabase) return;
+      setMessage(action === 'signup' ? 'Creando cuenta...' : 'Iniciando sesion...');
+
+      const result = action === 'signup'
+        ? await supabase.auth.signUp({ email, password })
+        : await supabase.auth.signInWithPassword({ email, password });
+
+      if (result.error) {
+        setMessage(result.error.message, 'error');
+        return;
+      }
+
+      setMessage(action === 'signup' ? 'Cuenta creada. Revisa tu email si Supabase pide confirmacion.' : 'Sesion iniciada.', 'success');
+      window.location.assign(nextUrl);
+    });
+  </script>
+</BaseLayout>

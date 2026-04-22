@@ -1,0 +1,206 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Admin | MLabs Music"
+  description="Administra usuarios y apps activadas en MLabs Music."
+  canonicalPath="/admin"
+  bodyClass="app-body"
+>
+  <div class="page-wrap">
+    <header class="site-header">
+      <nav class="nav" aria-label="Principal">
+        <a class="brand" href="/">MLABS MUSIC</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links" id="primaryMenu">
+          <a href="/">Inicio</a>
+          <a class="is-auth-hidden" href="/apps" data-auth-link="apps">Apps</a>
+          <a class="is-auth-hidden" href="/admin" data-auth-link="admin">Admin</a>
+        </div>
+        <button class="button primary" type="button" id="adminSignOutButton">Cerrar sesion</button>
+      </nav>
+    </header>
+
+    <main class="dashboard-screen">
+      <section class="dashboard-hero shell reveal">
+        <p class="eyebrow">Administracion</p>
+        <h1>Usuarios y apps activadas</h1>
+        <p id="adminSummary">Validando permisos de administrador...</p>
+      </section>
+
+      <section class="shell admin-layout">
+        <aside class="admin-panel">
+          <h2>Usuarios</h2>
+          <div class="admin-list" id="usersList"></div>
+        </aside>
+        <section class="admin-panel">
+          <div class="admin-panel-head">
+            <div>
+              <h2>Apps del usuario</h2>
+              <p id="selectedUserLabel">Selecciona un usuario.</p>
+            </div>
+          </div>
+          <div class="admin-list" id="appsList"></div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    import { supabase, isSupabaseConfigured } from '../lib/supabase';
+
+    const adminSummary = document.getElementById('adminSummary');
+    const usersList = document.getElementById('usersList');
+    const appsList = document.getElementById('appsList');
+    const selectedUserLabel = document.getElementById('selectedUserLabel');
+    const signOutButton = document.getElementById('adminSignOutButton');
+
+    let users = [];
+    let apps = [];
+    let userApps = [];
+    let selectedUserId = '';
+
+    function setSummary(text) {
+      if (adminSummary) adminSummary.textContent = text;
+    }
+
+    function setPanel(node, html) {
+      if (node) node.innerHTML = html;
+    }
+
+    async function requireAdmin() {
+      if (!isSupabaseConfigured || !supabase) {
+        setSummary('Configura Supabase para usar el panel admin.');
+        return null;
+      }
+
+      const { data: sessionData } = await supabase.auth.getSession();
+      const session = sessionData.session;
+      if (!session) {
+        window.location.assign('/login?next=/admin');
+        return null;
+      }
+
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('id, email, role')
+        .eq('id', session.user.id)
+        .single();
+
+      if (error || profile?.role !== 'admin') {
+        setSummary('No tienes permisos de administrador.');
+        setPanel(usersList, '<div class="empty-state">Acceso restringido.</div>');
+        setPanel(appsList, '<div class="empty-state">Solo administradores.</div>');
+        return null;
+      }
+
+      setSummary(`Administrador: ${profile.email || session.user.email}.`);
+      return profile;
+    }
+
+    async function loadAdminData() {
+      const admin = await requireAdmin();
+      if (!admin || !supabase) return;
+
+      const [profilesResult, appsResult, userAppsResult] = await Promise.all([
+        supabase.from('profiles').select('id, email, full_name, role, created_at').order('created_at', { ascending: false }),
+        supabase.from('apps').select('id, name, slug, description, icon, category, active').order('name'),
+        supabase.from('user_apps').select('user_id, app_id, enabled'),
+      ]);
+
+      if (profilesResult.error || appsResult.error || userAppsResult.error) {
+        setSummary('No se pudieron cargar los datos admin. Revisa RLS y permisos.');
+        return;
+      }
+
+      users = profilesResult.data || [];
+      apps = appsResult.data || [];
+      userApps = userAppsResult.data || [];
+      selectedUserId = users[0]?.id || '';
+      renderUsers();
+      renderApps();
+    }
+
+    function renderUsers() {
+      if (!users.length) {
+        setPanel(usersList, '<div class="empty-state">No hay usuarios todavia.</div>');
+        return;
+      }
+
+      setPanel(usersList, users.map((user) => `
+        <button class="admin-user ${user.id === selectedUserId ? 'is-active' : ''}" type="button" data-user-id="${user.id}">
+          <span>${user.email || 'Sin email'}</span>
+          <strong>${user.role}</strong>
+        </button>
+      `).join(''));
+
+      for (const button of usersList?.querySelectorAll('[data-user-id]') || []) {
+        button.addEventListener('click', () => {
+          selectedUserId = button.dataset.userId || '';
+          renderUsers();
+          renderApps();
+        });
+      }
+    }
+
+    function hasApp(userId, appId) {
+      return userApps.some((item) => item.user_id === userId && item.app_id === appId && item.enabled);
+    }
+
+    function renderApps() {
+      const selectedUser = users.find((user) => user.id === selectedUserId);
+      if (selectedUserLabel) selectedUserLabel.textContent = selectedUser?.email || 'Selecciona un usuario.';
+
+      if (!selectedUserId || !apps.length) {
+        setPanel(appsList, '<div class="empty-state">No hay apps para gestionar.</div>');
+        return;
+      }
+
+      setPanel(appsList, apps.map((app) => {
+        const checked = hasApp(selectedUserId, app.id) ? 'checked' : '';
+        return `
+          <label class="admin-app">
+            <span>
+              <strong>${app.name}</strong>
+              <small>${app.category || 'App'} · ${app.active ? 'Activa' : 'Oculta'}</small>
+            </span>
+            <input type="checkbox" data-app-id="${app.id}" ${checked} />
+          </label>
+        `;
+      }).join(''));
+
+      for (const input of appsList?.querySelectorAll('[data-app-id]') || []) {
+        input.addEventListener('change', async () => {
+          if (!supabase || !selectedUserId) return;
+          const appId = input.dataset.appId;
+          const enabled = input.checked;
+
+          const { error } = await supabase
+            .from('user_apps')
+            .upsert({ user_id: selectedUserId, app_id: appId, enabled }, { onConflict: 'user_id,app_id' });
+
+          if (error) {
+            input.checked = !enabled;
+            setSummary(`No se pudo actualizar: ${error.message}`);
+            return;
+          }
+
+          const existing = userApps.find((item) => item.user_id === selectedUserId && item.app_id === appId);
+          if (existing) existing.enabled = enabled;
+          else userApps.push({ user_id: selectedUserId, app_id: appId, enabled });
+          setSummary('Cambios guardados.');
+        });
+      }
+    }
+
+    signOutButton?.addEventListener('click', async () => {
+      await supabase?.auth.signOut();
+      window.location.assign('/login');
+    });
+
+    loadAdminData();
+  </script>
+</BaseLayout>

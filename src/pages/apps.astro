@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { appCatalog } from '../data/appCatalog';
+---
+
+<BaseLayout
+  title="Mis apps | MLabs Music"
+  description="Panel privado de apps activadas en MLabs Music."
+  canonicalPath="/apps"
+  bodyClass="app-body"
+>
+  <div class="page-wrap">
+    <header class="site-header">
+      <nav class="nav" aria-label="Principal">
+        <a class="brand" href="/">MLABS MUSIC</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links" id="primaryMenu">
+          <a href="/">Inicio</a>
+          <a class="is-auth-hidden" href="/apps" data-auth-link="apps">Apps</a>
+          <a class="is-auth-hidden" href="/admin" data-auth-link="admin">Admin</a>
+        </div>
+        <button class="button primary" type="button" id="signOutButton">Cerrar sesion</button>
+      </nav>
+    </header>
+
+    <main class="dashboard-screen">
+      <section class="dashboard-hero shell reveal">
+        <p class="eyebrow">Panel privado</p>
+        <h1>Tus apps activadas</h1>
+        <p id="userSummary">Comprobando sesion...</p>
+      </section>
+
+      <section class="shell dashboard-section">
+        <div class="app-grid" id="appsGrid" aria-live="polite">
+          {appCatalog.map((app) => (
+            <article class="app-card app-card--locked">
+              <span class="app-icon">{app.icon}</span>
+              <span class="tag">{app.category}</span>
+              <h2>{app.name}</h2>
+              <p>{app.description}</p>
+              <span class="app-status">Pendiente de validar</span>
+            </article>
+          ))}
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    import { supabase, isSupabaseConfigured } from '../lib/supabase';
+
+    const userSummary = document.getElementById('userSummary');
+    const appsGrid = document.getElementById('appsGrid');
+    const signOutButton = document.getElementById('signOutButton');
+
+    function renderMessage(text) {
+      if (appsGrid) appsGrid.innerHTML = `<div class="empty-state">${text}</div>`;
+    }
+
+    function appCard(item) {
+      const app = item.apps;
+      const launchUrl = app.launch_url || '#';
+      return `
+        <article class="app-card">
+          <span class="app-icon">${app.icon || app.name.slice(0, 2).toUpperCase()}</span>
+          <span class="tag">${app.category || 'App'}</span>
+          <h2>${app.name}</h2>
+          <p>${app.description || ''}</p>
+          <a class="button primary" href="${launchUrl}">Abrir app</a>
+        </article>
+      `;
+    }
+
+    if (!isSupabaseConfigured || !supabase) {
+      renderMessage('Configura Supabase para cargar las apps activadas.');
+    } else {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const session = sessionData.session;
+
+      if (!session) {
+        window.location.assign('/login?next=/apps');
+      } else {
+        if (userSummary) userSummary.textContent = `Sesion iniciada como ${session.user.email}.`;
+
+        const { data, error } = await supabase
+          .from('user_apps')
+          .select('enabled, apps(id, name, slug, description, icon, category, launch_url, active)')
+          .eq('user_id', session.user.id)
+          .eq('enabled', true)
+          .eq('apps.active', true)
+          .order('created_at', { ascending: true });
+
+        if (error) {
+          renderMessage('No se pudieron cargar tus apps. Revisa las politicas RLS de Supabase.');
+        } else if (!data?.length) {
+          renderMessage('Todavia no tienes apps activadas. Un administrador puede activarlas desde /admin.');
+        } else if (appsGrid) {
+          appsGrid.innerHTML = data.map(appCard).join('');
+        }
+      }
+    }
+
+    signOutButton?.addEventListener('click', async () => {
+      await supabase?.auth.signOut();
+      window.location.assign('/login');
+    });
+  </script>
+</BaseLayout>

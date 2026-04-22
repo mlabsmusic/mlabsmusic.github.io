@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import homeHtml from '../../index.html?raw';
+
+const bodyInner = homeHtml
+  .match(/<body[^>]*>([\s\S]*)<\/body>/)?.[1]
+  ?.replace(/<script src="assets\/site\.js[^"]*"><\/script>/, '') ?? '';
+---
+
+<BaseLayout
+  title="MLabs Music | Webs y apps para DJs, artistas y proyectos de sonido"
+  description="MLabs Music crea webs, apps y herramientas digitales para DJs, artistas, productores y empresas de sonido emergentes que necesitan crecer con presencia profesional."
+  canonicalPath="/"
+>
+  <Fragment set:html={bodyInner} />
+</BaseLayout>
