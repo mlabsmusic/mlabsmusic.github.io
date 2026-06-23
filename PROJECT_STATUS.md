@@ -26,6 +26,7 @@ Vision actual:
 - Workspace tipo Git musical en `/workspace`
 - Login en `/login`
 - Panel owner en `/admin`
+- Hidratacion cloud del workspace cuando el agente local ya ha subido snapshots
 
 ### Datos reales del Drive
 
@@ -53,6 +54,18 @@ Existe un agente local funcional base:
 - crea snapshots en Supabase
 - crea change sets y cambios detectados
 - soporta modo watch
+- recuerda carpeta, email, intervalo y modo dentro de la app macOS
+
+### App macOS
+
+Existe una app macOS nativa funcional:
+
+- carpeta: `macos/FolderAgentApp`
+- bundle generado: `dist/MLABSFolderAgent.app`
+- selecciona carpeta local
+- guarda configuracion basica
+- arranca y detiene el agente
+- muestra estado, log y vista previa local
 
 Scripts disponibles:
 
@@ -109,12 +122,38 @@ La estructura de Supabase ya esta orientada a:
 - cambios individuales
 - flujo de revision
 
+Ya validado extremo a extremo:
+
+- merge `working -> published` en biblioteca personal
+- PR musical a `0_MASTER LIBRARY`
+- aprobacion owner desde `/admin`
+- merge owner que publica snapshot real en master
+- lectura de snapshots cloud en `/workspace`
+
 Pendiente de endurecer y terminar:
 
-- merge real `working -> published`
-- PR musical hacia master
-- aprobacion owner conectada extremo a extremo
+- convertir la publicacion a master en una experiencia mas editorial y menos tecnica
+- mostrar mejor la actividad master en la web publica
 - mejor lectura del Drive o estrategia de ingestion alternativa
+- instalacion mas pulida del agente/app macOS
+
+## Validacion operativa hecha hoy
+
+Se valido el flujo completo con el perfil `TEST`:
+
+- login web real
+- sync del agente desde carpeta local de prueba
+- snapshots en Supabase
+- change sets en la libreria personal
+- PR musical hacia master
+- merge owner desde `/admin`
+- publicacion real en `0_MASTER LIBRARY`
+
+Resultado confirmado:
+
+- `0_MASTER LIBRARY` tiene snapshot publicado real
+- archivo validado en master: `Latin/Promos/afterhours-tool.aac`
+- bundle macOS funcional en `dist/MLABSFolderAgent.app`
 
 ## Comandos utiles
 
@@ -138,11 +177,11 @@ npm run drive:sync
 
 ## Rama de trabajo
 
-- rama actual: `codex/drive-sync-recordpool`
+- revisar rama actual antes de commit con `git branch --show-current`
 
 ## Siguiente objetivo recomendado
 
-1. cerrar el flujo completo del workspace con Supabase
-2. permitir aprobar o rechazar PRs musicales desde `/admin`
+1. mejorar la UX del owner review y la visibilidad del master
+2. mostrar actividad master y ultimos merges en la web
 3. definir ingestion real de canciones desde Drive o desde carpeta local
-4. conectar perfil DJ con su biblioteca cloud real
+4. preparar commit, push y demo externa

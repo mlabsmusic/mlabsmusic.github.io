@@ -37,7 +37,7 @@ import {
           <div class="recordpool-sidebar-top">
             <p class="eyebrow">Google Drive recordpool</p>
             <h1>Biblioteca navegable</h1>
-            <p class="recordpool-copy">Un espacio pensado para navegar la música con calma, abrir carpetas hijas y preparar descargas sin perderte por el camino.</p>
+            <p class="recordpool-copy">Una forma mucho más cómoda de recorrer el pool, bajar por cada carpeta y preparar descargas con criterio.</p>
             <div class="recordpool-profile-meta">
               <span>{recordpoolSource.name}</span>
               <span>Sync {recordpoolSource.syncedAt}</span>
@@ -91,7 +91,7 @@ import {
             <p class="recordpool-sidebar-title">Descargador</p>
             <div class="recordpool-source-card">
               <strong id="recordpoolDownloadCount">0 tracks seleccionados</strong>
-              <small>Cuando haya canciones visibles podrás seleccionarlas aquí por tema o por carpeta.</small>
+              <small>Ve sumando música a tu selección y prepara una descarga limpia, sin perder el hilo de la sesión.</small>
               <div class="recordpool-source-actions">
                 <button class="recordpool-row-button" id="recordpoolClearSelection" type="button">Vaciar</button>
                 <button class="recordpool-row-button is-primary" id="recordpoolDownloadSelection" type="button">Descargar seleccion</button>
@@ -109,8 +109,8 @@ import {
             </div>
 
             <div class="recordpool-toolbar-center">
-              <strong id="recordpoolNowPlaying">Selecciona una canción para escucharla, revisarla y decidir si quieres descargarla.</strong>
-              <p class="recordpool-toolbar-subcopy">Todo gira alrededor de tu selección actual: eliges una ruta, ves sus temas y escuchas el que te interese.</p>
+              <strong id="recordpoolNowPlaying">Elige una ruta, revisa el contenido y quédate solo con la música que te interesa de verdad.</strong>
+              <p class="recordpool-toolbar-subcopy">La vista está pensada para escuchar, revisar y descargar sin salir del flujo.</p>
             </div>
 
             <div class="recordpool-toolbar-right">
@@ -122,7 +122,7 @@ import {
               <div class="recordpool-player-surface-copy">
                 <p class="eyebrow">Preview activo</p>
                 <h2 id="recordpoolPreviewTitle">Sin track seleccionado</h2>
-                <p id="recordpoolPreviewMeta" class="recordpool-player-meta">En este momento el Drive solo nos deja ver la estructura. Cuando haya canciones visibles, aquí aparecerá su preview.</p>
+                <p id="recordpoolPreviewMeta" class="recordpool-player-meta">Aquí se concentra la escucha de la sesión: cuando el contenido esté disponible, el preview aparecerá listo para decidir rápido.</p>
               </div>
               <div class="recordpool-player-controls">
                 <div class="recordpool-drive-frame-wrap">
@@ -140,14 +140,14 @@ import {
             <div>
               <p class="eyebrow">Explorador</p>
               <h2>Carpetas, ramas y canciones</h2>
-              <p class="recordpool-copy">Empiezas por una carpeta principal y bajas por sus subcarpetas hasta llegar a la música que realmente quieres escuchar o bajar.</p>
+              <p class="recordpool-copy">Explora el pool desde su estructura real y llega rápido a la carpeta, crate o selección que encaja con tu momento.</p>
             </div>
           </header>
 
           <section class="recordpool-browser-panel">
             <div class="recordpool-browser-head">
               <div id="recordpoolBreadcrumbs" class="recordpool-breadcrumbs" aria-label="Ruta de carpetas"></div>
-              <p id="recordpoolBrowserMeta" class="recordpool-browser-meta">Explora carpetas y subcarpetas del recordpool.</p>
+              <p id="recordpoolBrowserMeta" class="recordpool-browser-meta">Muévete por el árbol del pool sin perder contexto.</p>
             </div>
             <div id="recordpoolFolderBrowser" class="recordpool-folder-browser"></div>
           </section>
@@ -205,13 +205,13 @@ import {
                 ))}
                 {!recordpoolTracks.length && (
                   <tr class="workspace-file-placeholder">
-                    <td colspan="7">Ahora mismo el Drive visible no devuelve canciones. La estructura sí está sincronizada y lista para mostrarlas cuando aparezcan.</td>
+                    <td colspan="7">La estructura ya está preparada. En cuanto esta ruta tenga música visible, aparecerá aquí con la misma organización del pool.</td>
                   </tr>
                 )}
               </tbody>
             </table>
             <div id="recordpoolTableEmpty" class="recordpool-table-empty" hidden>
-              Esta ruta todavía no tiene canciones visibles. Si tiene carpetas hijas, sigue bajando por ellas para comprobarlo.
+              Esta ruta todavía no muestra canciones. Si tiene carpetas hijas, sigue bajando hasta encontrar el punto exacto donde quieres trabajar.
             </div>
           </div>
         </section>

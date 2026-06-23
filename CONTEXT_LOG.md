@@ -16,8 +16,11 @@ Este archivo guarda contexto operativo para retomar el trabajo rapido en futuras
   - Franjdeejay
 - Se anadio un workspace que representa la idea de Git musical.
 - Se implemento un agente local base que escanea librerias y sube snapshots a Supabase.
+- Se creo una app macOS nativa para controlar carpeta local y lanzar el agente.
 - Se limpio el discurso de la UI para que no suene a texto generado ni a demo falsa.
 - Se arreglo el hero de video de la home con `webm`, `mp4` y `poster`.
+- Se conecto el workspace a snapshots cloud reales cuando el agente ya ha sincronizado.
+- Se valido el flujo `DJ -> PR musical -> owner -> 0_MASTER LIBRARY`.
 
 ### Estructura visible confirmada del Drive
 
@@ -59,10 +62,9 @@ Subcarpetas de requests visibles:
 
 #### Prioridad alta
 
-- conectar el login y las bibliotecas reales de Supabase con el workspace
-- hacer merge real de snapshots `working -> published`
-- conectar `2_MASTER REQUESTS` al panel owner
-- permitir aprobar y rechazar PRs musicales desde la web
+- mejorar la UX final del owner review
+- hacer visible la actividad master dentro del producto
+- pulir la instalacion y el onboarding de la app macOS
 
 #### Prioridad media
 
@@ -87,6 +89,8 @@ Subcarpetas de requests visibles:
 - `src/pages/djs/[slug].astro`
 - `app/build-drive-snapshot.mjs`
 - `app/music-agent.mjs`
+- `macos/FolderAgentApp/Sources/MLABSFolderAgent/Services/AgentStore.swift`
+- `src/pages/admin.astro`
 
 ### Notas operativas
 
@@ -100,5 +104,6 @@ Subcarpetas de requests visibles:
 2. `npm install`
 3. `npm run dev -- --host 127.0.0.1 --port 4321`
 4. `npm run build`
-5. revisar `/`, `/djs`, `/recordpool`, `/workspace`
-6. seguir con merge real y PR musical owner
+5. revisar `/`, `/djs`, `/recordpool`, `/workspace`, `/admin`
+6. comprobar `0_MASTER LIBRARY` en Supabase
+7. seguir con UX, master activity y deployment

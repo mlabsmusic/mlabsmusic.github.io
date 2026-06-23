@@ -36,10 +36,10 @@ import {
       <section class="shell workspace-hero reveal">
         <div class="workspace-hero-copy">
           <p class="eyebrow">Tu espacio de trabajo</p>
-          <h1>Tu libreria local entra primero. La web compara, versiona y revisa.</h1>
+          <h1>Tu librería no solo se guarda: aquí se ordena, se cuida y se prepara para crecer.</h1>
           <p>
-            Este espacio está pensado para que puedas revisar tu música con calma: conectar una carpeta, ver qué ha cambiado
-            y decidir qué se queda para ti y qué acaba formando parte del pool.
+            Este espacio reúne lo que un DJ necesita para trabajar con criterio: leer su carpeta local, detectar cambios,
+            guardar versiones y decidir qué material se queda privado y qué pasa al pool.
           </p>
         </div>
         <div class="workspace-metric-row">
@@ -71,7 +71,7 @@ import {
               <div class="workspace-panel-head">
                 <div>
                   <p class="workspace-kicker">Carpeta local</p>
-                  <h3>Tu fuente de trabajo</h3>
+                  <h3>Donde empieza tu colección</h3>
                 </div>
                 <label class="workspace-connect-button">
                   <input id="localFolderInput" type="file" webkitdirectory directory multiple />
@@ -79,7 +79,7 @@ import {
                 </label>
               </div>
               <p class="workspace-sidebar-copy">
-                Lee una carpeta real de tu ordenador, compara cambios y prepara lo que quieres guardar o compartir.
+                Conecta tu librería tal y como la trabajas a diario y conviértela en una base mucho más fácil de revisar y evolucionar.
               </p>
               <div class="workspace-source-status">
                 <span id="workspaceSourceName">Sin carpeta conectada</span>
@@ -91,12 +91,12 @@ import {
               <div class="workspace-panel-head">
                 <div>
                   <p class="workspace-kicker">Estado cloud</p>
-                  <h3>Sesion y biblioteca</h3>
+                  <h3>Tu espacio guardado</h3>
                 </div>
                 <span class="workspace-badge" id="workspaceCloudBadge">Modo local</span>
               </div>
               <p class="workspace-sidebar-copy" id="workspaceCloudCopy">
-                Inicia sesión para que el historial y los cambios queden guardados dentro de tu biblioteca personal.
+                Inicia sesión para guardar tu historial, mantener tu biblioteca viva y seguir tu trabajo desde cualquier momento.
               </p>
               <div class="workspace-source-status">
                 <span id="workspaceCloudUser">Sin sesion iniciada</span>
@@ -110,7 +110,7 @@ import {
               <div class="workspace-panel-head">
                 <div>
                   <p class="workspace-kicker">Cambios recientes</p>
-                  <h3>Qué ha cambiado en tu biblioteca</h3>
+                  <h3>Lo que se ha movido en tu librería</h3>
                 </div>
                 <span class="workspace-badge" id="workspaceDiffSummary">0 cambios</span>
               </div>
@@ -135,7 +135,7 @@ import {
               <div class="workspace-panel-head">
                 <div>
                   <p class="workspace-kicker">Cambios compartidos</p>
-                  <h3>Solicitudes y revisiones</h3>
+                  <h3>Lo que sube a revisión</h3>
                 </div>
                 <span class="workspace-badge" id="workspacePrCount">0 activas</span>
               </div>
@@ -157,7 +157,7 @@ import {
               <div class="workspace-panel-head">
                 <div>
                   <p class="workspace-kicker">Como funciona</p>
-                  <h3>Tu biblioteca, bien controlada</h3>
+                  <h3>Un flujo pensado para trabajar mejor</h3>
                 </div>
               </div>
               <div class="workspace-flow-grid">
@@ -175,7 +175,7 @@ import {
               <div class="workspace-panel-head">
                 <div>
                   <p class="workspace-kicker">Lectura local</p>
-                  <h3>Archivos detectados</h3>
+                  <h3>Vista rápida de tu carpeta</h3>
                 </div>
                 <span class="workspace-badge" id="workspaceFileSummary">0 archivos</span>
               </div>
@@ -202,7 +202,7 @@ import {
               <div class="workspace-panel-head">
                 <div>
                   <p class="workspace-kicker">Historial</p>
-                  <h3>Estados guardados</h3>
+                  <h3>Versiones que merece conservar</h3>
                 </div>
                 <span class="workspace-badge" id="workspaceSnapshotCount">0 guardados</span>
               </div>
@@ -287,6 +287,7 @@ import {
     let currentProfile = null;
     let currentLibrary = null;
     let currentWorkingSnapshotId = '';
+    let hasLocalSelection = false;
 
     function readStoredSnapshot() {
       try {
@@ -374,11 +375,11 @@ import {
       return changes;
     }
 
-    function renderFiles(snapshot) {
+    function renderFiles(snapshot, emptyMessage = 'Conecta una carpeta para ver aquí los archivos detectados.') {
       if (!fileTableBody || !fileSummary) return;
 
       if (!snapshot.length) {
-        fileTableBody.innerHTML = '<tr class="workspace-file-placeholder"><td colspan="4">Conecta una carpeta para ver aquí los archivos detectados.</td></tr>';
+        fileTableBody.innerHTML = `<tr class="workspace-file-placeholder"><td colspan="4">${emptyMessage}</td></tr>`;
         fileSummary.textContent = '0 archivos';
         return;
       }
@@ -388,7 +389,7 @@ import {
         <tr>
           <td data-label="Path">${file.path}</td>
           <td data-label="Tamano">${formatBytes(file.size)}</td>
-          <td data-label="Modificado">${formatDate(file.lastModified)}</td>
+          <td data-label="Modificado">${formatDate(file.lastModified || file.modifiedAt)}</td>
           <td data-label="Firma">${file.signature}</td>
         </tr>
       `).join('');
@@ -417,6 +418,50 @@ import {
           <span>${change.type}</span>
         </label>
       `).join('');
+    }
+
+    function mapCloudChange(change) {
+      return {
+        id: change.id,
+        type: change.change_type,
+        title: change.entity_key || change.after_json?.name || change.before_json?.name || 'Track',
+        detail:
+          change.after_json?.path
+          || change.before_json?.path
+          || change.after_json?.detail
+          || change.before_json?.detail
+          || 'Cambio recibido desde el agente local.',
+        before_json: change.before_json || null,
+        after_json: change.after_json || null,
+      };
+    }
+
+    function hydrateWorkspaceFromCloud(latestSnapshot, latestCloudChanges = []) {
+      if (!latestSnapshot) return;
+
+      currentSnapshot = latestSnapshot.snapshot_json || [];
+      currentWorkingSnapshotId = latestSnapshot.id || currentWorkingSnapshotId;
+
+      if (sourceName) {
+        sourceName.textContent = latestSnapshot.root_path
+          ? latestSnapshot.root_path.split('/').filter(Boolean).at(-1) || latestSnapshot.root_path
+          : latestSnapshot.label || 'Snapshot cloud';
+      }
+
+      if (sourceMeta) {
+        sourceMeta.textContent = `${latestSnapshot.file_count || currentSnapshot.length} archivos cargados desde el último sync del agente.`;
+      }
+
+      renderFiles(
+        currentSnapshot,
+        'Aún no hay archivos subidos por el agente cloud para esta librería.',
+      );
+
+      if (latestCloudChanges.length) {
+        renderChanges(latestCloudChanges.map(mapCloudChange));
+      } else {
+        renderChanges([]);
+      }
     }
 
     function renderCloudChangeSets(changeSets) {
@@ -547,7 +592,7 @@ import {
       const [snapshotResult, changeSetResult] = await Promise.all([
         supabase
           .from('library_snapshots')
-          .select('id, label, source_kind, root_path, file_count, total_bytes, created_at')
+          .select('id, label, source_kind, root_path, file_count, total_bytes, created_at, snapshot_json')
           .eq('library_id', currentLibrary.id)
           .order('created_at', { ascending: false })
           .limit(6),
@@ -559,8 +604,28 @@ import {
           .limit(6),
       ]);
 
-      renderCloudSnapshots(snapshotResult.data || []);
-      renderCloudChangeSets(changeSetResult.data || []);
+      const snapshots = snapshotResult.data || [];
+      const changeSets = changeSetResult.data || [];
+
+      renderCloudSnapshots(snapshots);
+      renderCloudChangeSets(changeSets);
+
+      const latestOpenChangeSet = changeSets.find((item) => item.status === 'open' || item.status === 'draft') || null;
+      let latestChanges = [];
+
+      if (latestOpenChangeSet) {
+        const changeDetailResult = await supabase
+          .from('library_changes')
+          .select('id, change_type, entity_key, before_json, after_json, selected_for_master, created_at')
+          .eq('change_set_id', latestOpenChangeSet.id)
+          .order('created_at', { ascending: true });
+
+        latestChanges = changeDetailResult.data || [];
+      }
+
+      if (!hasLocalSelection && snapshots.length) {
+        hydrateWorkspaceFromCloud(snapshots[0], latestChanges);
+      }
     }
 
     function refreshFromSnapshot(snapshot) {
@@ -572,6 +637,7 @@ import {
     }
 
     input?.addEventListener('change', (event) => {
+      hasLocalSelection = true;
       const files = Array.from(event.target.files || []);
       const snapshot = createSnapshot(files);
       const root = snapshot[0]?.path?.split('/')?.[0] || 'Libreria local';
@@ -719,8 +785,8 @@ import {
         entity_type: 'track',
         change_type: change.type,
         entity_key: change.title,
-        before_json: change.type === 'added' ? null : { detail: change.detail },
-        after_json: change.type === 'removed' ? null : { detail: change.detail },
+        before_json: change.type === 'added' ? null : (change.before_json || { detail: change.detail }),
+        after_json: change.type === 'removed' ? null : (change.after_json || { detail: change.detail }),
         selected_for_master: true,
       }));
 

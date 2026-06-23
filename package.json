@@ -8,6 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "drive:sync": "node app/build-drive-snapshot.mjs",
+    "agent:dist": "node app/build-music-agent-dist.mjs",
     "agent:scan": "node app/music-agent.mjs",
     "agent:watch": "node app/music-agent.mjs --watch",
     "cap:sync": "npm run build && npx cap sync",

@@ -97,6 +97,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     let reviewHistory = [];
     let currentPrId = '';
     let currentPrChanges = [];
+    let masterSnapshotFiles = [];
 
     function setSummary(text) {
       if (ownerSummary) ownerSummary.textContent = text;
@@ -175,9 +176,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       `).join('');
 
       for (const button of pendingPrList.querySelectorAll('[data-pr-id]')) {
-        button.addEventListener('click', () => {
+        button.addEventListener('click', async () => {
           currentPrId = button.dataset.prId || '';
           renderPendingPrs();
+          await loadCurrentPrChanges();
           renderCurrentPr();
         });
       }
@@ -284,20 +286,67 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       reviewHistory = rows.filter((row) => row.status !== 'open').slice(0, 8);
       currentPrId = pendingPrs[0]?.id || '';
 
-      if (currentPrId) {
-        const { data: changes } = await supabase
-          .from('library_changes')
-          .select('id, entity_key, change_type, before_json, after_json, selected_for_master')
-          .eq('change_set_id', currentPrId)
-          .order('created_at', { ascending: true });
-        currentPrChanges = changes || [];
+      if (masterLibrary?.current_published_snapshot_id) {
+        const { data: masterSnapshot } = await supabase
+          .from('library_snapshots')
+          .select('snapshot_json')
+          .eq('id', masterLibrary.current_published_snapshot_id)
+          .single();
+        masterSnapshotFiles = Array.isArray(masterSnapshot?.snapshot_json) ? masterSnapshot.snapshot_json : [];
       } else {
-        currentPrChanges = [];
+        masterSnapshotFiles = [];
       }
+
+      await loadCurrentPrChanges();
 
       renderPendingPrs();
       renderCurrentPr();
       renderHistory();
+    }
+
+    async function loadCurrentPrChanges() {
+      if (!currentPrId || !supabase) {
+        currentPrChanges = [];
+        return;
+      }
+
+      const { data: changes } = await supabase
+        .from('library_changes')
+        .select('id, entity_key, change_type, before_json, after_json, selected_for_master')
+        .eq('change_set_id', currentPrId)
+        .order('created_at', { ascending: true });
+
+      currentPrChanges = changes || [];
+    }
+
+    function buildMasterSnapshot(previousSnapshot, changes) {
+      const fileMap = new Map(
+        (Array.isArray(previousSnapshot) ? previousSnapshot : [])
+          .filter((item) => item?.path)
+          .map((item) => [item.path, item]),
+      );
+
+      for (const change of changes) {
+        const nextFile = change.after_json;
+        const prevFile = change.before_json;
+        const filePath = nextFile?.path || prevFile?.path;
+        if (!filePath) continue;
+
+        if (change.change_type === 'removed') {
+          fileMap.delete(filePath);
+          continue;
+        }
+
+        if (change.change_type === 'added' || change.change_type === 'updated') {
+          fileMap.set(filePath, nextFile);
+        }
+      }
+
+      return Array.from(fileMap.values()).sort((a, b) => String(a.path).localeCompare(String(b.path)));
+    }
+
+    function totalBytes(snapshot) {
+      return (snapshot || []).reduce((sum, item) => sum + Number(item?.size || 0), 0);
     }
 
     async function approveCurrentPr(status) {
@@ -307,20 +356,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const notes = ownerReviewNotes?.value?.trim() || '';
 
       if (status === 'merged') {
+        const mergedSnapshotFiles = buildMasterSnapshot(masterSnapshotFiles, currentPrChanges);
         const masterSnapshotPayload = {
           library_id: masterLibrary.id,
           created_by: ownerProfile.id,
           label: `Master merge · ${currentPr.title}`,
           source_kind: 'browser_demo',
           root_path: '0_MASTER LIBRARY',
-          file_count: currentPrChanges.length,
-          total_bytes: 0,
+          file_count: mergedSnapshotFiles.length,
+          total_bytes: totalBytes(mergedSnapshotFiles),
           based_on_snapshot_id: masterLibrary.current_published_snapshot_id || null,
-          snapshot_json: currentPrChanges.map((change) => ({
-            entity_key: change.entity_key,
-            change_type: change.change_type,
-            detail: change.after_json?.detail || change.before_json?.detail || '',
-          })),
+          snapshot_json: mergedSnapshotFiles,
         };
 
         const snapshotInsert = await supabase
@@ -351,6 +397,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         }
 
         masterLibrary = libraryUpdate.data;
+        masterSnapshotFiles = mergedSnapshotFiles;
       }
 
       const updateResult = await supabase

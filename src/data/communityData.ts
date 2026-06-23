@@ -11,52 +11,52 @@ export const platformStats = [
 export const libraryBlueprint = [
   {
     title: 'Portfolio',
-    description: 'Foto, bio, ciudad, estilos y una pequeña presentación para que cualquiera entienda rápido quién es ese DJ.',
+    description: 'Cada perfil presenta al DJ con imagen, ciudad, identidad musical y una entrada clara a su universo sonoro.',
   },
   {
     title: 'Carpetas y subcarpetas',
-    description: 'Cada DJ entra a sus carpetas principales, baja por sus subcarpetas y encuentra la música ya ordenada de una forma clara.',
+    description: 'La librería conserva el orden real del DJ, pero lo muestra de una forma mucho más cómoda para explorar, seleccionar y volver rápido a lo importante.',
   },
   {
     title: 'Catalogo',
-    description: 'Además del Drive, la app ofrece una vista cómoda para buscar por BPM, tonalidad, tipo de edit y descargas.',
+    description: 'La vista catálogo convierte una carpeta de música en una herramienta útil para pinchar: filtros, contexto, selección y acceso rápido.',
   },
   {
     title: 'Comunidad',
-    description: 'Cada tema puede quedarse privado o compartirse con la comunidad, sin perder el orden de la biblioteca personal.',
+    description: 'Cada DJ mantiene su espacio y, al mismo tiempo, puede aportar valor al pool común cuando decide compartir música.',
   },
 ];
 
 export const drivePlan = [
   {
     title: 'Drive como origen',
-    body: 'La música sigue guardada en Google Drive. La web la organiza para que navegarla, escucharla y descargarla sea mucho más fácil.',
+    body: 'Tu música sigue donde ya trabajas. MLABS la convierte en una experiencia mucho más ágil para revisar, buscar y moverte por ella.',
   },
   {
     title: 'Todo bien organizado',
-    body: 'Perfiles, favoritos, datos de los tracks y actividad del pool se guardan aparte para que todo esté mejor ordenado y sea más útil.',
+    body: 'Perfiles, estados, favoritos y actividad del pool aportan orden y contexto sin obligarte a cambiar tu forma de trabajar.',
   },
   {
     title: 'Perfil + biblioteca',
-    body: 'Cada DJ tiene su perfil y su propia biblioteca. Entras, ves quién es, qué estilo mueve y después recorres su música.',
+    body: 'Cada DJ tiene presencia propia dentro de la plataforma: entras en su perfil, entiendes su línea y accedes a su librería desde el mismo sitio.',
   },
 ];
 
 export const djProfiles = driveDjProfiles.map((profile) => ({
     ...profile,
     summary:
-      `Perfil de ${profile.name} dentro de la comunidad. Su carpeta ya está creada en Drive y servirá como base para organizar su biblioteca personal.`,
+      `${profile.name} ya tiene su espacio dentro de la comunidad, listo para crecer con sets, carpetas, favoritos y música compartida.`,
     mission:
-      'La idea es que este perfil muestre tanto la identidad del DJ como la entrada a su biblioteca real, respetando la estructura que tenga en Drive.',
+      'Este perfil está pensado para unir imagen, criterio musical y acceso directo a una librería trabajada con orden y personalidad.',
     ownerRoots: [profile.folderId],
     highlights: [
-      'Carpeta real ya visible dentro de 1_DJ LIBRARIES',
-      'Preparado para enseñar subcarpetas y música en cuanto Drive devuelva contenido',
-      'Buen punto de partida para una biblioteca bien cuidada dentro de la comunidad',
+      'Espacio propio dentro del pool compartido',
+      'Base lista para organizar promos, edits y favoritos',
+      'Perfil preparado para enseñar identidad y librería en una sola vista',
     ],
     portfolio: [
-      { label: 'Estado', value: 'Carpeta creada' },
-      { label: 'Enfoque', value: 'Biblioteca personal + comunidad' },
+      { label: 'Estado', value: 'Perfil activo' },
+      { label: 'Enfoque', value: 'Colección propia + pool' },
       { label: 'Formato', value: 'Perfil + librería' },
     ],
   }));
