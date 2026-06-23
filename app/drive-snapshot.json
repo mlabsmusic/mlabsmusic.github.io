@@ -1,0 +1,124 @@
+{
+  "root": {
+    "id": "1fCdj8YdV_3ITHPu633tmjw4gFSSxmn0S",
+    "name": "MLABSMUSIC.COM",
+    "url": "https://drive.google.com/drive/folders/1fCdj8YdV_3ITHPu633tmjw4gFSSxmn0S?usp=sharing",
+    "syncedAt": "2026-06-23"
+  },
+  "folders": [
+    {
+      "id": "14X03RGymrOOKwGqk-3ZSDoDLS9oaubDK",
+      "name": "0_MASTER LIBRARY",
+      "parentId": null,
+      "description": "Biblioteca principal compartida"
+    },
+    {
+      "id": "1kn641vlNAeFSVwrFryb6fS38SLtF-fnI",
+      "name": "1_DJ LIBRARIES",
+      "parentId": null,
+      "description": "Bibliotecas privadas por DJ"
+    },
+    {
+      "id": "1kYnU3Bw5GS0QpSg2Fsmfm7hilecFrA_9",
+      "name": "2_MASTER REQUESTS",
+      "parentId": null,
+      "description": "Solicitudes para entrar en master"
+    },
+    {
+      "id": "1Kkjj7aGDV3C8RRyUw5aGMPCGo_4WyjgX",
+      "name": "3_WEB ASSETS",
+      "parentId": null,
+      "description": "Assets y materiales de la web"
+    },
+    {
+      "id": "1ATSnpkQ7DZiInCe9T5TuFwBsm-65UGrQ",
+      "name": "MARQUES EDITION",
+      "parentId": "1kn641vlNAeFSVwrFryb6fS38SLtF-fnI",
+      "description": "Espacio musical de Marques Edition"
+    },
+    {
+      "id": "1Dd2ZLlokFtoN-cRVe7WS87GAmNyb7NoM",
+      "name": "DJ FESST",
+      "parentId": "1kn641vlNAeFSVwrFryb6fS38SLtF-fnI",
+      "description": "Espacio musical de DJ Fesst"
+    },
+    {
+      "id": "1wo9wCMVnNE9ap8H5cu_G286gmeoT4hws",
+      "name": "DJ NICO",
+      "parentId": "1kn641vlNAeFSVwrFryb6fS38SLtF-fnI",
+      "description": "Espacio musical de DJ Nico"
+    },
+    {
+      "id": "1P3kgIZQ0aNT1Sk0CYBWqzMUGjJQj4DIR",
+      "name": "ARZOMUSIC",
+      "parentId": "1kn641vlNAeFSVwrFryb6fS38SLtF-fnI",
+      "description": "Espacio musical de ArzoMusic"
+    },
+    {
+      "id": "15u4i7J5aI_kQkdJcfcgCVYNtB8IF8_ib",
+      "name": "FRANJDEEJAY",
+      "parentId": "1kn641vlNAeFSVwrFryb6fS38SLtF-fnI",
+      "description": "Espacio musical de Franjdeejay"
+    },
+    {
+      "id": "1pz0L1X1_jHvOlbyVS9_VsZMbt_Tjyl5v",
+      "name": "PENDING",
+      "parentId": "1kYnU3Bw5GS0QpSg2Fsmfm7hilecFrA_9",
+      "description": "Solicitudes pendientes"
+    },
+    {
+      "id": "1GsDpWg2l5vLssvnf-bfRRdrT7e8TEnCM",
+      "name": "APPROVED",
+      "parentId": "1kYnU3Bw5GS0QpSg2Fsmfm7hilecFrA_9",
+      "description": "Solicitudes aprobadas"
+    },
+    {
+      "id": "1VWyqbSEe4bPnbJPzavlZ-abbQ43wRKrh",
+      "name": "REJECTED",
+      "parentId": "1kYnU3Bw5GS0QpSg2Fsmfm7hilecFrA_9",
+      "description": "Solicitudes rechazadas"
+    }
+  ],
+  "profiles": [
+    {
+      "slug": "marques-edition",
+      "name": "Marques Edition",
+      "city": "Madrid",
+      "genres": ["Afro House", "Reggaeton", "Latin Urban"],
+      "heroImage": "/assets/community-marques-edition.jpg",
+      "folderId": "1ATSnpkQ7DZiInCe9T5TuFwBsm-65UGrQ"
+    },
+    {
+      "slug": "dj-fesst",
+      "name": "DJ Fesst",
+      "city": "Barcelona",
+      "genres": ["Reggaeton", "House", "Open Format"],
+      "heroImage": "/assets/community-dj-fesst.jpg",
+      "folderId": "1Dd2ZLlokFtoN-cRVe7WS87GAmNyb7NoM"
+    },
+    {
+      "slug": "dj-nicolas",
+      "name": "DJ Nico",
+      "city": "Valencia",
+      "genres": ["Afro House", "Latin House", "Warm Up"],
+      "heroImage": "/assets/community-dj-nicolas.jpg",
+      "folderId": "1wo9wCMVnNE9ap8H5cu_G286gmeoT4hws"
+    },
+    {
+      "slug": "arzomusic",
+      "name": "ArzoMusic",
+      "city": "Madrid",
+      "genres": ["Open Format", "Latin Club", "Main Room"],
+      "heroImage": "/assets/community-arzomusic.jpg",
+      "folderId": "1P3kgIZQ0aNT1Sk0CYBWqzMUGjJQj4DIR"
+    },
+    {
+      "slug": "franjdeejay",
+      "name": "Franjdeejay",
+      "city": "Madrid",
+      "genres": ["Open Format", "Latin Club", "Night Energy"],
+      "heroImage": "/assets/community-franjdeejay.jpg",
+      "folderId": "15u4i7J5aI_kQkdJcfcgCVYNtB8IF8_ib"
+    }
+  ]
+}

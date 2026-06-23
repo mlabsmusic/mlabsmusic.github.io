@@ -1,0 +1,555 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import {
+  recordpoolFolders,
+  recordpoolFolderTree,
+  recordpoolSource,
+  recordpoolTracks,
+} from '../data/recordpoolData';
+---
+
+<BaseLayout
+  title="Recordpool | MLabs Recordpool"
+  description="Explorador del recordpool para navegar carpetas, escuchar previews y descargar canciones desde Google Drive con una interfaz pensada para DJs."
+  canonicalPath="/recordpool"
+  bodyClass="app-body recordpool-body"
+>
+  <div class="page-wrap">
+    <header class="site-header">
+      <nav class="nav" aria-label="Principal">
+        <a class="brand" href="/">MLABS RECORDPOOL</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links" id="primaryMenu">
+          <a href="/">Inicio</a>
+          <a href="/djs">DJs</a>
+          <a href="/workspace">Workspace</a>
+          <a class="is-auth-hidden" href="/admin" data-auth-link="admin">Owner Review</a>
+        </div>
+        <a class="button primary" href="/workspace">Abrir workspace</a>
+      </nav>
+    </header>
+
+    <main class="recordpool-screen">
+      <section class="shell recordpool-app-shell reveal">
+        <aside class="recordpool-sidebar">
+          <div class="recordpool-sidebar-top">
+            <p class="eyebrow">Google Drive recordpool</p>
+            <h1>Biblioteca navegable</h1>
+            <p class="recordpool-copy">Un espacio pensado para navegar la música con calma, abrir carpetas hijas y preparar descargas sin perderte por el camino.</p>
+            <div class="recordpool-profile-meta">
+              <span>{recordpoolSource.name}</span>
+              <span>Sync {recordpoolSource.syncedAt}</span>
+            </div>
+          </div>
+
+          <label class="recordpool-sidebar-search">
+            <span>Buscar</span>
+            <input id="recordpoolSearch" class="recordpool-search" type="search" placeholder="Track, artista, BPM o carpeta..." />
+          </label>
+
+          <div class="recordpool-sidebar-group">
+            <p class="recordpool-sidebar-title">Vista</p>
+            <div class="recordpool-filter-pills">
+              <button class="recordpool-filter-pill is-active" type="button" data-library-filter="all">Todo</button>
+              <button class="recordpool-filter-pill" type="button" data-library-filter="mapped">Mapeadas</button>
+              <button class="recordpool-filter-pill" type="button" data-library-filter="pending">Pendientes</button>
+            </div>
+          </div>
+
+          <div class="recordpool-sidebar-group">
+            <div class="recordpool-sidebar-group-head">
+              <p class="recordpool-sidebar-title">Arbol del record pool</p>
+              <button class="recordpool-sidebar-ghost" type="button" id="recordpoolSelectVisible">Seleccionar visibles</button>
+            </div>
+
+            <button class="recordpool-sidebar-root is-active" type="button" data-folder-filter="">
+              <span>Root</span>
+              <small>{recordpoolTracks.length} tracks</small>
+            </button>
+
+            <div class="recordpool-tree">
+              {recordpoolFolderTree.map((folder) => (
+                <button
+                  class="recordpool-tree-item"
+                  type="button"
+                  data-folder-filter={folder.id}
+                  style={`--folder-depth:${folder.depth};`}
+                >
+                  <span class="recordpool-tree-item-main">
+                    <strong>{folder.name}</strong>
+                    <small>{folder.vibe}</small>
+                  </span>
+                  <span class="recordpool-tree-item-count">{folder.trackCount}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div class="recordpool-sidebar-group">
+            <p class="recordpool-sidebar-title">Descargador</p>
+            <div class="recordpool-source-card">
+              <strong id="recordpoolDownloadCount">0 tracks seleccionados</strong>
+              <small>Cuando haya canciones visibles podrás seleccionarlas aquí por tema o por carpeta.</small>
+              <div class="recordpool-source-actions">
+                <button class="recordpool-row-button" id="recordpoolClearSelection" type="button">Vaciar</button>
+                <button class="recordpool-row-button is-primary" id="recordpoolDownloadSelection" type="button">Descargar seleccion</button>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <section class="recordpool-library">
+          <div class="recordpool-toolbar">
+            <div class="recordpool-transport">
+              <button type="button" class="recordpool-icon-button" id="recordpoolPrev" aria-label="Anterior">|&lt;</button>
+              <button type="button" class="recordpool-icon-button" id="recordpoolToggle" aria-label="Cargar preview">▷</button>
+              <button type="button" class="recordpool-icon-button" id="recordpoolNext" aria-label="Siguiente">&gt;|</button>
+            </div>
+
+            <div class="recordpool-toolbar-center">
+              <strong id="recordpoolNowPlaying">Selecciona una canción para escucharla, revisarla y decidir si quieres descargarla.</strong>
+              <p class="recordpool-toolbar-subcopy">Todo gira alrededor de tu selección actual: eliges una ruta, ves sus temas y escuchas el que te interese.</p>
+            </div>
+
+            <div class="recordpool-toolbar-right">
+              <span class="recordpool-toolbar-pill">{recordpoolTracks.length} canciones</span>
+              <span class="recordpool-toolbar-pill">{recordpoolFolders.filter((folder) => folder.parentId === null).length} fuentes</span>
+            </div>
+
+            <section class="recordpool-player-surface">
+              <div class="recordpool-player-surface-copy">
+                <p class="eyebrow">Preview activo</p>
+                <h2 id="recordpoolPreviewTitle">Sin track seleccionado</h2>
+                <p id="recordpoolPreviewMeta" class="recordpool-player-meta">En este momento el Drive solo nos deja ver la estructura. Cuando haya canciones visibles, aquí aparecerá su preview.</p>
+              </div>
+              <div class="recordpool-player-controls">
+                <div class="recordpool-drive-frame-wrap">
+                  <iframe id="recordpoolPreviewFrame" title="Preview del recordpool" src="" allow="autoplay"></iframe>
+                </div>
+                <div class="recordpool-player-actions">
+                  <a id="recordpoolOpenCurrent" class="recordpool-row-button" href="#" target="_blank" rel="noreferrer" aria-disabled="true">Abrir en Drive</a>
+                  <button id="recordpoolAddCurrent" class="recordpool-row-button" type="button">Añadir a descarga</button>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <header class="recordpool-library-head">
+            <div>
+              <p class="eyebrow">Explorador</p>
+              <h2>Carpetas, ramas y canciones</h2>
+              <p class="recordpool-copy">Empiezas por una carpeta principal y bajas por sus subcarpetas hasta llegar a la música que realmente quieres escuchar o bajar.</p>
+            </div>
+          </header>
+
+          <section class="recordpool-browser-panel">
+            <div class="recordpool-browser-head">
+              <div id="recordpoolBreadcrumbs" class="recordpool-breadcrumbs" aria-label="Ruta de carpetas"></div>
+              <p id="recordpoolBrowserMeta" class="recordpool-browser-meta">Explora carpetas y subcarpetas del recordpool.</p>
+            </div>
+            <div id="recordpoolFolderBrowser" class="recordpool-folder-browser"></div>
+          </section>
+
+          <div class="recordpool-table-wrap">
+            <table class="recordpool-table">
+              <thead>
+                <tr>
+                  <th>Titulo</th>
+                  <th>Artista</th>
+                  <th>Carpeta</th>
+                  <th>BPM</th>
+                  <th>Key</th>
+                  <th>Tipo</th>
+                  <th>Descarga</th>
+                </tr>
+              </thead>
+              <tbody id="recordpoolTableBody">
+                {recordpoolTracks.map((track, index) => (
+                  <tr
+                    data-index={index}
+                    data-folder-id={track.folderId}
+                    data-status={track.status === 'Mapeado' ? 'mapped' : 'pending'}
+                    data-search={`${track.title} ${track.artist} ${track.folderPath} ${track.bpm} ${track.key} ${track.type} ${track.status}`.toLowerCase()}
+                  >
+                    <td>
+                      <button
+                        class="recordpool-track-trigger"
+                        type="button"
+                        data-track-index={index}
+                        data-preview-src={track.previewUrl}
+                        data-open-src={track.openUrl}
+                        data-track-label={`${track.artist} - ${track.title}`}
+                        data-track-playlist={track.folderPath}
+                        data-track-bpm={track.bpm || '—'}
+                        data-track-key={track.key || '—'}
+                        data-track-type={track.type}
+                      >
+                        {track.title}
+                      </button>
+                    </td>
+                    <td>{track.artist}</td>
+                    <td>{track.folderPath}</td>
+                    <td>{track.bpm || '—'}</td>
+                    <td>{track.key || '—'}</td>
+                    <td>{track.type}</td>
+                    <td>
+                      <div class="recordpool-actions">
+                        <button class="recordpool-row-button" type="button" data-preview-track={index}>Preview</button>
+                        <button class="recordpool-row-button" type="button" data-select-track={index}>Añadir</button>
+                        <a class="recordpool-row-button is-primary" href={track.downloadUrl} download>Descargar</a>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+                {!recordpoolTracks.length && (
+                  <tr class="workspace-file-placeholder">
+                    <td colspan="7">Ahora mismo el Drive visible no devuelve canciones. La estructura sí está sincronizada y lista para mostrarlas cuando aparezcan.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+            <div id="recordpoolTableEmpty" class="recordpool-table-empty" hidden>
+              Esta ruta todavía no tiene canciones visibles. Si tiene carpetas hijas, sigue bajando por ellas para comprobarlo.
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script id="recordpoolFolderData" type="application/json" set:html={JSON.stringify(recordpoolFolders)}></script>
+
+  <script>
+    import { supabase, isSupabaseConfigured } from '../lib/supabase';
+
+    const searchInput = document.getElementById('recordpoolSearch');
+    const rows = Array.from(document.querySelectorAll('#recordpoolTableBody tr'));
+    const nowPlaying = document.getElementById('recordpoolNowPlaying');
+    const previewFrame = document.getElementById('recordpoolPreviewFrame');
+    const playButtons = Array.from(document.querySelectorAll('.recordpool-track-trigger'));
+    const previewButtons = Array.from(document.querySelectorAll('[data-preview-track]'));
+    const toggleButton = document.getElementById('recordpoolToggle');
+    const prevButton = document.getElementById('recordpoolPrev');
+    const nextButton = document.getElementById('recordpoolNext');
+    const previewTitle = document.getElementById('recordpoolPreviewTitle');
+    const previewMeta = document.getElementById('recordpoolPreviewMeta');
+    const libraryFilters = Array.from(document.querySelectorAll('[data-library-filter]'));
+    const folderFilters = Array.from(document.querySelectorAll('[data-folder-filter]'));
+    const trackSelectButtons = Array.from(document.querySelectorAll('[data-select-track]'));
+    const addCurrentButton = document.getElementById('recordpoolAddCurrent');
+    const selectVisibleButton = document.getElementById('recordpoolSelectVisible');
+    const clearSelectionButton = document.getElementById('recordpoolClearSelection');
+    const downloadSelectionButton = document.getElementById('recordpoolDownloadSelection');
+    const downloadCount = document.getElementById('recordpoolDownloadCount');
+    const folderBrowser = document.getElementById('recordpoolFolderBrowser');
+    const breadcrumbs = document.getElementById('recordpoolBreadcrumbs');
+    const browserMeta = document.getElementById('recordpoolBrowserMeta');
+    const tableEmpty = document.getElementById('recordpoolTableEmpty');
+    const openCurrentButton = document.getElementById('recordpoolOpenCurrent');
+    const folderData = JSON.parse(document.getElementById('recordpoolFolderData')?.textContent || '[]');
+    let selectedStatus = 'all';
+    let selectedFolderIds = [];
+    let currentTrackIndex = -1;
+    let currentFolderId = '';
+    const selectedDownloads = new Set();
+
+    function getFolder(folderId) {
+      return folderData.find((item) => item.id === folderId) || null;
+    }
+
+    function getFolderChildren(parentId) {
+      return folderData.filter((item) => (item.parentId || null) === (parentId || null));
+    }
+
+    function getFolderDescendantIdsClient(folderId) {
+      if (!folderId) return [];
+      const branch = [folderId];
+      const walk = (parentId) => {
+        for (const folder of folderData.filter((item) => item.parentId === parentId)) {
+          branch.push(folder.id);
+          walk(folder.id);
+        }
+      };
+      walk(folderId);
+      return branch;
+    }
+
+    function getFolderLineage(folderId) {
+      const lineage = [];
+      let current = getFolder(folderId);
+      while (current) {
+        lineage.unshift(current);
+        current = current.parentId ? getFolder(current.parentId) : null;
+      }
+      return lineage;
+    }
+
+    function visibleRows() {
+      return rows.filter((row) => row.style.display !== 'none');
+    }
+
+    function syncTransportState() {
+      if (!toggleButton) return;
+      toggleButton.textContent = currentTrackIndex >= 0 ? '↻' : '▷';
+    }
+
+    function syncSelectionUi() {
+      if (downloadCount) {
+        downloadCount.textContent = `${selectedDownloads.size} track${selectedDownloads.size === 1 ? '' : 's'} seleccionados`;
+      }
+
+      for (const button of trackSelectButtons) {
+        const index = Number(button.dataset.selectTrack || '-1');
+        const active = selectedDownloads.has(index);
+        button.textContent = active ? 'Añadido' : 'Añadir';
+        button.classList.toggle('is-selected', active);
+      }
+    }
+
+    function addTrackToDownloads(index) {
+      if (index < 0) return;
+      selectedDownloads.add(index);
+      syncSelectionUi();
+    }
+
+    function addFolderToDownloads(folderId) {
+      const branchIds = new Set(getFolderDescendantIdsClient(folderId));
+      for (const row of rows) {
+        if (branchIds.has(row.dataset.folderId || '')) selectedDownloads.add(Number(row.dataset.index || '-1'));
+      }
+      syncSelectionUi();
+    }
+
+    function loadTrack(index) {
+      const row = rows.find((item) => Number(item.dataset.index) === index);
+      if (!row) return;
+      const button = row.querySelector('[data-preview-src]');
+      if (!(button instanceof HTMLElement)) return;
+      const src = button.dataset.previewSrc || '';
+      const openSrc = button.dataset.openSrc || '';
+      const label = button.dataset.trackLabel || 'Reproduciendo track';
+      const playlist = button.dataset.trackPlaylist || '';
+      const bpm = button.dataset.trackBpm || '—';
+      const key = button.dataset.trackKey || '—';
+      const type = button.dataset.trackType || '';
+      if (!(previewFrame instanceof HTMLIFrameElement) || !src) return;
+
+      currentTrackIndex = index;
+      previewFrame.src = src;
+      if (nowPlaying) nowPlaying.textContent = label;
+      if (previewTitle) previewTitle.textContent = button.textContent?.trim() || label;
+      if (previewMeta) previewMeta.textContent = `${playlist} · BPM ${bpm} · Key ${key} · ${type} · Usa los controles de Drive dentro del player`;
+      if (openCurrentButton instanceof HTMLAnchorElement) {
+        openCurrentButton.href = openSrc || '#';
+        openCurrentButton.setAttribute('aria-disabled', openSrc ? 'false' : 'true');
+      }
+      for (const item of rows) item.classList.toggle('is-current', Number(item.dataset.index) === index);
+      syncTransportState();
+    }
+
+    function applyFilters() {
+      const term = searchInput instanceof HTMLInputElement ? searchInput.value.trim().toLowerCase() : '';
+      for (const row of rows) {
+        const haystack = row.dataset.search || '';
+        const matchesSearch = !term || haystack.includes(term);
+        const matchesStatus = selectedStatus === 'all' || row.dataset.status === selectedStatus;
+        const matchesFolder = !currentFolderId || row.dataset.folderId === currentFolderId;
+        row.style.display = matchesSearch && matchesStatus && matchesFolder ? '' : 'none';
+      }
+
+      if (tableEmpty) {
+        tableEmpty.hidden = visibleRows().length > 0;
+      }
+    }
+
+    function renderFolderBrowser() {
+      const lineage = currentFolderId ? getFolderLineage(currentFolderId) : [];
+      const cards = getFolderChildren(currentFolderId || null);
+
+      if (breadcrumbs) {
+        const parts = [
+          `<button type="button" class="recordpool-crumb ${currentFolderId ? '' : 'is-active'}" data-crumb-root="true">Root</button>`,
+          ...lineage.map((folder, index) => `<button type="button" class="recordpool-crumb ${index === lineage.length - 1 ? 'is-active' : ''}" data-crumb-id="${folder.id}">${folder.name}</button>`),
+        ];
+        breadcrumbs.innerHTML = parts.join('<span>/</span>');
+      }
+
+      if (browserMeta) {
+        const current = getFolder(currentFolderId);
+        browserMeta.textContent = current
+          ? `${current.name} · ${cards.length} carpetas hijas · ${current.trackCount} tracks en esta rama`
+          : `Root · ${cards.length} fuentes principales del recordpool`;
+      }
+
+      if (folderBrowser) {
+        if (!cards.length) {
+          folderBrowser.innerHTML = '<div class="recordpool-browser-empty">Esta carpeta no tiene más niveles visibles ahora mismo. Cuando el contenido aparezca en Drive, se reflejará aquí.</div>';
+        } else {
+          folderBrowser.innerHTML = cards.map((folder) => `
+            <article class="recordpool-folder-browser-card">
+              <button type="button" class="recordpool-folder-browser-hit" data-browser-folder="${folder.id}">
+                <strong>${folder.name}</strong>
+                <small>${folder.vibe || ''}</small>
+              </button>
+              <div class="recordpool-folder-browser-card-footer">
+                <span>${folder.trackCount} tracks</span>
+                <button type="button" class="recordpool-row-button" data-add-folder-browser="${folder.id}">Añadir carpeta</button>
+              </div>
+            </article>
+          `).join('');
+        }
+      }
+
+      for (const button of breadcrumbs?.querySelectorAll('[data-crumb-root], [data-crumb-id]') || []) {
+        button.addEventListener('click', () => {
+          const folderId = button.getAttribute('data-crumb-id') || '';
+          currentFolderId = folderId;
+          selectedFolderIds = folderId ? getFolderDescendantIdsClient(folderId) : [];
+          for (const item of folderFilters) item.classList.toggle('is-active', item.dataset.folderFilter === folderId);
+          const rootButton = document.querySelector('[data-folder-filter=""]');
+          rootButton?.classList.toggle('is-active', !folderId);
+          renderFolderBrowser();
+          applyFilters();
+        });
+      }
+
+      for (const button of folderBrowser?.querySelectorAll('[data-browser-folder]') || []) {
+        button.addEventListener('click', () => {
+          const folderId = button.getAttribute('data-browser-folder') || '';
+          currentFolderId = folderId;
+          selectedFolderIds = getFolderDescendantIdsClient(folderId);
+          for (const item of folderFilters) item.classList.toggle('is-active', item.dataset.folderFilter === folderId);
+          const rootButton = document.querySelector('[data-folder-filter=""]');
+          rootButton?.classList.toggle('is-active', false);
+          renderFolderBrowser();
+          applyFilters();
+        });
+      }
+
+      for (const button of folderBrowser?.querySelectorAll('[data-add-folder-browser]') || []) {
+        button.addEventListener('click', (event) => {
+          event.stopPropagation();
+          addFolderToDownloads(button.getAttribute('data-add-folder-browser') || '');
+        });
+      }
+    }
+
+    if (isSupabaseConfigured && supabase) {
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) {
+        window.location.assign('/login?next=/recordpool');
+      }
+    }
+
+    searchInput?.addEventListener('input', applyFilters);
+
+    for (const button of playButtons) {
+      button.addEventListener('click', () => {
+        loadTrack(Number(button.dataset.trackIndex || '-1'));
+      });
+    }
+
+    for (const button of previewButtons) {
+      button.addEventListener('click', () => {
+        loadTrack(Number(button.dataset.previewTrack || '-1'));
+      });
+    }
+
+    for (const row of rows) {
+      row.addEventListener('click', (event) => {
+        const target = event.target;
+        if (target instanceof HTMLElement && target.closest('a, button')) return;
+        loadTrack(Number(row.dataset.index || '-1'));
+      });
+    }
+
+    for (const button of trackSelectButtons) {
+      button.addEventListener('click', () => {
+        addTrackToDownloads(Number(button.dataset.selectTrack || '-1'));
+      });
+    }
+
+    for (const button of libraryFilters) {
+      button.addEventListener('click', () => {
+        selectedStatus = button.dataset.libraryFilter || 'all';
+        for (const item of libraryFilters) item.classList.toggle('is-active', item === button);
+        applyFilters();
+      });
+    }
+
+    for (const button of folderFilters) {
+      button.addEventListener('click', () => {
+        const folderId = button.dataset.folderFilter || '';
+        currentFolderId = folderId;
+        selectedFolderIds = folderId ? getFolderDescendantIdsClient(folderId) : [];
+        for (const item of folderFilters) item.classList.toggle('is-active', item === button);
+        renderFolderBrowser();
+        applyFilters();
+      });
+    }
+
+    toggleButton?.addEventListener('click', () => {
+      if (currentTrackIndex < 0) {
+        const targetIndex = Number(visibleRows()[0]?.dataset.index || '-1');
+        if (targetIndex >= 0) loadTrack(targetIndex);
+        return;
+      }
+      loadTrack(currentTrackIndex);
+    });
+
+    prevButton?.addEventListener('click', () => {
+      const list = visibleRows();
+      if (!list.length) return;
+      const currentPos = list.findIndex((row) => Number(row.dataset.index) === currentTrackIndex);
+      const nextRow = list[currentPos > 0 ? currentPos - 1 : 0];
+      loadTrack(Number(nextRow.dataset.index || '-1'));
+    });
+
+    nextButton?.addEventListener('click', () => {
+      const list = visibleRows();
+      if (!list.length) return;
+      const currentPos = list.findIndex((row) => Number(row.dataset.index) === currentTrackIndex);
+      const nextRow = list[currentPos >= 0 && currentPos < list.length - 1 ? currentPos + 1 : 0];
+      loadTrack(Number(nextRow.dataset.index || '-1'));
+    });
+
+    addCurrentButton?.addEventListener('click', () => {
+      if (currentTrackIndex >= 0) addTrackToDownloads(currentTrackIndex);
+    });
+
+    selectVisibleButton?.addEventListener('click', () => {
+      for (const row of visibleRows()) selectedDownloads.add(Number(row.dataset.index || '-1'));
+      syncSelectionUi();
+    });
+
+    clearSelectionButton?.addEventListener('click', () => {
+      selectedDownloads.clear();
+      syncSelectionUi();
+    });
+
+    downloadSelectionButton?.addEventListener('click', () => {
+      if (!selectedDownloads.size) return;
+      const indexes = Array.from(selectedDownloads.values());
+      indexes.forEach((index, position) => {
+        const row = rows.find((item) => Number(item.dataset.index) === index);
+        const link = row?.querySelector('a[download]');
+        if (!(link instanceof HTMLAnchorElement)) return;
+        window.setTimeout(() => {
+          const anchor = document.createElement('a');
+          anchor.href = link.href;
+          anchor.download = '';
+          anchor.rel = 'noreferrer';
+          document.body.append(anchor);
+          anchor.click();
+          anchor.remove();
+        }, position * 350);
+      });
+    });
+
+    syncSelectionUi();
+    syncTransportState();
+    renderFolderBrowser();
+  </script>
+</BaseLayout>

@@ -3,21 +3,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
-  title="Iniciar sesion | MLabs Music"
-  description="Accede a tu cuenta de MLabs Music para ver las apps activadas."
+  title="Acceso privado | MLabs Recordpool"
+  description="Accede al recordpool comunitario para entrar a tu biblioteca, ver la comunidad y gestionar tu música."
   canonicalPath="/login"
   bodyClass="app-body"
 >
   <div class="page-wrap">
     <header class="site-header">
       <nav class="nav" aria-label="Principal">
-        <a class="brand" href="/">MLABS MUSIC</a>
+        <a class="brand" href="/">MLABS RECORDPOOL</a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" aria-label="Abrir menu">
           <span></span><span></span><span></span>
         </button>
         <div class="nav-links" id="primaryMenu">
           <a href="/">Inicio</a>
-          <a class="is-auth-hidden" href="/apps" data-auth-link="apps">Apps</a>
+          <a href="/djs">DJs</a>
+          <a href="/workspace">Workspace</a>
           <a class="is-auth-hidden" href="/admin" data-auth-link="admin">Admin</a>
         </div>
       </nav>
@@ -25,9 +26,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <main class="auth-screen">
       <section class="auth-panel reveal" aria-labelledby="loginTitle">
-        <p class="eyebrow">Cuenta MLabs</p>
-        <h1 id="loginTitle">Inicia sesion para ver tus apps activadas.</h1>
-        <p>Usa tu email y contraseña. Si todavia no tienes cuenta, puedes crearla desde aqui y el administrador activara tus apps.</p>
+        <p class="eyebrow">Acceso privado</p>
+        <h1 id="loginTitle">Entra a tu espacio dentro del recordpool.</h1>
+        <p>
+          Usa tu email y contraseña para acceder a tu biblioteca, a la comunidad y a los contenidos privados del pool.
+          Si aún no tienes acceso, puedes dejar tu cuenta creada y te abrimos la puerta en cuanto esté lista.
+        </p>
 
         <form class="auth-form" id="authForm">
           <label>
@@ -53,7 +57,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     const form = document.getElementById('authForm');
     const message = document.getElementById('authMessage');
-    const nextUrl = new URL(window.location.href).searchParams.get('next') || '/apps';
+    const nextUrl = new URL(window.location.href).searchParams.get('next') || '/workspace';
 
     function setMessage(text, tone = 'info') {
       if (!message) return;
@@ -77,7 +81,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const action = submitter?.dataset?.authAction || 'signin';
 
       if (!supabase) return;
-      setMessage(action === 'signup' ? 'Creando cuenta...' : 'Iniciando sesion...');
+      setMessage(action === 'signup' ? 'Creando acceso privado...' : 'Entrando al recordpool...');
 
       const result = action === 'signup'
         ? await supabase.auth.signUp({ email, password })
@@ -88,7 +92,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         return;
       }
 
-      setMessage(action === 'signup' ? 'Cuenta creada. Revisa tu email si Supabase pide confirmacion.' : 'Sesion iniciada.', 'success');
+      setMessage(
+        action === 'signup'
+          ? 'Cuenta creada. Si recibes un correo de confirmación, revísalo y después terminamos de activar tu acceso.'
+          : 'Sesión iniciada. Redirigiendo a tu espacio...',
+        'success',
+      );
       window.location.assign(nextUrl);
     });
   </script>

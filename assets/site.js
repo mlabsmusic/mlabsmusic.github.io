@@ -38,15 +38,33 @@
 
   const revealItems = [...document.querySelectorAll('.reveal')];
   if ('IntersectionObserver' in window) {
+    const revealInView = () => {
+      for (const item of revealItems) {
+        if (item.classList.contains('is-visible')) continue;
+        const bounds = item.getBoundingClientRect();
+        if (bounds.top <= window.innerHeight * 0.92) {
+          item.classList.add('is-visible');
+        }
+      }
+    };
+
+    revealInView();
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
         if (!entry.isIntersecting) continue;
         entry.target.classList.add('is-visible');
         observer.unobserve(entry.target);
       }
-    }, { threshold: 0.12 });
+    }, {
+      threshold: 0.01,
+      rootMargin: '0px 0px -8% 0px',
+    });
 
     for (const item of revealItems) observer.observe(item);
+    window.addEventListener('load', revealInView, { once: true });
+    window.setTimeout(() => {
+      for (const item of revealItems) item.classList.add('is-visible');
+    }, 650);
   } else {
     for (const item of revealItems) item.classList.add('is-visible');
   }

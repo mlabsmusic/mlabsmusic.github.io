@@ -1,0 +1,733 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import {
+  demoPullRequests,
+  demoWorkingChanges,
+  gitMusicFlow,
+  gitMusicMetrics,
+  gitMusicPrinciples,
+  sampleLocalTree,
+} from '../data/gitMusicData';
+---
+
+<BaseLayout
+  title="Git Musical Workspace | MLabs Recordpool"
+  description="Espacio para revisar cambios en tu biblioteca, guardar su estado y decidir qué compartes dentro del recordpool."
+  canonicalPath="/workspace"
+  bodyClass="app-body workspace-body"
+>
+  <div class="page-wrap">
+    <header class="site-header">
+      <nav class="nav" aria-label="Principal">
+        <a class="brand" href="/">MLABS RECORDPOOL</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links" id="primaryMenu">
+          <a href="/">Inicio</a>
+          <a href="/djs">DJs</a>
+          <a href="/recordpool">Recordpool</a>
+          <a href="/workspace">Workspace</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="workspace-screen">
+      <section class="shell workspace-hero reveal">
+        <div class="workspace-hero-copy">
+          <p class="eyebrow">Tu espacio de trabajo</p>
+          <h1>Tu libreria local entra primero. La web compara, versiona y revisa.</h1>
+          <p>
+            Este espacio está pensado para que puedas revisar tu música con calma: conectar una carpeta, ver qué ha cambiado
+            y decidir qué se queda para ti y qué acaba formando parte del pool.
+          </p>
+        </div>
+        <div class="workspace-metric-row">
+          {gitMusicMetrics.map((metric) => (
+            <article class="workspace-metric-card">
+              <strong>{metric.value}</strong>
+              <span>{metric.label}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="shell workspace-shell reveal">
+        <aside class="workspace-sidebar">
+          <div class="workspace-sidebar-block">
+            <p class="workspace-sidebar-title">Principios</p>
+            <div class="workspace-principles">
+              {gitMusicPrinciples.map((item) => (
+                <article class="workspace-principle-card">
+                  <strong>{item.title}</strong>
+                  <p>{item.body}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <div class="workspace-sidebar-block">
+            <div class="workspace-sidebar-head">
+              <p class="workspace-sidebar-title">Carpeta local</p>
+              <label class="workspace-connect-button">
+                <input id="localFolderInput" type="file" webkitdirectory directory multiple />
+                Conectar carpeta
+              </label>
+            </div>
+            <p class="workspace-sidebar-copy">
+              Puedes usar una carpeta real de tu ordenador. La web la lee, la resume y la compara con la última versión guardada.
+            </p>
+            <div class="workspace-source-status">
+              <span id="workspaceSourceName">Sin carpeta conectada</span>
+              <small id="workspaceSourceMeta">Todavia no hay snapshot local.</small>
+            </div>
+          </div>
+
+          <div class="workspace-sidebar-block">
+            <div class="workspace-sidebar-head">
+              <p class="workspace-sidebar-title">Estado cloud</p>
+              <span class="workspace-badge" id="workspaceCloudBadge">Modo local</span>
+            </div>
+            <p class="workspace-sidebar-copy" id="workspaceCloudCopy">
+              Inicia sesión para que el historial y los cambios queden guardados dentro de tu biblioteca personal.
+            </p>
+            <div class="workspace-source-status">
+              <span id="workspaceCloudUser">Sin sesion iniciada</span>
+              <small id="workspaceCloudLibrary">No hay libreria cloud activa.</small>
+            </div>
+          </div>
+
+          <div class="workspace-sidebar-block">
+            <p class="workspace-sidebar-title">Base actual del pool</p>
+            <div class="workspace-tree">
+              {sampleLocalTree.map((node) => (
+                <div class="workspace-tree-root">
+                  <strong>{node.name}</strong>
+                  <ul>
+                    {node.children.map((child) => (
+                      <li>
+                        <span>{child.name}</span>
+                        {child.children && (
+                          <ul>
+                            {child.children.map((leaf) => (
+                              <li>{leaf.name}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </aside>
+
+        <section class="workspace-main">
+          <div class="workspace-toolbar">
+            <div>
+              <p class="workspace-kicker">Workspace actual</p>
+              <h2 id="workspaceTitle">MARQUES EDITION / Biblioteca en curso</h2>
+            </div>
+            <div class="workspace-toolbar-actions">
+              <button class="recordpool-row-button" id="saveSnapshotButton" type="button">Guardar estado</button>
+              <button class="recordpool-row-button" id="mergePublishedButton" type="button">Pasar a estable</button>
+              <button class="recordpool-row-button is-primary" id="stageSelectionButton" type="button">Compartir cambios</button>
+            </div>
+          </div>
+
+          <section class="workspace-grid">
+            <article class="workspace-panel">
+              <div class="workspace-panel-head">
+                <div>
+                  <p class="workspace-kicker">Cambios recientes</p>
+                  <h3>Qué ha cambiado en tu biblioteca</h3>
+                </div>
+                <span class="workspace-badge" id="workspaceDiffSummary">0 cambios</span>
+              </div>
+              <div class="workspace-change-list" id="workspaceChangeList">
+                {demoWorkingChanges.map((change) => (
+                  <label class={`workspace-change-row is-${change.type}`}>
+                    <input type="checkbox" data-change-id={change.id} />
+                    <div>
+                      <strong>{change.title}</strong>
+                      <p>{change.detail}</p>
+                    </div>
+                    <span>{change.type}</span>
+                  </label>
+                ))}
+              </div>
+              <div class="workspace-empty" id="workspaceEmpty" hidden>
+                Todo está al día. No hay cambios pendientes por revisar.
+              </div>
+            </article>
+
+            <article class="workspace-panel">
+              <div class="workspace-panel-head">
+                <div>
+                  <p class="workspace-kicker">Cambios compartidos</p>
+                  <h3>Solicitudes y revisiones</h3>
+                </div>
+                <span class="workspace-badge" id="workspacePrCount">0 activas</span>
+              </div>
+              <div class="workspace-pr-list" id="workspacePrList">
+                {demoPullRequests.map((pr) => (
+                  <article class={`workspace-pr-card is-${pr.status}`}>
+                    <div class="workspace-pr-card-head">
+                      <strong>{pr.title}</strong>
+                      <span>{pr.status}</span>
+                    </div>
+                    <p>{pr.summary}</p>
+                    <small>Destino: {pr.target}</small>
+                  </article>
+                ))}
+              </div>
+            </article>
+
+            <article class="workspace-panel workspace-panel-wide">
+              <div class="workspace-panel-head">
+                <div>
+                  <p class="workspace-kicker">Como funciona</p>
+                  <h3>Tu biblioteca, bien controlada</h3>
+                </div>
+              </div>
+              <div class="workspace-flow-grid">
+                {gitMusicFlow.map((item) => (
+                  <article class="workspace-flow-card">
+                    <span>{item.step}</span>
+                    <strong>{item.title}</strong>
+                    <p>{item.body}</p>
+                  </article>
+                ))}
+              </div>
+            </article>
+
+            <article class="workspace-panel workspace-panel-wide">
+              <div class="workspace-panel-head">
+                <div>
+                  <p class="workspace-kicker">Lectura local</p>
+                  <h3>Archivos detectados</h3>
+                </div>
+                <span class="workspace-badge" id="workspaceFileSummary">0 archivos</span>
+              </div>
+              <div class="workspace-file-table-wrap">
+                <table class="workspace-file-table">
+                  <thead>
+                    <tr>
+                      <th>Path</th>
+                      <th>Tamano</th>
+                      <th>Modificado</th>
+                      <th>Firma</th>
+                    </tr>
+                  </thead>
+                  <tbody id="workspaceFileTableBody">
+                    <tr class="workspace-file-placeholder">
+                      <td colspan="4">Conecta una carpeta para ver aquí los archivos detectados.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+
+            <article class="workspace-panel workspace-panel-wide">
+              <div class="workspace-panel-head">
+                <div>
+                  <p class="workspace-kicker">Historial</p>
+                  <h3>Estados guardados</h3>
+                </div>
+                <span class="workspace-badge" id="workspaceSnapshotCount">0 guardados</span>
+              </div>
+              <div class="workspace-timeline" id="workspaceSnapshotTimeline">
+                <div class="workspace-empty">
+                  Inicia sesión y guarda un primer estado para empezar a crear tu historial.
+                </div>
+              </div>
+            </article>
+          </section>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    import { supabase, isSupabaseConfigured } from '../lib/supabase';
+
+    const input = document.getElementById('localFolderInput');
+    const sourceName = document.getElementById('workspaceSourceName');
+    const sourceMeta = document.getElementById('workspaceSourceMeta');
+    const title = document.getElementById('workspaceTitle');
+    const fileSummary = document.getElementById('workspaceFileSummary');
+    const fileTableBody = document.getElementById('workspaceFileTableBody');
+    const diffSummary = document.getElementById('workspaceDiffSummary');
+    const changeList = document.getElementById('workspaceChangeList');
+    const emptyState = document.getElementById('workspaceEmpty');
+    const saveSnapshotButton = document.getElementById('saveSnapshotButton');
+    const mergePublishedButton = document.getElementById('mergePublishedButton');
+    const stageSelectionButton = document.getElementById('stageSelectionButton');
+    const prList = document.getElementById('workspacePrList');
+    const prCount = document.getElementById('workspacePrCount');
+    const cloudBadge = document.getElementById('workspaceCloudBadge');
+    const cloudCopy = document.getElementById('workspaceCloudCopy');
+    const cloudUser = document.getElementById('workspaceCloudUser');
+    const cloudLibrary = document.getElementById('workspaceCloudLibrary');
+    const snapshotTimeline = document.getElementById('workspaceSnapshotTimeline');
+    const snapshotCount = document.getElementById('workspaceSnapshotCount');
+
+    const STORAGE_KEY = 'mlabs_git_music_snapshot_v1';
+    let currentSnapshot = [];
+    let currentChanges = [];
+    let currentProfile = null;
+    let currentLibrary = null;
+    let currentWorkingSnapshotId = '';
+
+    function readStoredSnapshot() {
+      try {
+        return JSON.parse(window.localStorage.getItem(STORAGE_KEY) || '[]');
+      } catch {
+        return [];
+      }
+    }
+
+    function writeStoredSnapshot(snapshot) {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
+    }
+
+    function totalBytes(snapshot) {
+      return snapshot.reduce((sum, item) => sum + (item.size || 0), 0);
+    }
+
+    function buildSignature(file) {
+      return [file.name, file.size, file.lastModified].join(':');
+    }
+
+    function formatBytes(bytes) {
+      if (!Number.isFinite(bytes)) return '-';
+      if (bytes < 1024) return `${bytes} B`;
+      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+      if (bytes < 1024 * 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+      return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+    }
+
+    function formatDate(value) {
+      return new Date(value).toLocaleString('es-ES', {
+        dateStyle: 'short',
+        timeStyle: 'short',
+      });
+    }
+
+    function createSnapshot(files) {
+      return files.map((file) => ({
+        path: file.webkitRelativePath || file.name,
+        name: file.name,
+        size: file.size,
+        lastModified: file.lastModified,
+        signature: buildSignature(file),
+      })).sort((a, b) => a.path.localeCompare(b.path));
+    }
+
+    function diffSnapshots(previous, next) {
+      const prevMap = new Map(previous.map((item) => [item.path, item]));
+      const nextMap = new Map(next.map((item) => [item.path, item]));
+      const changes = [];
+
+      for (const item of next) {
+        if (!prevMap.has(item.path)) {
+          changes.push({
+            id: `add-${item.path}`,
+            type: 'added',
+            title: item.name,
+            detail: `Nuevo archivo en /${item.path}`,
+          });
+          continue;
+        }
+
+        const previousItem = prevMap.get(item.path);
+        if (previousItem.signature !== item.signature) {
+          changes.push({
+            id: `update-${item.path}`,
+            type: 'updated',
+            title: item.name,
+            detail: `Archivo modificado en /${item.path}`,
+          });
+        }
+      }
+
+      for (const item of previous) {
+        if (!nextMap.has(item.path)) {
+          changes.push({
+            id: `remove-${item.path}`,
+            type: 'removed',
+            title: item.name,
+            detail: `Archivo eliminado de /${item.path}`,
+          });
+        }
+      }
+
+      return changes;
+    }
+
+    function renderFiles(snapshot) {
+      if (!fileTableBody || !fileSummary) return;
+
+      if (!snapshot.length) {
+        fileTableBody.innerHTML = '<tr class="workspace-file-placeholder"><td colspan="4">Conecta una carpeta para ver aquí los archivos detectados.</td></tr>';
+        fileSummary.textContent = '0 archivos';
+        return;
+      }
+
+      fileSummary.textContent = `${snapshot.length} archivos`;
+      fileTableBody.innerHTML = snapshot.slice(0, 80).map((file) => `
+        <tr>
+          <td>${file.path}</td>
+          <td>${formatBytes(file.size)}</td>
+          <td>${formatDate(file.lastModified)}</td>
+          <td>${file.signature}</td>
+        </tr>
+      `).join('');
+    }
+
+    function renderChanges(changes) {
+      currentChanges = changes;
+
+      if (!changeList || !emptyState || !diffSummary) return;
+      if (!changes.length) {
+        changeList.innerHTML = '';
+        emptyState.hidden = false;
+        diffSummary.textContent = 'Sin cambios';
+        return;
+      }
+
+      emptyState.hidden = true;
+      diffSummary.textContent = `${changes.length} cambios`;
+      changeList.innerHTML = changes.map((change) => `
+        <label class="workspace-change-row is-${change.type}">
+          <input type="checkbox" data-change-id="${change.id}" />
+          <div>
+            <strong>${change.title}</strong>
+            <p>${change.detail}</p>
+          </div>
+          <span>${change.type}</span>
+        </label>
+      `).join('');
+    }
+
+    function renderCloudChangeSets(changeSets) {
+      if (!prList || !prCount) return;
+
+      if (!changeSets.length) {
+        prCount.textContent = '0 activas';
+        prList.innerHTML = '<div class="workspace-empty">Todavía no hay solicitudes guardadas. Cuando compartas cambios o envíes música al pool, aparecerá aquí.</div>';
+        return;
+      }
+
+      prCount.textContent = `${changeSets.length} activas`;
+      prList.innerHTML = changeSets.map((pr) => `
+        <article class="workspace-pr-card is-${pr.status === 'open' ? 'review' : pr.status}">
+          <div class="workspace-pr-card-head">
+            <strong>${pr.title}</strong>
+            <span>${pr.status}</span>
+          </div>
+          <p>${pr.description || 'Sin descripcion adicional.'}</p>
+          <small>Destino: ${pr.target_kind === 'master' ? '0_MASTER LIBRARY' : 'Mi libreria'} · ${formatDate(pr.created_at)}</small>
+          ${pr.review_notes ? `<small>Review: ${pr.review_notes}</small>` : ''}
+        </article>
+      `).join('');
+    }
+
+    function renderCloudSnapshots(snapshots) {
+      if (!snapshotTimeline || !snapshotCount) return;
+
+      if (!snapshots.length) {
+        snapshotCount.textContent = '0 guardados';
+        snapshotTimeline.innerHTML = '<div class="workspace-empty">Inicia sesión y guarda un primer estado para empezar a crear tu historial.</div>';
+        return;
+      }
+
+      snapshotCount.textContent = `${snapshots.length} guardados`;
+      snapshotTimeline.innerHTML = snapshots.map((snapshot) => `
+        <article class="workspace-timeline-card">
+          <div class="workspace-timeline-head">
+            <strong>${snapshot.label || 'Snapshot sin nombre'}</strong>
+            <span>${formatDate(snapshot.created_at)}</span>
+          </div>
+          <p>${snapshot.file_count} archivos · ${formatBytes(snapshot.total_bytes)} · origen ${snapshot.source_kind}</p>
+          <small>${snapshot.root_path || 'Ruta no indicada'}</small>
+        </article>
+      `).join('');
+    }
+
+    function updateCloudStatus(mode, copy) {
+      if (cloudBadge) cloudBadge.textContent = mode;
+      if (cloudCopy) cloudCopy.textContent = copy;
+    }
+
+    async function ensureCloudContext() {
+      if (!isSupabaseConfigured || !supabase) {
+        updateCloudStatus('Sin Supabase', 'Faltan variables de entorno para guardar snapshots en cloud.');
+        return false;
+      }
+
+      const { data: sessionData } = await supabase.auth.getSession();
+      const session = sessionData.session;
+
+      if (!session) {
+        updateCloudStatus('Modo local', 'Inicia sesión para que el historial y los cambios queden guardados dentro de tu biblioteca personal.');
+        if (cloudUser) cloudUser.textContent = 'Sin sesion iniciada';
+        if (cloudLibrary) cloudLibrary.textContent = 'No hay libreria cloud activa.';
+        return false;
+      }
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('id, email, display_name, slug')
+        .eq('id', session.user.id)
+        .single();
+
+      currentProfile = profile || null;
+
+      let { data: library } = await supabase
+        .from('libraries')
+        .select('id, name, slug, kind, profile_id, current_working_snapshot_id, current_published_snapshot_id')
+        .eq('profile_id', session.user.id)
+        .eq('kind', 'personal')
+        .maybeSingle();
+
+      if (!library) {
+        const payload = {
+          profile_id: session.user.id,
+          name: `${profile?.display_name || 'DJ'} Library`,
+          slug: `${profile?.slug || session.user.id}-library`,
+          kind: 'personal',
+          is_public: false,
+        };
+
+        const inserted = await supabase
+          .from('libraries')
+          .insert(payload)
+          .select('id, name, slug, kind, profile_id, current_working_snapshot_id, current_published_snapshot_id')
+          .single();
+
+        if (inserted.error) {
+          updateCloudStatus('Error', 'No he podido resolver tu libreria cloud todavia.');
+          if (cloudUser) cloudUser.textContent = profile?.email || session.user.email || 'Usuario conectado';
+          if (cloudLibrary) cloudLibrary.textContent = inserted.error.message;
+          return false;
+        }
+
+        library = inserted.data;
+      }
+
+      currentLibrary = library;
+      currentWorkingSnapshotId = library.current_working_snapshot_id || '';
+      updateCloudStatus('Cloud activo', 'Cada estado que guardes puede quedar disponible para el historial de tu biblioteca.');
+      if (cloudUser) cloudUser.textContent = profile?.display_name || profile?.email || session.user.email || 'Usuario conectado';
+      if (cloudLibrary) cloudLibrary.textContent = `${library.name} · ${library.slug}${library.current_published_snapshot_id ? ' · published activo' : ''}`;
+      return true;
+    }
+
+    async function loadCloudHistory() {
+      const ready = await ensureCloudContext();
+      if (!ready || !currentLibrary || !supabase) {
+        renderCloudSnapshots([]);
+        renderCloudChangeSets([]);
+        return;
+      }
+
+      const [snapshotResult, changeSetResult] = await Promise.all([
+        supabase
+          .from('library_snapshots')
+          .select('id, label, source_kind, root_path, file_count, total_bytes, created_at')
+          .eq('library_id', currentLibrary.id)
+          .order('created_at', { ascending: false })
+          .limit(6),
+        supabase
+          .from('library_change_sets')
+          .select('id, title, description, review_notes, target_kind, status, created_at')
+          .eq('library_id', currentLibrary.id)
+          .order('created_at', { ascending: false })
+          .limit(6),
+      ]);
+
+      renderCloudSnapshots(snapshotResult.data || []);
+      renderCloudChangeSets(changeSetResult.data || []);
+    }
+
+    function refreshFromSnapshot(snapshot) {
+      currentSnapshot = snapshot;
+      const previousSnapshot = readStoredSnapshot();
+      const changes = diffSnapshots(previousSnapshot, snapshot);
+      renderFiles(snapshot);
+      renderChanges(changes);
+    }
+
+    input?.addEventListener('change', (event) => {
+      const files = Array.from(event.target.files || []);
+      const snapshot = createSnapshot(files);
+      const root = snapshot[0]?.path?.split('/')?.[0] || 'Libreria local';
+
+      title.textContent = `${root} / Biblioteca en curso`;
+      sourceName.textContent = root;
+      sourceMeta.textContent = `${snapshot.length} archivos detectados en esta lectura local.`;
+      refreshFromSnapshot(snapshot);
+    });
+
+    saveSnapshotButton?.addEventListener('click', async () => {
+      if (!currentSnapshot.length) {
+        sourceMeta.textContent = 'Primero conecta una carpeta local para poder guardar un estado.';
+        return;
+      }
+
+      writeStoredSnapshot(currentSnapshot);
+      sourceMeta.textContent = `Estado local guardado con ${currentSnapshot.length} archivos.`;
+
+      const ready = await ensureCloudContext();
+      if (ready && currentLibrary && currentProfile && supabase) {
+        const payload = {
+          library_id: currentLibrary.id,
+          created_by: currentProfile.id,
+          label: `${sourceName?.textContent || 'Workspace'} estado`,
+          source_kind: 'browser_demo',
+          root_path: sourceName?.textContent || null,
+          file_count: currentSnapshot.length,
+          total_bytes: totalBytes(currentSnapshot),
+          snapshot_json: currentSnapshot,
+        };
+
+        const insertResult = await supabase.from('library_snapshots').insert(payload).select('id').single();
+
+        if (insertResult.error) {
+          sourceMeta.textContent = `El estado local se guardó, pero la sincronización cloud ha fallado: ${insertResult.error.message}`;
+        } else {
+          currentWorkingSnapshotId = insertResult.data.id;
+          await supabase
+            .from('libraries')
+            .update({
+              current_working_snapshot_id: insertResult.data.id,
+              updated_at: new Date().toISOString(),
+            })
+            .eq('id', currentLibrary.id);
+          sourceMeta.textContent = `Estado local y cloud guardado con ${currentSnapshot.length} archivos.`;
+          await loadCloudHistory();
+        }
+      }
+
+      refreshFromSnapshot(currentSnapshot);
+    });
+
+    mergePublishedButton?.addEventListener('click', async () => {
+      if (!currentSnapshot.length) {
+        sourceMeta.textContent = 'Primero conecta una carpeta local y guarda un estado.';
+        return;
+      }
+
+      const ready = await ensureCloudContext();
+      if (!ready || !currentLibrary || !currentProfile || !supabase) return;
+
+      if (!currentWorkingSnapshotId) {
+        sourceMeta.textContent = 'Guarda primero el estado actual en cloud antes de pasarlo a estable.';
+        return;
+      }
+
+      const changeSetInsert = await supabase
+        .from('library_change_sets')
+        .insert({
+          library_id: currentLibrary.id,
+          created_by: currentProfile.id,
+          reviewed_by: currentProfile.id,
+          title: `Paso a estable · ${new Date().toLocaleDateString('es-ES')}`,
+          description: `${currentChanges.length} cambios aceptados hacia la biblioteca estable.`,
+          review_notes: 'Merge directo desde el workspace del DJ.',
+          target_kind: 'library',
+          status: 'merged',
+          to_snapshot_id: currentWorkingSnapshotId,
+          merged_at: new Date().toISOString(),
+        });
+
+      if (changeSetInsert.error) {
+        sourceMeta.textContent = `No he podido registrar el paso a estable: ${changeSetInsert.error.message}`;
+        return;
+      }
+
+      const libraryUpdate = await supabase
+        .from('libraries')
+        .update({
+          current_published_snapshot_id: currentWorkingSnapshotId,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', currentLibrary.id)
+        .select('id, name, slug, kind, profile_id, current_working_snapshot_id, current_published_snapshot_id')
+        .single();
+
+      if (libraryUpdate.error) {
+        sourceMeta.textContent = `El cambio quedó registrado, pero no pude actualizar la versión estable: ${libraryUpdate.error.message}`;
+        return;
+      }
+
+      currentLibrary = libraryUpdate.data;
+      writeStoredSnapshot(currentSnapshot);
+      sourceMeta.textContent = 'La versión estable ya está actualizada. Todo vuelve a quedar alineado.';
+      refreshFromSnapshot(currentSnapshot);
+      await loadCloudHistory();
+    });
+
+    stageSelectionButton?.addEventListener('click', async () => {
+      const selected = Array.from(document.querySelectorAll('[data-change-id]:checked'));
+      if (!selected.length) {
+        sourceMeta.textContent = 'Marca uno o varios cambios antes de preparar una PR musical.';
+        return;
+      }
+
+      sourceMeta.textContent = `${selected.length} cambios marcados para compartir o revisar.`;
+      const ready = await ensureCloudContext();
+      if (!ready || !currentLibrary || !currentProfile || !supabase) return;
+
+      const changeSetResult = await supabase
+        .from('library_change_sets')
+        .insert({
+          library_id: currentLibrary.id,
+          created_by: currentProfile.id,
+          title: `Cambios preparados · ${new Date().toLocaleDateString('es-ES')}`,
+          description: `${selected.length} cambios preparados para revisión antes de entrar en la biblioteca compartida.`,
+          target_kind: 'master',
+          status: 'open',
+          from_snapshot_id: currentLibrary.current_published_snapshot_id || null,
+          to_snapshot_id: currentWorkingSnapshotId || null,
+        })
+        .select('id')
+        .single();
+
+      if (changeSetResult.error) {
+        sourceMeta.textContent = `No he podido crear la solicitud cloud: ${changeSetResult.error.message}`;
+        return;
+      }
+
+      const selectedIds = new Set(selected.map((item) => item.dataset.changeId));
+      const selectedChanges = currentChanges.filter((change) => selectedIds.has(change.id));
+      const rows = selectedChanges.map((change) => ({
+        change_set_id: changeSetResult.data.id,
+        entity_type: 'track',
+        change_type: change.type,
+        entity_key: change.title,
+        before_json: change.type === 'added' ? null : { detail: change.detail },
+        after_json: change.type === 'removed' ? null : { detail: change.detail },
+        selected_for_master: true,
+      }));
+
+      const { error } = await supabase.from('library_changes').insert(rows);
+      if (error) {
+        sourceMeta.textContent = `He creado la solicitud, pero no pude guardar el detalle de sus cambios: ${error.message}`;
+        return;
+      }
+
+      sourceMeta.textContent = `Solicitud cloud creada con ${selectedChanges.length} cambios.`;
+      await loadCloudHistory();
+    });
+
+    const previousSnapshot = readStoredSnapshot();
+    if (previousSnapshot.length) {
+      sourceMeta.textContent = `Hay un estado guardado con ${previousSnapshot.length} archivos listo para comparar.`;
+    }
+
+    loadCloudHistory();
+  </script>
+</BaseLayout>

@@ -1,8 +1,16 @@
 export const appCatalog = [
   {
+    name: 'Recordpool Mapper',
+    slug: 'recordpool-mapper',
+    description: 'Te ayuda a recorrer la música del recordpool, entender cómo está ordenada y moverte mejor entre carpetas, canciones y descargas.',
+    icon: 'RP',
+    category: 'Recordpool',
+    launch_url: '/recordpool/',
+  },
+  {
     name: 'Folder to iTunes',
     slug: 'folder-to-itunes',
-    description: 'Crea playlists de Apple Music desde carpetas locales y automatiza bibliotecas de trabajo.',
+    description: 'Convierte carpetas bien organizadas en playlists listas para trabajar más rápido en tu biblioteca musical.',
     icon: 'FT',
     category: 'Biblioteca',
     launch_url: '/app/',
@@ -10,7 +18,7 @@ export const appCatalog = [
   {
     name: 'AI Session Generator',
     slug: 'ai-session-generator',
-    description: 'Genera ideas de sesiones, estructuras y propuestas musicales asistidas por IA.',
+    description: 'Sirve como apoyo creativo para pensar sesiones, bloques de energía o ideas de recorrido cuando quieres preparar un set.',
     icon: 'AI',
     category: 'Creatividad',
     launch_url: '#',
@@ -18,7 +26,7 @@ export const appCatalog = [
   {
     name: 'Test Runner',
     slug: 'test-runner',
-    description: 'Verifica flujos, diagnósticos y pruebas de herramientas internas.',
+    description: 'Revisa que ciertas herramientas internas estén funcionando bien antes de usarlas dentro del proyecto.',
     icon: 'TR',
     category: 'QA',
     launch_url: '#',
@@ -26,7 +34,7 @@ export const appCatalog = [
   {
     name: 'Diagnostics',
     slug: 'diagnostics',
-    description: 'Revisa estado técnico, permisos y señales de configuración de MTools.',
+    description: 'Muestra el estado técnico y la configuración general para detectar rápido si algo necesita atención.',
     icon: 'DX',
     category: 'Sistema',
     launch_url: '#',

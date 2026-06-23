@@ -6,11 +6,17 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "drive:sync": "node app/build-drive-snapshot.mjs",
+    "agent:scan": "node app/music-agent.mjs",
+    "agent:watch": "node app/music-agent.mjs --watch"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.1",
     "@supabase/supabase-js": "^2.49.4",
     "astro": "^6.1.8"
+  },
+  "devDependencies": {
+    "playwright": "^1.61.0"
   }
 }

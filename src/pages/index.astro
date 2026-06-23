@@ -1,16 +1,194 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import homeHtml from '../../index.html?raw';
+import { drivePlan, getCommunityProfiles, libraryBlueprint, platformStats } from '../data/communityData';
 
-const bodyInner = homeHtml
-  .match(/<body[^>]*>([\s\S]*)<\/body>/)?.[1]
-  ?.replace(/<script src="assets\/site\.js[^"]*"><\/script>/, '') ?? '';
+const profiles = getCommunityProfiles();
 ---
 
 <BaseLayout
-  title="MLabs Music | Webs y apps para DJs, artistas y proyectos de sonido"
-  description="MLabs Music crea webs, apps y herramientas digitales para DJs, artistas, productores y empresas de sonido emergentes que necesitan crecer con presencia profesional."
+  title="MLabs Recordpool | Comunidad y bibliotecas para DJs"
+  description="Recordpool comunitario para DJs: perfiles públicos, portfolio, bibliotecas personales conectadas a Drive y música compartida dentro de una comunidad."
   canonicalPath="/"
 >
-  <Fragment set:html={bodyInner} />
+  <div class="page-wrap">
+    <header class="site-header">
+      <nav class="nav" aria-label="Principal">
+        <a class="brand" href="/">MLABS RECORDPOOL</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links" id="primaryMenu">
+          <a href="#vision">Vision</a>
+          <a href="/djs">DJs</a>
+          <a href="#estructura">Biblioteca</a>
+          <a href="/workspace">Workspace</a>
+        </div>
+        <a class="button primary" href="/login">Acceso privado</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero recordpool-hero">
+        <video
+          class="hero-video"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="auto"
+          poster="/assets/video/mlabs-hero-poster.jpg"
+          aria-label="Visual del recordpool"
+        >
+          <source src="/assets/video/mlabs-hero-fast.webm" type="video/webm" />
+          <source src="/assets/video/mlabs-hero-fast.mp4" type="video/mp4" />
+        </video>
+        <div class="shell hero-content">
+          <p class="eyebrow">Recordpool comunitario</p>
+          <h1>Perfiles de DJs, bibliotecas propias y música compartida en una sola comunidad.</h1>
+          <p>
+            Aquí cada DJ tiene su perfil, su forma de ordenar la música y su propio espacio dentro del pool.
+            La idea es simple: descubrir quién hay dentro, entrar en su biblioteca y moverse por ella de una forma cómoda y natural.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="/djs">Explorar perfiles</a>
+            <a class="button ghost" href="/workspace">Ver cómo se organiza</a>
+          </div>
+          <div class="recordpool-stat-row">
+            {platformStats.map((stat) => (
+              <article class="recordpool-stat-card">
+                <strong>{stat.value}</strong>
+                <span>{stat.label}</span>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section recordpool-band" id="vision">
+        <div class="shell recordpool-band-grid">
+          {drivePlan.map((item) => (
+            <article class="recordpool-band-card reveal">
+              <span>{item.title}</span>
+              <p>{item.body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="section" id="estructura">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="section-kicker">Estructura</p>
+            <h2>La biblioteca no debería depender solo de carpetas: debe tener vista Drive y vista catálogo.</h2>
+            <p>
+              Cada DJ puede seguir ordenando su música como quiera, pero la web la presenta de una forma mucho más clara:
+              con navegación, búsqueda, información útil y acceso rápido a lo importante.
+            </p>
+          </div>
+
+          <div class="recordpool-blueprint-grid">
+            {libraryBlueprint.map((item) => (
+              <article class="recordpool-blueprint-card reveal">
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section recordpool-community-section">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="section-kicker">Comunidad</p>
+            <h2>Antes de entrar, ya puedes entender quién está dentro y qué tipo de música comparte.</h2>
+            <p>
+              La parte pública sirve para descubrir a cada DJ, ver su identidad y hacerse una idea de cómo está organizada su biblioteca.
+            </p>
+          </div>
+
+          <div class="recordpool-profile-grid">
+            {profiles.map((profile) => (
+              <article class="recordpool-profile-card reveal">
+                <img src={profile.heroImage} alt={`Visual de ${profile.name}`} />
+                <div class="recordpool-profile-card-body">
+                  <h3>{profile.name}</h3>
+                  <p>{profile.summary}</p>
+                  <div class="recordpool-profile-meta">
+                    <span>{profile.city}</span>
+                    <span>{profile.trackCount} tracks</span>
+                    <span>{profile.rootCount} roots</span>
+                  </div>
+                  <a class="button ghost" href={`/djs/${profile.slug}`}>Ver perfil</a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section recordpool-process-section">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="section-kicker">Fases</p>
+            <h2>Así encaja la música del día a día dentro de la plataforma.</h2>
+          </div>
+          <ol class="steps reveal">
+            <li class="step">
+              <span>01</span>
+              <h3>Lectura local</h3>
+              <p>La carpeta del DJ se puede leer sin subir toda la música, para entender rápido qué tiene y cómo la organiza.</p>
+            </li>
+            <li class="step">
+              <span>02</span>
+              <h3>Control de cambios</h3>
+              <p>Cada DJ ve qué ha cambiado en su biblioteca y decide qué se queda en pruebas y qué pasa a su versión estable.</p>
+            </li>
+            <li class="step">
+              <span>03</span>
+              <h3>Aportes al pool</h3>
+              <p>Cuando un tema merece compartirse, se propone para la biblioteca común y se revisa antes de publicarlo.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="contact">
+        <div class="shell contact-layout">
+          <div>
+            <p class="eyebrow">Siguiente paso</p>
+            <h2>La base ya está lista para sentirse como un recordpool de verdad.</h2>
+            <p>
+              El siguiente paso es seguir afinando el espacio privado de cada DJ para que su biblioteca sea fácil de cuidar, revisar y compartir.
+            </p>
+          </div>
+          <div class="contact-actions">
+            <a class="button primary" href="/djs">Ver directorio de DJs</a>
+            <a class="button ghost" href="/workspace">Abrir workspace</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const heroVideo = document.querySelector('.hero-video');
+
+    if (heroVideo instanceof HTMLVideoElement) {
+      const tryPlay = async () => {
+        try {
+          heroVideo.muted = true;
+          await heroVideo.play();
+        } catch {}
+      };
+
+      if (heroVideo.readyState >= 2) {
+        void tryPlay();
+      } else {
+        heroVideo.addEventListener('canplay', () => {
+          void tryPlay();
+        }, { once: true });
+      }
+    }
+  </script>
 </BaseLayout>

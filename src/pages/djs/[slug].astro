@@ -1,0 +1,151 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCommunityProfiles } from '../../data/communityData';
+
+export function getStaticPaths() {
+  return getCommunityProfiles().map((profile) => ({
+    params: { slug: profile.slug },
+    props: { profile },
+  }));
+}
+
+const { profile } = Astro.props;
+---
+
+<BaseLayout
+  title={`${profile.name} | MLabs Recordpool`}
+  description={`${profile.name}: perfil público, portfolio y biblioteca dentro del recordpool comunitario.`}
+  canonicalPath={`/djs/${profile.slug}`}
+>
+  <div class="page-wrap">
+    <header class="site-header">
+      <nav class="nav" aria-label="Principal">
+        <a class="brand" href="/">MLABS RECORDPOOL</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links" id="primaryMenu">
+          <a href="/">Inicio</a>
+          <a href="/djs">DJs</a>
+          <a href="/recordpool">Demo</a>
+        </div>
+        <a class="button primary" href="/login">Acceso privado</a>
+      </nav>
+    </header>
+
+    <main class="recordpool-profile-page">
+      <section class="recordpool-profile-hero">
+        <img src={profile.heroImage} alt={`Visual de ${profile.name}`} />
+        <div class="shell recordpool-profile-hero-inner">
+          <div class="recordpool-profile-hero-copy">
+            <h1>{profile.name}</h1>
+            <p>{profile.summary}</p>
+            <div class="recordpool-profile-hero-stats">
+              <span>{profile.city}</span>
+              <span>{profile.trackCount} tracks</span>
+              <span>{profile.rootCount} roots</span>
+              <span>{profile.childCount} crates</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="shell">
+          <div class="recordpool-profile-layout">
+            <section class="recordpool-profile-panel reveal">
+              <p class="section-kicker">Portfolio</p>
+              <h2>Cómo se presenta este DJ dentro de la comunidad.</h2>
+              <p>{profile.mission}</p>
+              <div class="recordpool-portfolio-grid">
+                {profile.portfolio.map((item) => (
+                  <article class="recordpool-portfolio-card">
+                    <span>{item.label}</span>
+                    <strong>{item.value}</strong>
+                  </article>
+                ))}
+              </div>
+              <ul class="recordpool-highlight-list">
+                {profile.highlights.map((item) => <li>{item}</li>)}
+              </ul>
+            </section>
+
+            <section class="recordpool-profile-panel reveal">
+              <p class="section-kicker">Library</p>
+              <h2>Biblioteca visible ahora</h2>
+              <p>
+                Esta parte enseña únicamente lo que hoy mismo está visible en Drive. En cuanto aparezcan subcarpetas o canciones,
+                se verán aquí con la misma estructura real.
+              </p>
+              {profile.rootCards.length ? (
+                <div class="recordpool-root-grid">
+                  {profile.rootCards.map((folder) => (
+                    <article class="recordpool-root-card">
+                      <span>{folder.trackCount} tracks</span>
+                      <strong>{folder.name}</strong>
+                      <p>{folder.vibe}</p>
+                    </article>
+                  ))}
+                </div>
+              ) : (
+                <div class="workspace-empty">Todavía no hay carpetas visibles para este perfil.</div>
+              )}
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section class="section recordpool-library-preview-section">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="section-kicker">Crates visibles</p>
+            <h2>Subcarpetas visibles</h2>
+            <p>
+              Cuando Drive enseñe carpetas hijas dentro de esta biblioteca, aparecerán aquí directamente.
+            </p>
+          </div>
+          {profile.firstLayerChildren.length ? (
+            <div class="recordpool-crate-grid">
+              {profile.firstLayerChildren.map((folder) => (
+                <article class="recordpool-crate-card reveal">
+                  <strong>{folder.name}</strong>
+                  <p>{folder.vibe}</p>
+                  <span>{folder.trackCount} tracks</span>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <div class="workspace-empty">Ahora mismo Drive no está devolviendo subcarpetas visibles dentro de este espacio.</div>
+          )}
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="section-kicker">Canciones visibles</p>
+            <h2>Música disponible en este perfil</h2>
+          </div>
+
+          {profile.featuredTracks.length ? (
+            <div class="recordpool-track-list reveal">
+              {profile.featuredTracks.map((track) => (
+                <article class="recordpool-track-row">
+                  <div>
+                    <strong>{track.title}</strong>
+                    <p>{track.artist}</p>
+                  </div>
+                  <span>{track.folderPath}</span>
+                  <span>{track.bpm || '—'} BPM</span>
+                  <span>{track.type}</span>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <div class="workspace-empty">Todavía no hay canciones visibles en Drive para este perfil.</div>
+          )}
+        </div>
+      </section>
+    </main>
+  </div>
+</BaseLayout>

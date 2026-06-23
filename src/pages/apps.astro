@@ -4,32 +4,33 @@ import { appCatalog } from '../data/appCatalog';
 ---
 
 <BaseLayout
-  title="Mis apps | MLabs Music"
-  description="Panel privado de apps activadas en MLabs Music."
+  title="Herramientas privadas | MLabs Recordpool"
+  description="Panel privado con las herramientas activadas dentro de MLabs Recordpool."
   canonicalPath="/apps"
   bodyClass="app-body"
 >
   <div class="page-wrap">
     <header class="site-header">
       <nav class="nav" aria-label="Principal">
-        <a class="brand" href="/">MLABS MUSIC</a>
+        <a class="brand" href="/">MLABS RECORDPOOL</a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" aria-label="Abrir menu">
           <span></span><span></span><span></span>
         </button>
         <div class="nav-links" id="primaryMenu">
           <a href="/">Inicio</a>
-          <a class="is-auth-hidden" href="/apps" data-auth-link="apps">Apps</a>
-          <a class="is-auth-hidden" href="/admin" data-auth-link="admin">Admin</a>
+          <a href="/djs">DJs</a>
+          <a href="/workspace">Workspace</a>
+          <a class="is-auth-hidden" href="/admin" data-auth-link="admin">Owner Review</a>
         </div>
         <button class="button primary" type="button" id="signOutButton">Cerrar sesion</button>
       </nav>
     </header>
 
     <main class="dashboard-screen">
-      <section class="dashboard-hero shell reveal">
+      <section class="dashboard-hero dashboard-hero-compact shell reveal">
         <p class="eyebrow">Panel privado</p>
-        <h1>Tus apps activadas</h1>
-        <p id="userSummary">Comprobando sesion...</p>
+        <h1>Herramientas activadas</h1>
+        <p id="userSummary">Comprobando sesion y cargando tu espacio privado...</p>
       </section>
 
       <section class="shell dashboard-section">
@@ -74,7 +75,7 @@ import { appCatalog } from '../data/appCatalog';
     }
 
     if (!isSupabaseConfigured || !supabase) {
-      renderMessage('Configura Supabase para cargar las apps activadas.');
+      renderMessage('Configura Supabase para cargar las herramientas activadas.');
     } else {
       const { data: sessionData } = await supabase.auth.getSession();
       const session = sessionData.session;
@@ -95,7 +96,7 @@ import { appCatalog } from '../data/appCatalog';
         if (error) {
           renderMessage('No se pudieron cargar tus apps. Revisa las politicas RLS de Supabase.');
         } else if (!data?.length) {
-          renderMessage('Todavia no tienes apps activadas. Un administrador puede activarlas desde /admin.');
+          renderMessage('Todavia no tienes herramientas activadas. Cuando abramos mas modulos apareceran aqui.');
         } else if (appsGrid) {
           appsGrid.innerHTML = data.map(appCard).join('');
         }

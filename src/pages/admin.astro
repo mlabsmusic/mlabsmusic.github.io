@@ -3,110 +3,75 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
-  title="Admin | MLabs Music"
-  description="Administra usuarios y apps activadas en MLabs Music."
+  title="Owner Review | MLabs Recordpool"
+  description="Revision owner de PRs musicales hacia 0_MASTER LIBRARY."
   canonicalPath="/admin"
   bodyClass="app-body"
 >
   <div class="page-wrap">
     <header class="site-header">
       <nav class="nav" aria-label="Principal">
-        <a class="brand" href="/">MLABS MUSIC</a>
+        <a class="brand" href="/">MLABS RECORDPOOL</a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" aria-label="Abrir menu">
           <span></span><span></span><span></span>
         </button>
         <div class="nav-links" id="primaryMenu">
           <a href="/">Inicio</a>
-          <a class="is-auth-hidden" href="/apps" data-auth-link="apps">Apps</a>
-          <a class="is-auth-hidden" href="/admin" data-auth-link="admin">Admin</a>
+          <a href="/workspace">Workspace</a>
+          <a class="is-auth-hidden" href="/admin" data-auth-link="admin">Owner Review</a>
         </div>
-        <button class="button primary" type="button" id="adminSignOutButton">Cerrar sesion</button>
+        <button class="button primary" type="button" id="ownerSignOutButton">Cerrar sesion</button>
       </nav>
     </header>
 
     <main class="dashboard-screen">
-      <section class="dashboard-hero shell reveal">
-        <p class="eyebrow">Administracion</p>
-        <h1>Usuarios y apps activadas</h1>
-        <p id="adminSummary">Validando permisos de administrador...</p>
+      <section class="dashboard-hero dashboard-hero-compact shell reveal">
+        <p class="eyebrow">Owner review</p>
+        <h1>Revision de cambios para 0_MASTER LIBRARY</h1>
+        <p id="ownerSummary">Validando permisos owner y cargando solicitudes musicales...</p>
       </section>
 
-      <section class="shell admin-layout">
+      <section class="shell admin-layout admin-layout-review">
         <aside class="admin-panel">
-          <h2>Usuarios</h2>
-          <div class="admin-list" id="usersList"></div>
+          <h2>PRs pendientes</h2>
+          <div class="admin-list" id="pendingPrList"></div>
         </aside>
-        <section class="admin-panel">
-          <div class="admin-panel-head">
-            <div>
-              <h2>Datos del usuario</h2>
-              <p id="selectedUserLabel">Selecciona un usuario.</p>
-            </div>
-          </div>
-          <form class="admin-form" id="userForm">
-            <label>
-              Email
-              <input id="userEmail" name="email" type="email" readonly />
-            </label>
-            <label>
-              Nombre visible
-              <input id="userFullName" name="full_name" type="text" placeholder="Nombre, marca o proyecto" />
-            </label>
-            <label>
-              Rol
-              <select id="userRole" name="role">
-                <option value="user">user</option>
-                <option value="admin">admin</option>
-              </select>
-            </label>
-            <button class="button primary" type="submit">Guardar usuario</button>
-          </form>
 
-          <h2 class="admin-subtitle">Apps activadas</h2>
-          <div class="admin-list" id="appsList"></div>
-        </section>
         <section class="admin-panel">
           <div class="admin-panel-head">
             <div>
-              <h2>Catalogo de apps</h2>
-              <p>Edita las apps disponibles en el panel privado.</p>
+              <h2>Detalle de revision</h2>
+              <p id="selectedPrLabel">Selecciona una PR musical.</p>
             </div>
-            <button class="button ghost" id="newAppButton" type="button">Nueva app</button>
           </div>
-          <div class="admin-list" id="catalogList"></div>
-          <form class="admin-form" id="appForm">
+
+          <div class="workspace-timeline" id="prMetaPanel">
+            <div class="workspace-empty">Esperando una PR a master.</div>
+          </div>
+
+          <h2 class="admin-subtitle">Cambios incluidos</h2>
+          <div class="admin-list" id="prChangesList"></div>
+
+          <form class="admin-form" id="ownerReviewForm">
             <label>
-              Nombre
-              <input id="appName" name="name" type="text" required />
+              Notas de revision
+              <textarea id="ownerReviewNotes" name="review_notes" rows="4" placeholder="Comentario editorial, motivos o feedback para el DJ"></textarea>
             </label>
-            <label>
-              Slug
-              <input id="appSlug" name="slug" type="text" required />
-            </label>
-            <div class="admin-form-grid">
-              <label>
-                Categoria
-                <input id="appCategory" name="category" type="text" />
-              </label>
-              <label>
-                Icono
-                <input id="appIcon" name="icon" type="text" maxlength="4" />
-              </label>
+            <div class="auth-actions">
+              <button class="button ghost" type="button" id="rejectPrButton">Rechazar</button>
+              <button class="button primary" type="submit">Aprobar y mergear</button>
             </div>
-            <label>
-              URL de apertura
-              <input id="appLaunchUrl" name="launch_url" type="text" placeholder="/app/" />
-            </label>
-            <label>
-              Descripcion
-              <textarea id="appDescription" name="description" rows="4"></textarea>
-            </label>
-            <label class="admin-check">
-              <input id="appActive" name="active" type="checkbox" />
-              Visible y disponible
-            </label>
-            <button class="button primary" type="submit">Guardar app</button>
           </form>
+        </section>
+
+        <section class="admin-panel admin-panel-history">
+          <div class="admin-panel-head">
+            <div>
+              <h2>Historial reciente</h2>
+              <p>Ultimas PRs a master ya revisadas por owner.</p>
+            </div>
+          </div>
+          <div class="admin-list" id="reviewHistoryList"></div>
         </section>
       </section>
     </main>
@@ -115,21 +80,27 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <script>
     import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
-    const adminSummary = document.getElementById('adminSummary');
-    const usersList = document.getElementById('usersList');
-    const appsList = document.getElementById('appsList');
-    const catalogList = document.getElementById('catalogList');
-    const selectedUserLabel = document.getElementById('selectedUserLabel');
-    const signOutButton = document.getElementById('adminSignOutButton');
-    const userForm = document.getElementById('userForm');
-    const appForm = document.getElementById('appForm');
-    const newAppButton = document.getElementById('newAppButton');
+    const ownerSummary = document.getElementById('ownerSummary');
+    const pendingPrList = document.getElementById('pendingPrList');
+    const selectedPrLabel = document.getElementById('selectedPrLabel');
+    const prMetaPanel = document.getElementById('prMetaPanel');
+    const prChangesList = document.getElementById('prChangesList');
+    const reviewHistoryList = document.getElementById('reviewHistoryList');
+    const ownerReviewForm = document.getElementById('ownerReviewForm');
+    const ownerReviewNotes = document.getElementById('ownerReviewNotes');
+    const rejectPrButton = document.getElementById('rejectPrButton');
+    const signOutButton = document.getElementById('ownerSignOutButton');
 
-    let users = [];
-    let apps = [];
-    let userApps = [];
-    let selectedUserId = '';
-    let selectedAppId = '';
+    let ownerProfile = null;
+    let masterLibrary = null;
+    let pendingPrs = [];
+    let reviewHistory = [];
+    let currentPrId = '';
+    let currentPrChanges = [];
+
+    function setSummary(text) {
+      if (ownerSummary) ownerSummary.textContent = text;
+    }
 
     function escapeHtml(value) {
       return String(value ?? '')
@@ -140,285 +111,275 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         .replaceAll("'", '&#039;');
     }
 
-    function setInputValue(id, value) {
-      const input = document.getElementById(id);
-      if (input) input.value = value ?? '';
+    function formatDate(value) {
+      return new Date(value).toLocaleString('es-ES', {
+        dateStyle: 'short',
+        timeStyle: 'short',
+      });
     }
 
-    function setChecked(id, checked) {
-      const input = document.getElementById(id);
-      if (input) input.checked = Boolean(checked);
-    }
-
-    function setSummary(text) {
-      if (adminSummary) adminSummary.textContent = text;
-    }
-
-    function setPanel(node, html) {
-      if (node) node.innerHTML = html;
-    }
-
-    async function requireAdmin() {
+    async function requireOwner() {
       if (!isSupabaseConfigured || !supabase) {
-        setSummary('Configura Supabase para usar el panel admin.');
-        return null;
+        setSummary('Configura Supabase para usar el panel owner.');
+        return false;
       }
 
       const { data: sessionData } = await supabase.auth.getSession();
       const session = sessionData.session;
+
       if (!session) {
         window.location.assign('/login?next=/admin');
-        return null;
+        return false;
       }
 
       const { data: profile, error } = await supabase
         .from('profiles')
-        .select('id, email, role')
+        .select('id, email, display_name, role, is_owner')
         .eq('id', session.user.id)
         .single();
 
-      if (error || profile?.role !== 'admin') {
-        setSummary('No tienes permisos de administrador.');
-        setPanel(usersList, '<div class="empty-state">Acceso restringido.</div>');
-        setPanel(appsList, '<div class="empty-state">Solo administradores.</div>');
-        return null;
+      if (error || (!profile?.is_owner && profile?.role !== 'admin')) {
+        setSummary('No tienes permisos de owner para revisar la master.');
+        return false;
       }
 
-      setSummary(`Administrador: ${profile.email || session.user.email}.`);
-      return profile;
+      ownerProfile = profile;
+      setSummary(`Owner activo: ${profile.display_name || profile.email}`);
+
+      const { data: library } = await supabase
+        .from('libraries')
+        .select('id, name, slug, current_working_snapshot_id, current_published_snapshot_id')
+        .eq('kind', 'master')
+        .single();
+
+      masterLibrary = library || null;
+      return true;
     }
 
-    async function loadAdminData() {
-      const admin = await requireAdmin();
-      if (!admin || !supabase) return;
+    function renderPendingPrs() {
+      if (!pendingPrList) return;
 
-      const [profilesResult, appsResult, userAppsResult] = await Promise.all([
-        supabase.from('profiles').select('id, email, full_name, role, created_at').order('created_at', { ascending: false }),
-        supabase.from('apps').select('id, name, slug, description, icon, category, active').order('name'),
-        supabase.from('user_apps').select('user_id, app_id, enabled'),
-      ]);
-
-      if (profilesResult.error || appsResult.error || userAppsResult.error) {
-        setSummary('No se pudieron cargar los datos admin. Revisa RLS y permisos.');
+      if (!pendingPrs.length) {
+        pendingPrList.innerHTML = '<div class="workspace-empty">No hay PRs pendientes ahora mismo.</div>';
         return;
       }
 
-      users = profilesResult.data || [];
-      apps = appsResult.data || [];
-      userApps = userAppsResult.data || [];
-      selectedUserId = users[0]?.id || '';
-      selectedAppId = apps[0]?.id || '';
-      renderUsers();
-      renderUserForm();
-      renderApps();
-      renderCatalog();
-      renderAppForm();
-    }
-
-    function renderUsers() {
-      if (!users.length) {
-        setPanel(usersList, '<div class="empty-state">No hay usuarios todavia.</div>');
-        return;
-      }
-
-      setPanel(usersList, users.map((user) => `
-        <button class="admin-user ${user.id === selectedUserId ? 'is-active' : ''}" type="button" data-user-id="${user.id}">
+      pendingPrList.innerHTML = pendingPrs.map((pr) => `
+        <button class="admin-user ${pr.id === currentPrId ? 'is-active' : ''}" type="button" data-pr-id="${pr.id}">
           <span>
-            <strong>${escapeHtml(user.email || 'Sin email')}</strong>
-            <small>${escapeHtml(user.full_name || 'Sin nombre')}</small>
+            <strong>${escapeHtml(pr.title)}</strong>
+            <small>${escapeHtml(pr.profile_name || 'DJ')} · ${formatDate(pr.created_at)}</small>
           </span>
-          <em>${escapeHtml(user.role)}</em>
+          <em>${escapeHtml(pr.status)}</em>
         </button>
-      `).join(''));
+      `).join('');
 
-      for (const button of usersList?.querySelectorAll('[data-user-id]') || []) {
+      for (const button of pendingPrList.querySelectorAll('[data-pr-id]')) {
         button.addEventListener('click', () => {
-          selectedUserId = button.dataset.userId || '';
-          renderUsers();
-          renderUserForm();
-          renderApps();
+          currentPrId = button.dataset.prId || '';
+          renderPendingPrs();
+          renderCurrentPr();
         });
       }
     }
 
-    function renderUserForm() {
-      const selectedUser = users.find((user) => user.id === selectedUserId);
-      if (selectedUserLabel) selectedUserLabel.textContent = selectedUser?.email || 'Selecciona un usuario.';
+    function renderCurrentPr() {
+      const currentPr = pendingPrs.find((pr) => pr.id === currentPrId);
 
-      setInputValue('userEmail', selectedUser?.email || '');
-      setInputValue('userFullName', selectedUser?.full_name || '');
-      setInputValue('userRole', selectedUser?.role || 'user');
-
-      if (userForm) {
-        for (const field of userForm.querySelectorAll('input, select, button')) {
-          field.disabled = !selectedUser;
-        }
-      }
-    }
-
-    function hasApp(userId, appId) {
-      return userApps.some((item) => item.user_id === userId && item.app_id === appId && item.enabled);
-    }
-
-    function renderApps() {
-      const selectedUser = users.find((user) => user.id === selectedUserId);
-      if (selectedUserLabel) selectedUserLabel.textContent = selectedUser?.email || 'Selecciona un usuario.';
-
-      if (!selectedUserId || !apps.length) {
-        setPanel(appsList, '<div class="empty-state">No hay apps para gestionar.</div>');
+      if (!currentPr) {
+        if (selectedPrLabel) selectedPrLabel.textContent = 'Selecciona una PR musical.';
+        if (prMetaPanel) prMetaPanel.innerHTML = '<div class="workspace-empty">Esperando una PR a master.</div>';
+        if (prChangesList) prChangesList.innerHTML = '<div class="workspace-empty">No hay cambios cargados.</div>';
+        if (ownerReviewNotes) ownerReviewNotes.value = '';
         return;
       }
 
-      setPanel(appsList, apps.map((app) => {
-        const checked = hasApp(selectedUserId, app.id) ? 'checked' : '';
-        return `
-          <label class="admin-app">
-            <span>
-              <strong>${escapeHtml(app.name)}</strong>
-              <small>${escapeHtml(app.category || 'App')} · ${app.active ? 'Activa' : 'Oculta'}</small>
-            </span>
-            <input type="checkbox" data-app-id="${app.id}" ${checked} />
-          </label>
+      if (selectedPrLabel) selectedPrLabel.textContent = `${currentPr.title} · ${currentPr.profile_name || 'DJ'}`;
+      if (ownerReviewNotes) ownerReviewNotes.value = currentPr.review_notes || '';
+
+      if (prMetaPanel) {
+        prMetaPanel.innerHTML = `
+          <article class="workspace-timeline-card">
+            <div class="workspace-timeline-head">
+              <strong>${escapeHtml(currentPr.title)}</strong>
+              <span>${formatDate(currentPr.created_at)}</span>
+            </div>
+            <p>${escapeHtml(currentPr.description || 'Sin descripcion')}</p>
+            <small>Origen: ${escapeHtml(currentPr.library_name || 'Library')} · owner review hacia 0_MASTER LIBRARY</small>
+          </article>
         `;
-      }).join(''));
-
-      for (const input of appsList?.querySelectorAll('[data-app-id]') || []) {
-        input.addEventListener('change', async () => {
-          if (!supabase || !selectedUserId) return;
-          const appId = input.dataset.appId;
-          const enabled = input.checked;
-
-          const { error } = await supabase
-            .from('user_apps')
-            .upsert({ user_id: selectedUserId, app_id: appId, enabled }, { onConflict: 'user_id,app_id' });
-
-          if (error) {
-            input.checked = !enabled;
-            setSummary(`No se pudo actualizar: ${error.message}`);
-            return;
-          }
-
-          const existing = userApps.find((item) => item.user_id === selectedUserId && item.app_id === appId);
-          if (existing) existing.enabled = enabled;
-          else userApps.push({ user_id: selectedUserId, app_id: appId, enabled });
-          setSummary('Cambios guardados.');
-        });
       }
-    }
 
-    function renderCatalog() {
-      if (!apps.length) {
-        setPanel(catalogList, '<div class="empty-state">No hay apps en el catalogo.</div>');
+      if (!prChangesList) return;
+      if (!currentPrChanges.length) {
+        prChangesList.innerHTML = '<div class="workspace-empty">Esta PR no tiene cambios detallados cargados.</div>';
         return;
       }
 
-      setPanel(catalogList, apps.map((app) => `
-        <button class="admin-user ${app.id === selectedAppId ? 'is-active' : ''}" type="button" data-catalog-app-id="${app.id}">
-          <span>
-            <strong>${escapeHtml(app.name)}</strong>
-            <small>${escapeHtml(app.slug)} · ${escapeHtml(app.category || 'App')}</small>
-          </span>
-          <em>${app.active ? 'visible' : 'oculta'}</em>
-        </button>
-      `).join(''));
+      prChangesList.innerHTML = currentPrChanges.map((change) => `
+        <article class="workspace-change-row is-${change.change_type}">
+          <div>
+            <strong>${escapeHtml(change.entity_key)}</strong>
+            <p>${escapeHtml(change.change_type)} · ${escapeHtml(change.after_json?.detail || change.before_json?.detail || 'Cambio sin detalle')}</p>
+          </div>
+          <span>${escapeHtml(change.change_type)}</span>
+        </article>
+      `).join('');
+    }
 
-      for (const button of catalogList?.querySelectorAll('[data-catalog-app-id]') || []) {
-        button.addEventListener('click', () => {
-          selectedAppId = button.dataset.catalogAppId || '';
-          renderCatalog();
-          renderAppForm();
-        });
+    function renderHistory() {
+      if (!reviewHistoryList) return;
+
+      if (!reviewHistory.length) {
+        reviewHistoryList.innerHTML = '<div class="workspace-empty">Todavia no hay PRs revisadas.</div>';
+        return;
       }
+
+      reviewHistoryList.innerHTML = reviewHistory.map((pr) => `
+        <article class="workspace-timeline-card">
+          <div class="workspace-timeline-head">
+            <strong>${escapeHtml(pr.title)}</strong>
+            <span>${formatDate(pr.created_at)}</span>
+          </div>
+          <p>${escapeHtml(pr.description || 'Sin descripcion')}</p>
+          <small>${escapeHtml(pr.status)}${pr.review_notes ? ` · ${escapeHtml(pr.review_notes)}` : ''}</small>
+        </article>
+      `).join('');
     }
 
-    function renderAppForm() {
-      const selectedApp = apps.find((app) => app.id === selectedAppId);
-      setInputValue('appName', selectedApp?.name || '');
-      setInputValue('appSlug', selectedApp?.slug || '');
-      setInputValue('appCategory', selectedApp?.category || '');
-      setInputValue('appIcon', selectedApp?.icon || '');
-      setInputValue('appLaunchUrl', selectedApp?.launch_url || '');
-      setInputValue('appDescription', selectedApp?.description || '');
-      setChecked('appActive', selectedApp?.active ?? true);
-    }
+    async function loadReviewData() {
+      const allowed = await requireOwner();
+      if (!allowed || !supabase) return;
 
-    userForm?.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      if (!supabase || !selectedUserId) return;
-
-      const formData = new FormData(userForm);
-      const fullName = String(formData.get('full_name') || '').trim();
-      const role = String(formData.get('role') || 'user');
-
-      const { data, error } = await supabase
-        .from('profiles')
-        .update({ full_name: fullName, role, updated_at: new Date().toISOString() })
-        .eq('id', selectedUserId)
-        .select('id, email, full_name, role, created_at')
-        .single();
+      const { data: changeSets, error } = await supabase
+        .from('library_change_sets')
+        .select(`
+          id,
+          title,
+          description,
+          review_notes,
+          target_kind,
+          status,
+          created_at,
+          library_id,
+          created_by,
+          libraries!inner(name),
+          profiles!library_change_sets_created_by_fkey(display_name,email)
+        `)
+        .eq('target_kind', 'master')
+        .order('created_at', { ascending: false });
 
       if (error) {
-        setSummary(`No se pudo guardar el usuario: ${error.message}`);
+        setSummary(`No he podido cargar las PRs: ${error.message}`);
         return;
       }
 
-      users = users.map((user) => user.id === selectedUserId ? data : user);
-      setSummary('Usuario actualizado.');
-      renderUsers();
-      renderUserForm();
-    });
+      const rows = (changeSets || []).map((row) => ({
+        ...row,
+        library_name: row.libraries?.name,
+        profile_name: row.profiles?.display_name || row.profiles?.email,
+      }));
 
-    newAppButton?.addEventListener('click', () => {
-      selectedAppId = '';
-      renderCatalog();
-      renderAppForm();
-      setSummary('Creando nueva app. Completa los datos y guarda.');
-    });
+      pendingPrs = rows.filter((row) => row.status === 'open');
+      reviewHistory = rows.filter((row) => row.status !== 'open').slice(0, 8);
+      currentPrId = pendingPrs[0]?.id || '';
 
-    appForm?.addEventListener('submit', async (event) => {
+      if (currentPrId) {
+        const { data: changes } = await supabase
+          .from('library_changes')
+          .select('id, entity_key, change_type, before_json, after_json, selected_for_master')
+          .eq('change_set_id', currentPrId)
+          .order('created_at', { ascending: true });
+        currentPrChanges = changes || [];
+      } else {
+        currentPrChanges = [];
+      }
+
+      renderPendingPrs();
+      renderCurrentPr();
+      renderHistory();
+    }
+
+    async function approveCurrentPr(status) {
+      const currentPr = pendingPrs.find((pr) => pr.id === currentPrId);
+      if (!currentPr || !ownerProfile || !supabase || !masterLibrary) return;
+
+      const notes = ownerReviewNotes?.value?.trim() || '';
+
+      if (status === 'merged') {
+        const masterSnapshotPayload = {
+          library_id: masterLibrary.id,
+          created_by: ownerProfile.id,
+          label: `Master merge · ${currentPr.title}`,
+          source_kind: 'browser_demo',
+          root_path: '0_MASTER LIBRARY',
+          file_count: currentPrChanges.length,
+          total_bytes: 0,
+          based_on_snapshot_id: masterLibrary.current_published_snapshot_id || null,
+          snapshot_json: currentPrChanges.map((change) => ({
+            entity_key: change.entity_key,
+            change_type: change.change_type,
+            detail: change.after_json?.detail || change.before_json?.detail || '',
+          })),
+        };
+
+        const snapshotInsert = await supabase
+          .from('library_snapshots')
+          .insert(masterSnapshotPayload)
+          .select('id')
+          .single();
+
+        if (snapshotInsert.error) {
+          setSummary(`No he podido crear el snapshot master: ${snapshotInsert.error.message}`);
+          return;
+        }
+
+        const libraryUpdate = await supabase
+          .from('libraries')
+          .update({
+            current_working_snapshot_id: snapshotInsert.data.id,
+            current_published_snapshot_id: snapshotInsert.data.id,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', masterLibrary.id)
+          .select('id, name, slug, current_working_snapshot_id, current_published_snapshot_id')
+          .single();
+
+        if (libraryUpdate.error) {
+          setSummary(`He creado el snapshot master, pero no actualice la libreria: ${libraryUpdate.error.message}`);
+          return;
+        }
+
+        masterLibrary = libraryUpdate.data;
+      }
+
+      const updateResult = await supabase
+        .from('library_change_sets')
+        .update({
+          status,
+          reviewed_by: ownerProfile.id,
+          review_notes: notes || (status === 'merged' ? 'Aprobado por owner.' : 'Rechazado por owner.'),
+          merged_at: status === 'merged' ? new Date().toISOString() : null,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', currentPr.id);
+
+      if (updateResult.error) {
+        setSummary(`No he podido actualizar la PR: ${updateResult.error.message}`);
+        return;
+      }
+
+      setSummary(status === 'merged' ? 'PR aprobada y mergeada a 0_MASTER LIBRARY.' : 'PR rechazada.');
+      await loadReviewData();
+    }
+
+    ownerReviewForm?.addEventListener('submit', async (event) => {
       event.preventDefault();
-      if (!supabase) return;
+      await approveCurrentPr('merged');
+    });
 
-      const formData = new FormData(appForm);
-      const payload = {
-        name: String(formData.get('name') || '').trim(),
-        slug: String(formData.get('slug') || '').trim(),
-        category: String(formData.get('category') || '').trim(),
-        icon: String(formData.get('icon') || '').trim(),
-        launch_url: String(formData.get('launch_url') || '').trim(),
-        description: String(formData.get('description') || '').trim(),
-        active: Boolean(formData.get('active')),
-        updated_at: new Date().toISOString(),
-      };
-
-      if (!payload.name || !payload.slug) {
-        setSummary('La app necesita nombre y slug.');
-        return;
-      }
-
-      const query = selectedAppId
-        ? supabase.from('apps').update(payload).eq('id', selectedAppId)
-        : supabase.from('apps').insert(payload);
-
-      const { data, error } = await query
-        .select('id, name, slug, description, icon, category, launch_url, active')
-        .single();
-
-      if (error) {
-        setSummary(`No se pudo guardar la app: ${error.message}`);
-        return;
-      }
-
-      if (selectedAppId) apps = apps.map((app) => app.id === selectedAppId ? data : app);
-      else {
-        apps = [...apps, data].sort((a, b) => a.name.localeCompare(b.name));
-        selectedAppId = data.id;
-      }
-
-      setSummary('App guardada.');
-      renderCatalog();
-      renderAppForm();
-      renderApps();
+    rejectPrButton?.addEventListener('click', async () => {
+      await approveCurrentPr('rejected');
     });
 
     signOutButton?.addEventListener('click', async () => {
@@ -426,6 +387,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       window.location.assign('/login');
     });
 
-    loadAdminData();
+    loadReviewData();
   </script>
 </BaseLayout>

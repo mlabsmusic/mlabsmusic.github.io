@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCommunityProfiles } from '../../data/communityData';
+
+const profiles = getCommunityProfiles();
+---
+
+<BaseLayout
+  title="DJs | MLabs Recordpool"
+  description="Directorio público de DJs dentro del recordpool comunitario: perfiles, portfolio y bibliotecas personales."
+  canonicalPath="/djs"
+>
+  <div class="page-wrap">
+    <header class="site-header">
+      <nav class="nav" aria-label="Principal">
+        <a class="brand" href="/">MLABS RECORDPOOL</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links" id="primaryMenu">
+          <a href="/">Inicio</a>
+          <a href="/djs">DJs</a>
+          <a href="/recordpool">Demo</a>
+        </div>
+        <a class="button primary" href="/login">Acceso privado</a>
+      </nav>
+    </header>
+
+    <main class="section recordpool-directory-page">
+      <div class="shell">
+        <div class="section-head reveal">
+          <p class="section-kicker">Directorio</p>
+          <h1 class="recordpool-page-title">DJs de la comunidad</h1>
+          <p>
+            Entra en cada perfil, descubre su estilo y entiende de un vistazo cómo organiza su música dentro del recordpool.
+          </p>
+        </div>
+
+        <div class="recordpool-directory-grid">
+          {profiles.map((profile) => (
+            <article class="recordpool-directory-card reveal">
+              <img src={profile.heroImage} alt={`Visual de ${profile.name}`} />
+              <div class="recordpool-directory-card-body">
+                <div class="recordpool-directory-card-head">
+                  <div>
+                    <h2>{profile.name}</h2>
+                  </div>
+                  <strong>{profile.city}</strong>
+                </div>
+                <p>{profile.summary}</p>
+                <div class="recordpool-directory-tags">
+                  {profile.genres.map((genre) => <span>{genre}</span>)}
+                </div>
+                <div class="recordpool-directory-stats">
+                  <span>{profile.trackCount} tracks</span>
+                  <span>{profile.rootCount} roots</span>
+                  <span>{profile.childCount} crates</span>
+                </div>
+                <a class="button ghost" href={`/djs/${profile.slug}`}>Abrir perfil</a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </main>
+  </div>
+</BaseLayout>
