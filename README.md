@@ -1,45 +1,64 @@
 # mlabsmusic.github.io
 
-Primary website repository for **Mlabs Music**: premium websites, portfolios, landing pages, and digital brand presence for DJs, producers, artists, and music projects.
+Web base de **MLABS RECORDPOOL**, una comunidad de DJs con perfiles propios, bibliotecas personales, control de cambios tipo Git musical y una librería master compartida.
 
-## Production structure
+## Estado actual
 
-- Main website source: `mlabsmusic.github.io`
-- Public domain: `https://www.mlabsmusic.com`
-- DNS: `www` CNAME -> `mlabsmusic.github.io`
-- Framework: Astro static build deployed to GitHub Pages
-- Auth/data: Supabase Auth + Postgres with Row Level Security
+El proyecto ya no está planteado como una web corporativa clásica. La dirección del producto ahora es:
 
-## Deployment
+- comunidad de DJs con perfil público
+- biblioteca personal por DJ
+- workspace para leer carpeta local, detectar cambios y guardarlos como snapshots
+- flujo de solicitudes hacia `0_MASTER LIBRARY`
+- recordpool navegable desde la estructura visible de Google Drive
 
-- GitHub Pages via GitHub Actions
-- Automatic deploy on push to `main`
-- Required repository secrets:
-  - `PUBLIC_SUPABASE_URL`
-  - `PUBLIC_SUPABASE_ANON_KEY`
+Resumen más detallado:
 
-## Files
+- [PROJECT_STATUS.md](./PROJECT_STATUS.md)
+- [CONTEXT_LOG.md](./CONTEXT_LOG.md)
 
-- `index.html`: landing page
-- `src/pages/login.astro`: login/signup route
-- `src/pages/apps.astro`: authenticated apps dashboard
-- `src/pages/admin.astro`: admin route for user app access
-- `supabase/schema.sql`: Supabase tables, seed apps, roles, and RLS policies
-- `projects.html`: services redirect
-- `about.html`: studio redirect
-- `CNAME`: custom domain (`www.mlabsmusic.com`)
-- `.github/workflows/deploy-pages.yml`: deploy pipeline
+## Stack
 
-## Local development
+- `Astro`
+- `Supabase Auth + Postgres`
+- `Google Drive` como origen visible del recordpool
+- `GitHub Pages` para despliegue
+
+## Rutas principales
+
+- `/` home del producto
+- `/djs` comunidad de DJs
+- `/djs/[slug]` perfil individual del DJ
+- `/recordpool` explorador del recordpool
+- `/workspace` espacio tipo Git musical para la biblioteca local
+- `/login` acceso de usuario
+- `/admin` revisión owner y gestión interna
+
+## Scripts
 
 ```bash
 npm install
-cp .env.example .env
 npm run dev
+npm run build
+npm run drive:sync
+npm run agent:scan -- "/ruta/a/libreria"
+npm run agent:watch -- "/ruta/a/libreria"
 ```
 
-Run `supabase/schema.sql` in the Supabase SQL editor, create your first account from `/login`, then promote it:
+## Variables de entorno
 
-```sql
-update public.profiles set role = 'admin' where email = 'you@example.com';
-```
+La app necesita:
+
+- `PUBLIC_SUPABASE_URL`
+- `PUBLIC_SUPABASE_ANON_KEY`
+
+El agente local también puede usar:
+
+- `MLABS_AGENT_EMAIL`
+- `MLABS_AGENT_PASSWORD`
+
+## Notas de producto
+
+- La web debe mostrar solo datos reales visibles del Drive. Nada de inventar canciones o carpetas.
+- Si Google Drive no expone subcarpetas o archivos con el acceso actual, la UI debe mostrar estado vacío honesto.
+- El objetivo final es que cada DJ trabaje su librería local y solo suba a la master lo que pase por una revisión estilo pull request musical.
