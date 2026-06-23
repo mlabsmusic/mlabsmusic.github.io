@@ -185,16 +185,16 @@ import {
                         data-track-bpm={track.bpm || '—'}
                         data-track-key={track.key || '—'}
                         data-track-type={track.type}
-                      >
+                    >
                         {track.title}
                       </button>
                     </td>
-                    <td>{track.artist}</td>
-                    <td>{track.folderPath}</td>
-                    <td>{track.bpm || '—'}</td>
-                    <td>{track.key || '—'}</td>
-                    <td>{track.type}</td>
-                    <td>
+                    <td data-label="Artista">{track.artist}</td>
+                    <td data-label="Carpeta">{track.folderPath}</td>
+                    <td data-label="BPM">{track.bpm || '—'}</td>
+                    <td data-label="Key">{track.key || '—'}</td>
+                    <td data-label="Tipo">{track.type}</td>
+                    <td data-label="Descarga">
                       <div class="recordpool-actions">
                         <button class="recordpool-row-button" type="button" data-preview-track={index}>Preview</button>
                         <button class="recordpool-row-button" type="button" data-select-track={index}>Añadir</button>

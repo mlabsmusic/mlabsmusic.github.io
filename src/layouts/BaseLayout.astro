@@ -23,6 +23,11 @@ const canonical = new URL(canonicalPath, 'https://www.mlabsmusic.com').toString(
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#061114" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="MLABS Recordpool" />
     <link rel="canonical" href={canonical} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
@@ -34,6 +39,8 @@ const canonical = new URL(canonicalPath, 'https://www.mlabsmusic.com').toString(
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content="https://www.mlabsmusic.com/assets/video/mlabs-hero-poster.jpg" />
     <link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="stylesheet" href="/assets/site.css" />
     <noscript><style>.page-wrap,.reveal{opacity:1;transform:none}</style></noscript>
   </head>

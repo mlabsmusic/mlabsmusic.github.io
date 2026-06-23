@@ -1,0 +1,26 @@
+{
+  "name": "MLABS Recordpool",
+  "short_name": "MLABS",
+  "description": "Recordpool comunitario con perfiles de DJs, bibliotecas personales y control de cambios musical.",
+  "lang": "es",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f5fbfb",
+  "theme_color": "#061114",
+  "icons": [
+    {
+      "src": "/assets/brand/app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/brand/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

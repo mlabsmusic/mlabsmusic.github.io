@@ -378,10 +378,10 @@ import {
       fileSummary.textContent = `${snapshot.length} archivos`;
       fileTableBody.innerHTML = snapshot.slice(0, 80).map((file) => `
         <tr>
-          <td>${file.path}</td>
-          <td>${formatBytes(file.size)}</td>
-          <td>${formatDate(file.lastModified)}</td>
-          <td>${file.signature}</td>
+          <td data-label="Path">${file.path}</td>
+          <td data-label="Tamano">${formatBytes(file.size)}</td>
+          <td data-label="Modificado">${formatDate(file.lastModified)}</td>
+          <td data-label="Firma">${file.signature}</td>
         </tr>
       `).join('');
     }

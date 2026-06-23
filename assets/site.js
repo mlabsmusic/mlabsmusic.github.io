@@ -29,6 +29,7 @@
       const isOpen = nav.classList.toggle('is-open');
       navToggle.setAttribute('aria-expanded', String(isOpen));
       navToggle.setAttribute('aria-label', isOpen ? 'Cerrar menu' : 'Abrir menu');
+      body.classList.toggle('is-locked', isOpen);
     });
 
     for (const link of nav.querySelectorAll('.nav-links a, .button')) {
@@ -138,5 +139,13 @@
         openShot();
       }
     });
+  }
+
+  const canRegisterPwa = 'serviceWorker' in navigator && !['127.0.0.1', 'localhost'].includes(window.location.hostname);
+
+  if (canRegisterPwa) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }, { once: true });
   }
 })();
