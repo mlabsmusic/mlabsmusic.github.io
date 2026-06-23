@@ -9,14 +9,26 @@
     "preview": "astro preview",
     "drive:sync": "node app/build-drive-snapshot.mjs",
     "agent:scan": "node app/music-agent.mjs",
-    "agent:watch": "node app/music-agent.mjs --watch"
+    "agent:watch": "node app/music-agent.mjs --watch",
+    "cap:sync": "npm run build && npx cap sync",
+    "cap:copy": "npm run build && npx cap copy",
+    "cap:open:ios": "npx cap open ios",
+    "cap:open:android": "npx cap open android"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.1",
+    "@capacitor/android": "^8.4.1",
+    "@capacitor/app": "^8.1.0",
+    "@capacitor/core": "^8.4.1",
+    "@capacitor/ios": "^8.4.1",
+    "@capacitor/keyboard": "^8.0.5",
+    "@capacitor/status-bar": "^8.0.2",
     "@supabase/supabase-js": "^2.49.4",
     "astro": "^6.1.8"
   },
   "devDependencies": {
-    "playwright": "^1.61.0"
+    "@capacitor/cli": "^8.4.1",
+    "playwright": "^1.61.0",
+    "typescript": "^5.9.3"
   }
 }

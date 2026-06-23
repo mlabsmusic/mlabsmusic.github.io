@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MLABS Recordpool</string>
+    <string name="title_activity_main">MLABS Recordpool</string>
+    <string name="package_name">com.mlabsmusic.recordpool</string>
+    <string name="custom_url_scheme">com.mlabsmusic.recordpool</string>
+</resources>
