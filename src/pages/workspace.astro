@@ -53,76 +53,6 @@ import {
       </section>
 
       <section class="shell workspace-shell reveal">
-        <aside class="workspace-sidebar">
-          <div class="workspace-sidebar-block">
-            <p class="workspace-sidebar-title">Principios</p>
-            <div class="workspace-principles">
-              {gitMusicPrinciples.map((item) => (
-                <article class="workspace-principle-card">
-                  <strong>{item.title}</strong>
-                  <p>{item.body}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-
-          <div class="workspace-sidebar-block">
-            <div class="workspace-sidebar-head">
-              <p class="workspace-sidebar-title">Carpeta local</p>
-              <label class="workspace-connect-button">
-                <input id="localFolderInput" type="file" webkitdirectory directory multiple />
-                Conectar carpeta
-              </label>
-            </div>
-            <p class="workspace-sidebar-copy">
-              Puedes usar una carpeta real de tu ordenador. La web la lee, la resume y la compara con la última versión guardada.
-            </p>
-            <div class="workspace-source-status">
-              <span id="workspaceSourceName">Sin carpeta conectada</span>
-              <small id="workspaceSourceMeta">Todavia no hay snapshot local.</small>
-            </div>
-          </div>
-
-          <div class="workspace-sidebar-block">
-            <div class="workspace-sidebar-head">
-              <p class="workspace-sidebar-title">Estado cloud</p>
-              <span class="workspace-badge" id="workspaceCloudBadge">Modo local</span>
-            </div>
-            <p class="workspace-sidebar-copy" id="workspaceCloudCopy">
-              Inicia sesión para que el historial y los cambios queden guardados dentro de tu biblioteca personal.
-            </p>
-            <div class="workspace-source-status">
-              <span id="workspaceCloudUser">Sin sesion iniciada</span>
-              <small id="workspaceCloudLibrary">No hay libreria cloud activa.</small>
-            </div>
-          </div>
-
-          <div class="workspace-sidebar-block">
-            <p class="workspace-sidebar-title">Base actual del pool</p>
-            <div class="workspace-tree">
-              {sampleLocalTree.map((node) => (
-                <div class="workspace-tree-root">
-                  <strong>{node.name}</strong>
-                  <ul>
-                    {node.children.map((child) => (
-                      <li>
-                        <span>{child.name}</span>
-                        {child.children && (
-                          <ul>
-                            {child.children.map((leaf) => (
-                              <li>{leaf.name}</li>
-                            ))}
-                          </ul>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        </aside>
-
         <section class="workspace-main">
           <div class="workspace-toolbar">
             <div>
@@ -135,6 +65,45 @@ import {
               <button class="recordpool-row-button is-primary" id="stageSelectionButton" type="button">Compartir cambios</button>
             </div>
           </div>
+
+          <section class="workspace-connection-grid">
+            <article class="workspace-panel">
+              <div class="workspace-panel-head">
+                <div>
+                  <p class="workspace-kicker">Carpeta local</p>
+                  <h3>Tu fuente de trabajo</h3>
+                </div>
+                <label class="workspace-connect-button">
+                  <input id="localFolderInput" type="file" webkitdirectory directory multiple />
+                  Conectar carpeta
+                </label>
+              </div>
+              <p class="workspace-sidebar-copy">
+                Lee una carpeta real de tu ordenador, compara cambios y prepara lo que quieres guardar o compartir.
+              </p>
+              <div class="workspace-source-status">
+                <span id="workspaceSourceName">Sin carpeta conectada</span>
+                <small id="workspaceSourceMeta">Todavia no hay snapshot local.</small>
+              </div>
+            </article>
+
+            <article class="workspace-panel">
+              <div class="workspace-panel-head">
+                <div>
+                  <p class="workspace-kicker">Estado cloud</p>
+                  <h3>Sesion y biblioteca</h3>
+                </div>
+                <span class="workspace-badge" id="workspaceCloudBadge">Modo local</span>
+              </div>
+              <p class="workspace-sidebar-copy" id="workspaceCloudCopy">
+                Inicia sesión para que el historial y los cambios queden guardados dentro de tu biblioteca personal.
+              </p>
+              <div class="workspace-source-status">
+                <span id="workspaceCloudUser">Sin sesion iniciada</span>
+                <small id="workspaceCloudLibrary">No hay libreria cloud activa.</small>
+              </div>
+            </article>
+          </section>
 
           <section class="workspace-grid">
             <article class="workspace-panel">
@@ -245,6 +214,45 @@ import {
             </article>
           </section>
         </section>
+
+        <aside class="workspace-sidebar">
+          <div class="workspace-sidebar-block">
+            <p class="workspace-sidebar-title">Principios</p>
+            <div class="workspace-principles">
+              {gitMusicPrinciples.map((item) => (
+                <article class="workspace-principle-card">
+                  <strong>{item.title}</strong>
+                  <p>{item.body}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <div class="workspace-sidebar-block">
+            <p class="workspace-sidebar-title">Base actual del pool</p>
+            <div class="workspace-tree">
+              {sampleLocalTree.map((node) => (
+                <div class="workspace-tree-root">
+                  <strong>{node.name}</strong>
+                  <ul>
+                    {node.children.map((child) => (
+                      <li>
+                        <span>{child.name}</span>
+                        {child.children && (
+                          <ul>
+                            {child.children.map((leaf) => (
+                              <li>{leaf.name}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </aside>
       </section>
     </main>
   </div>
@@ -519,6 +527,9 @@ import {
 
       currentLibrary = library;
       currentWorkingSnapshotId = library.current_working_snapshot_id || '';
+      if (title && profile?.display_name) {
+        title.textContent = `${profile.display_name} / Biblioteca en curso`;
+      }
       updateCloudStatus('Cloud activo', 'Cada estado que guardes puede quedar disponible para el historial de tu biblioteca.');
       if (cloudUser) cloudUser.textContent = profile?.display_name || profile?.email || session.user.email || 'Usuario conectado';
       if (cloudLibrary) cloudLibrary.textContent = `${library.name} · ${library.slug}${library.current_published_snapshot_id ? ' · published activo' : ''}`;

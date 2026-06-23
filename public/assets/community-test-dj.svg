@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" role="img" aria-label="TEST DJ profile cover">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#04171d"/>
+      <stop offset="50%" stop-color="#0a5f6a"/>
+      <stop offset="100%" stop-color="#13a7b7"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.96"/>
+      <stop offset="100%" stop-color="#caf5f8" stop-opacity="0.55"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1200" fill="url(#bg)"/>
+  <circle cx="930" cy="230" r="200" fill="#ffffff" fill-opacity="0.08"/>
+  <circle cx="260" cy="950" r="250" fill="#ffffff" fill-opacity="0.06"/>
+  <rect x="120" y="120" width="960" height="960" rx="52" fill="#08191f" fill-opacity="0.18" stroke="rgba(255,255,255,0.2)"/>
+  <g fill="none" stroke="url(#glow)" stroke-width="18">
+    <path d="M250 760c80-210 225-315 435-315 102 0 197 24 285 72"/>
+    <path d="M280 840c96-160 231-240 405-240 112 0 205 22 279 64"/>
+  </g>
+  <g fill="url(#glow)">
+    <circle cx="600" cy="430" r="138"/>
+    <path d="M358 898c54-140 134-210 242-210s188 70 242 210H358Z"/>
+  </g>
+  <text x="600" y="216" text-anchor="middle" fill="#eaffff" font-family="Instrument Sans, Arial, sans-serif" font-size="92" font-weight="800">TEST DJ</text>
+  <text x="600" y="1010" text-anchor="middle" fill="#d4fbff" font-family="Instrument Sans, Arial, sans-serif" font-size="34" font-weight="700">Perfil de prueba para QA visual y flujos de biblioteca</text>
+</svg>

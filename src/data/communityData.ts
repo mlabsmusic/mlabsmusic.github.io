@@ -2,9 +2,9 @@ import { driveDjProfiles } from './driveSnapshot';
 import { recordpoolFolders, recordpoolTracks } from './recordpoolData';
 
 export const platformStats = [
-  { value: '5', label: 'djs en comunidad' },
+  { value: '6', label: 'djs en comunidad' },
   { value: '0', label: 'tracks visibles ahora' },
-  { value: '12', label: 'carpetas visibles' },
+  { value: '15', label: 'carpetas visibles' },
   { value: '1', label: 'biblioteca compartida' },
 ];
 

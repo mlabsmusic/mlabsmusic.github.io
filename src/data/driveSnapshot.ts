@@ -61,6 +61,24 @@ export const driveVisibleFolders = [
     description: "Espacio musical de Franjdeejay",
   },
   {
+    id: "1J0xOUQGlQ6HJWONof37NSRJTGVQfUuae",
+    name: "TEST",
+    parentId: "1kn641vlNAeFSVwrFryb6fS38SLtF-fnI",
+    description: "Perfil de prueba para validar la experiencia del DJ",
+  },
+  {
+    id: "1WX5yiEQgmlnUOSKP2LBw35mvhk9jozT9",
+    name: "POR ORDENAR",
+    parentId: "1J0xOUQGlQ6HJWONof37NSRJTGVQfUuae",
+    description: "Borradores y música pendiente de clasificar",
+  },
+  {
+    id: "1Af718zcykAu_xtZogpq263uGFa8O77-z",
+    name: "FAVORITOS",
+    parentId: "1J0xOUQGlQ6HJWONof37NSRJTGVQfUuae",
+    description: "Selección rápida de temas de referencia",
+  },
+  {
     id: "1pz0L1X1_jHvOlbyVS9_VsZMbt_Tjyl5v",
     name: "PENDING",
     parentId: "1kYnU3Bw5GS0QpSg2Fsmfm7hilecFrA_9",
@@ -120,5 +138,13 @@ export const driveDjProfiles = [
     genres: ["Open Format", "Latin Club", "Night Energy"],
     heroImage: "/assets/community-franjdeejay.jpg",
     folderId: "15u4i7J5aI_kQkdJcfcgCVYNtB8IF8_ib",
+  },
+  {
+    slug: "test",
+    name: "TEST",
+    city: "Madrid",
+    genres: ["QA", "Open Format", "Club Tests"],
+    heroImage: "/assets/community-test-dj.svg",
+    folderId: "1J0xOUQGlQ6HJWONof37NSRJTGVQfUuae",
   },
 ] as const;

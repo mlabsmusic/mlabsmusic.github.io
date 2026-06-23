@@ -14,7 +14,7 @@ export const gitMusicPrinciples = [
 ];
 
 export const gitMusicMetrics = [
-  { value: '5', label: 'bibliotecas dj' },
+  { value: '6', label: 'bibliotecas dj' },
   { value: '4', label: 'zonas principales' },
   { value: '3', label: 'estados de revisión' },
   { value: '0', label: 'canciones visibles hoy' },
@@ -62,6 +62,13 @@ export const sampleLocalTree = [
           { name: 'DJ NICO' },
           { name: 'ARZOMUSIC' },
           { name: 'FRANJDEEJAY' },
+          {
+            name: 'TEST',
+            children: [
+              { name: 'POR ORDENAR' },
+              { name: 'FAVORITOS' },
+            ],
+          },
         ],
       },
       {
