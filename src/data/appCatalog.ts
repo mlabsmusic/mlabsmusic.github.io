@@ -13,7 +13,7 @@ export const appCatalog = [
     description: 'Convierte carpetas bien organizadas en playlists listas para trabajar más rápido en tu biblioteca musical.',
     icon: 'FT',
     category: 'Biblioteca',
-    launch_url: '/app/',
+    launch_url: '/workspace/',
   },
   {
     name: 'AI Session Generator',

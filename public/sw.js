@@ -1,10 +1,14 @@
-const CACHE_NAME = 'mlabs-recordpool-v1';
+const CACHE_NAME = 'mlabs-recordpool-v2';
 const APP_SHELL = [
   '/',
-  '/djs',
-  '/workspace',
-  '/login',
-  '/recordpool',
+  '/djs/',
+  '/workspace/',
+  '/login/',
+  '/recordpool/',
+  '/demo/',
+  '/pricing/',
+  '/for-crews/',
+  '/apps/',
   '/manifest.webmanifest',
   '/assets/site.css',
   '/assets/site.js',
@@ -37,19 +41,36 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
+  const requestUrl = new URL(event.request.url);
+  if (requestUrl.origin !== self.location.origin) return;
 
-      return fetch(event.request)
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
         .then((response) => {
-          if (!response || response.status !== 200 || response.type !== 'basic') return response;
-
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          }
           return response;
         })
-        .catch(() => caches.match('/'));
-    }),
+        .catch(() => caches.match(event.request).then((cached) => cached || caches.match('/'))),
+    );
+    return;
+  }
+
+  event.respondWith(
+    fetch(event.request)
+      .then((response) => {
+        if (!response || response.status !== 200 || response.type !== 'basic') return response;
+
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        return response;
+      })
+      .catch(() => caches.match(event.request).then((cached) => {
+        if (cached) return cached;
+        return caches.match('/');
+      })),
   );
 });
