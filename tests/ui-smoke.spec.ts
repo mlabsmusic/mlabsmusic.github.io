@@ -36,7 +36,7 @@ test.describe('public routes', () => {
     await expect(page.getByRole('heading', { name: /MLABS es Git para comunidades musicales/i })).toBeVisible();
     await expect(page.locator('.music-ops-node')).toHaveCount(6);
     await expect(page.getByRole('heading', { name: /El DJ no sube canciones una a una/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /Descargar para Mac M/i })).toHaveAttribute('href', '/downloads/MLABSFolderAgent-apple-silicon.zip');
+    await expect(page.getByRole('link', { name: /Solicitar acceso beta/i })).toHaveAttribute('href', /mailto:info@mlabsmusic.com/);
     await expect(page.locator('.mac-agent-feature')).toHaveCount(4);
     await expect(page.getByRole('heading', { name: /El negocio no es almacenar tracks/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /Ver pricing/i }).first()).toBeVisible();

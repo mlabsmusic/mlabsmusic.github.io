@@ -79,8 +79,8 @@ Existe una app macOS nativa funcional:
 - arranca y detiene el agente
 - muestra estado, log y vista previa local
 - muestra checklist de preparacion antes de iniciar el watch
-- build descargable para pilotos Apple Silicon: `public/downloads/MLABSFolderAgent-apple-silicon.zip`
-- requisito comunicado en web: macOS 14+ y Macs con procesador M1/M2/M3/M4
+- descarga publica pausada durante desarrollo para evitar bloqueos de Gatekeeper en pilotos
+- requisito comunicado en web: macOS 14+ y Macs con procesador M1/M2/M3/M4 en entrega manual
 
 Scripts disponibles:
 
@@ -149,7 +149,7 @@ Ya validado extremo a extremo:
 Pendiente de endurecer y terminar:
 
 - credenciales validas para smoke tests privados en CI/local
-- preparar distribucion firmada/notarizada de la app macOS si se quiere entregar fuera de este equipo
+- preparar distribucion Developer ID firmada/notarizada de la app macOS antes de entregar descarga publica
 - mejorar lectura profunda de Drive si Google expone permisos de subcarpetas/canciones
 - conectar el lead capture a Supabase/CRM cuando se decida el flujo comercial real
 

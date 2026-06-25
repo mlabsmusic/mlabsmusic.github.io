@@ -129,8 +129,8 @@ Subcarpetas de requests visibles:
 - Se anadio el flujo visual `Local DJ Folder -> MLABS Agent -> Music Branches -> Pull Request -> Owner Review -> 0_MASTER Library`.
 - Se agregaron beneficios de venta: controlled music deployment, unified library management, traceable music decisions y community monetization layer.
 - Se agrego FAQ de objeciones en `/for-crews` y CTA fijo "Reservar piloto de 7 dias".
-- Se anadio en la home una seccion "App macOS Apple Silicon" con preview visual de `MLABS Folder Agent`, CTA de descarga y features de ingesta local.
-- Se genero `public/downloads/MLABSFolderAgent-apple-silicon.zip` desde `dist/MLABSFolderAgent.app` para pilotos con Macs M1/M2/M3/M4.
+- Se anadio en la home una seccion "App macOS Apple Silicon" con preview visual de `MLABS Folder Agent`, CTA de acceso beta y features de ingesta local.
+- La descarga publica de `MLABSFolderAgent.app` queda pausada durante desarrollo para evitar bloqueos de Gatekeeper en usuarios externos.
 - `macos/FolderAgentApp/script/build_and_run.sh` ahora acepta `--package` para compilar sin abrir la app.
 
 ### Validacion
@@ -153,4 +153,4 @@ TEST_DJ_EMAIL="..." TEST_DJ_PASSWORD="..." npx playwright test
 - El Git graph usa fallback local cuando no hay sesion y se alimenta de `library_snapshots` + `library_change_sets` cuando Supabase responde.
 - `/pricing` y `/for-crews` no crean datos en Supabase todavia; el lead capture es intencionadamente local para poder vender y ensenar sin tocar RLS/schema.
 - El CTA fijo debe vivir fuera de `.page-wrap`; si se mete dentro, el transform de entrada rompe el comportamiento fixed en mobile/desktop.
-- La descarga macOS es una beta sin notarizar; el copy de web lo indica para evitar prometer distribucion publica final antes de firma/notarizacion.
+- La app macOS se entrega manualmente en pilotos guiados; antes de una descarga publica hace falta Developer ID y notarizacion.
