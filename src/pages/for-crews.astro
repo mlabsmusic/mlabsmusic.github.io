@@ -1,0 +1,209 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { buyerSegments, launchChecklist, musicOpsBenefits, musicOpsFaqs, musicOpsFlow, pricingTiers } from '../data/businessData';
+---
+
+<BaseLayout
+  title="Para crews, sellos y recordpools | MLABS"
+  description="MLABS convierte una comunidad musical en un recordpool privado con ramas, PRs, owner review, master library y narrativa comercial."
+  canonicalPath="/for-crews"
+>
+  <div class="page-wrap">
+    <header class="site-header">
+      <nav class="nav" aria-label="Principal">
+        <a class="brand" href="/">MLABS RECORDPOOL</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links" id="primaryMenu">
+          <a href="/">Home</a>
+          <a href="/demo">Demo</a>
+          <a href="/workspace">Workspace</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/for-crews">Para crews</a>
+        </div>
+        <button class="button primary" type="button" data-contact-modal data-pack="Pilot">Abrir piloto</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="section sales-hero buyer-hero">
+        <div class="shell sales-hero-grid">
+          <div class="sales-hero-copy reveal">
+            <p class="eyebrow">GitHub para musica comunitaria</p>
+            <h1>Tu crew no necesita otro enlace de Drive. Necesita control de cambios musical.</h1>
+            <p>
+              MLABS permite que cada DJ conserve su biblioteca privada, aporte solo lo que merece entrar,
+              y que el owner publique un master con trazabilidad editorial.
+            </p>
+            <div class="hero-actions">
+              <a class="button primary" href="/demo">Ver pitch</a>
+              <button class="button ghost" type="button" data-contact-modal data-pack="Pilot">Montar piloto</button>
+            </div>
+          </div>
+          <figure class="buyer-hero-frame reveal">
+            <img src="/assets/tutorial/tutorial-section-live.png" alt="Tutorial MLABS con flujo PR musical" />
+          </figure>
+        </div>
+      </section>
+
+      <section class="section music-ops-section buyer-music-ops">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="section-kicker">End-to-End Music Ops Platform</p>
+            <h2>Del folder privado del DJ al master aprobado por owner.</h2>
+            <p>
+              Esta es la historia que hay que vender: MLABS no guarda musica, gobierna como entra,
+              quien decide y que version queda publicada para la comunidad.
+            </p>
+          </div>
+
+          <div class="music-ops-diagram reveal" aria-label="Arquitectura Music Ops de MLABS">
+            {musicOpsFlow.map((item) => (
+              <article class="music-ops-node">
+                <span>{item.step}</span>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </article>
+            ))}
+          </div>
+
+          <div class="music-ops-benefits">
+            {musicOpsBenefits.map((benefit) => (
+              <article class="music-ops-benefit reveal">
+                <h3>{benefit.title}</h3>
+                <p>{benefit.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section buyer-section">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="section-kicker">Quien paga</p>
+            <h2>Cuatro compradores, el mismo dolor: mucho catalogo y poco gobierno.</h2>
+          </div>
+          <div class="buyer-grid">
+            {buyerSegments.map((buyer) => (
+              <article class="buyer-card reveal">
+                <span>{buyer.segment}</span>
+                <h3>{buyer.pain}</h3>
+                <p>{buyer.outcome}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section operator-section">
+        <div class="shell operator-grid">
+          <div class="operator-copy reveal">
+            <p class="section-kicker">Demo que cierra</p>
+            <h2>El piloto debe enseñar una biblioteca real, no promesas.</h2>
+            <p>
+              La forma de venderlo es sencilla: conectar una carpeta, crear ramas, abrir PRs,
+              aprobar un master y mostrar al comprador que su comunidad puede operar como software.
+            </p>
+            <a class="button primary" href="/workspace">Abrir workspace</a>
+          </div>
+          <ol class="launch-checklist reveal">
+            {launchChecklist.map((item, index) => (
+              <li>
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <p>{item}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section class="section buyer-pricing-section">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="section-kicker">Oferta recomendada</p>
+            <h2>Empieza vendiendo piloto, expande a sistema operativo.</h2>
+          </div>
+          <div class="buyer-offer-row">
+            {pricingTiers.slice(0, 2).map((tier) => (
+              <article class={`buyer-offer reveal ${tier.highlighted ? 'is-highlighted' : ''}`}>
+                <span>{tier.badge}</span>
+                <h3>{tier.name}</h3>
+                <strong>{tier.price}<small>{tier.cadence}</small></strong>
+                <p>{tier.description}</p>
+                <button class="button primary" type="button" data-contact-modal data-pack={tier.name}>{tier.cta}</button>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section music-ops-faq-section">
+        <div class="shell faq-layout">
+          <div class="faq-copy reveal">
+            <p class="section-kicker">Objeciones de comprador</p>
+            <h2>Preguntas que hay que responder antes de pedir dinero.</h2>
+            <p>La venta mejora cuando dejamos claro que MLABS respeta bibliotecas privadas, convive con el storage actual y crea gobierno musical.</p>
+          </div>
+          <div class="music-ops-faq-list reveal">
+            {musicOpsFaqs.map((item) => (
+              <details>
+                <summary>{item.question}</summary>
+                <p>{item.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="contact">
+        <div class="shell contact-layout">
+          <div>
+            <p class="eyebrow">La frase de venta</p>
+            <h2>“Dame siete dias y te enseño tu comunidad musical funcionando como un repositorio vivo.”</h2>
+            <p>Ese es el gancho. Corto, concreto y suficientemente distinto para abrir conversaciones.</p>
+          </div>
+          <div class="contact-actions">
+            <button class="button primary" type="button" data-contact-modal data-pack="Pilot">Crear lead</button>
+            <a class="button ghost" href="/pricing">Ver pricing</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal-backdrop" id="contactModal" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="leadTitle">
+        <h3 id="leadTitle">Lead para piloto</h3>
+        <p>Guarda el contacto y el contexto del comprador para preparar una demo con datos reales.</p>
+        <form class="lead-form" data-lead-form>
+          <label>
+            Nombre
+            <input name="name" type="text" placeholder="Nombre y equipo" required />
+          </label>
+          <label>
+            Email
+            <input name="email" type="email" placeholder="cliente@empresa.com" required />
+          </label>
+          <label>
+            Interes
+            <select id="leadNeed" name="need">
+              <option selected>Pilot</option>
+              <option>Community OS</option>
+              <option>Enterprise</option>
+            </select>
+          </label>
+          <label>
+            Nota
+            <textarea name="note" rows="4" placeholder="Que comunidad es, cuantos DJs tiene y que quiere resolver."></textarea>
+          </label>
+          <button class="action-link button primary" type="submit">Guardar lead</button>
+          <p class="lead-form-status" data-lead-status aria-live="polite"></p>
+        </form>
+        <button class="close" type="button">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <button class="sticky-pilot-cta" type="button" data-contact-modal data-pack="Pilot">Reservar piloto de 7 dias</button>
+</BaseLayout>

@@ -21,6 +21,30 @@ struct DetailView: View {
             }
 
             GroupBox {
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Preparación")
+                        .font(.headline)
+                    readinessRow(
+                        title: "Carpeta musical",
+                        detail: store.folderPath.isEmpty ? "Elige la carpeta que quieres vigilar." : "Carpeta conectada.",
+                        isReady: !store.folderPath.isEmpty
+                    )
+                    readinessRow(
+                        title: "Cuenta MLABS",
+                        detail: store.email.isEmpty || store.password.isEmpty ? "Completa email y contraseña en ajustes." : "Credenciales listas para iniciar sesión.",
+                        isReady: !store.email.isEmpty && !store.password.isEmpty
+                    )
+                    readinessRow(
+                        title: "Supabase",
+                        detail: store.supabaseURL.isEmpty || store.supabaseAnonKey.isEmpty ? "Faltan URL o publishable key." : "Destino cloud configurado.",
+                        isReady: !store.supabaseURL.isEmpty && !store.supabaseAnonKey.isEmpty
+                    )
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(6)
+            }
+
+            GroupBox {
                 VStack(alignment: .leading, spacing: 14) {
                     HStack(alignment: .center) {
                         VStack(alignment: .leading, spacing: 6) {
@@ -140,5 +164,21 @@ struct DetailView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(14)
         .background(.quaternary.opacity(0.25), in: RoundedRectangle(cornerRadius: 12))
+    }
+
+    private func readinessRow(title: String, detail: String, isReady: Bool) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: isReady ? "checkmark.circle.fill" : "circle")
+                .foregroundStyle(isReady ? .green : .secondary)
+                .font(.title3)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(title)
+                    .font(.subheadline.weight(.semibold))
+                Text(detail)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
     }
 }

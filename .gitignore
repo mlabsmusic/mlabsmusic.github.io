@@ -6,3 +6,5 @@ dist/
 .env
 .env.local
 macos/FolderAgentApp/.build/
+.agents/
+skills-lock.json

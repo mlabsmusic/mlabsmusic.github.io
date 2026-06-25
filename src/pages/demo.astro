@@ -1,0 +1,287 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const demoScenes = [
+  {
+    time: '00:00 - 00:25',
+    title: 'El problema: la musica vive desperdigada',
+    image: '/assets/tutorial/01-connect-folder.png',
+    point: 'Hoy una comunidad de DJs trabaja con carpetas, enlaces sueltos, versiones repetidas y cero control editorial.',
+    script: 'Esto no empieza como una app. Empieza como un problema real: la musica de una comunidad vive en carpetas, Drive y chats. MLABS convierte ese caos en un sistema con identidad y control.',
+  },
+  {
+    time: '00:25 - 01:00',
+    title: 'El DJ conecta su carpeta real',
+    image: '/assets/tutorial/01-connect-folder.png',
+    point: 'El agente lee la biblioteca local sin obligar al DJ a cambiar su rutina.',
+    script: 'El DJ no sube manualmente track por track. Conecta la carpeta donde ya trabaja, el agente detecta audios y crea un snapshot. El valor aqui es clave: no rompemos el workflow del DJ, lo elevamos.',
+  },
+  {
+    time: '01:00 - 01:35',
+    title: 'MLABS detecta cambios como Git musical',
+    image: '/assets/tutorial/02-detect-changes.png',
+    point: 'Cada alta, update o eliminacion queda registrada antes de tocar el master.',
+    script: 'MLABS entiende que una libreria musical cambia todo el tiempo. Por eso muestra diferencias: que entro, que se actualizo y que desaparecio. Esto convierte una carpeta en una biblioteca versionada.',
+  },
+  {
+    time: '01:35 - 02:10',
+    title: 'El DJ abre una PR musical',
+    image: '/assets/tutorial/03-create-pr.png',
+    point: 'Lo privado se queda privado. Solo lo elegido entra a revision para el pool comun.',
+    script: 'Aqui esta la magia de producto: el DJ selecciona que merece entrar al pool. No todo entra. Se abre una PR musical hacia 0_MASTER LIBRARY, con contexto y cambios concretos.',
+  },
+  {
+    time: '02:10 - 02:40',
+    title: 'Owner aprueba con impacto visible',
+    image: '/assets/tutorial/04-owner-review.png',
+    point: 'Owner ve impacto, notas y resultado antes de hacer merge.',
+    script: 'El owner no aprueba a ciegas. Ve cuantos tracks entran, que cambia, cuanto pesa y como queda el master. Es control editorial con trazabilidad, no una carpeta compartida sin gobierno.',
+  },
+  {
+    time: '02:40 - 03:00',
+    title: 'El master queda vivo, publicado y vendible',
+    image: '/assets/tutorial/05-master-live.png',
+    point: 'El recordpool muestra actividad real, snapshots y reviews: una comunidad convertida en producto.',
+    script: 'Cuando se aprueba, el master publica un snapshot. La comunidad ve actividad real y el negocio gana un asset: catalogo, perfiles, historial, permisos y criterio. Esto es infraestructura para recordpools modernos.',
+  },
+];
+
+const pitchSlides = [
+  {
+    kicker: 'Slide 01 · Apertura',
+    title: 'MLABS convierte una comunidad musical en infraestructura.',
+    body: 'El pitch empieza con una idea simple: una comunidad de DJs no necesita otro Drive. Necesita un sistema para organizar, revisar y publicar musica con criterio.',
+    image: '/assets/tutorial/01-connect-folder.png',
+    script: 'MLABS no es una web bonita encima de carpetas. Es una capa de producto para que una comunidad musical pueda operar con control, historial y master publicado.',
+  },
+  ...demoScenes.map((scene, index) => ({
+    kicker: `Slide ${String(index + 2).padStart(2, '0')} · ${scene.time}`,
+    title: scene.title,
+    body: scene.point,
+    image: scene.image,
+    script: scene.script,
+  })),
+  {
+    kicker: 'Slide 08 · Cierre',
+    title: 'El asset no es solo la musica. Es la comunidad operando con control.',
+    body: 'Perfiles, biblioteca, snapshots, PRs, owner review y master live crean una plataforma que puede venderse a crews, sellos, promotoras y recordpools.',
+    image: '/assets/tutorial/05-master-live.png',
+    script: 'La frase final: MLABS no es solo una web para DJs. Es el sistema operativo de una comunidad musical que quiere crecer con control.',
+  },
+];
+---
+
+<BaseLayout
+  title="Demo 3 minutos | MLABS Recordpool"
+  description="Guion de demo para presentar MLABS Recordpool: carpeta local, cambios, PR musical, owner review y master publicado."
+  canonicalPath="/demo"
+  bodyClass="app-body demo-body"
+>
+  <div class="page-wrap">
+    <header class="site-header">
+      <nav class="nav" aria-label="Principal">
+        <a class="brand" href="/">MLABS RECORDPOOL</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links" id="primaryMenu">
+          <a href="/">Home</a>
+          <a href="/#tutorial">Tutorial</a>
+          <a href="/for-crews">Para crews</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/workspace">Workspace</a>
+        </div>
+        <a class="button primary" href="/login">Acceso privado</a>
+      </nav>
+    </header>
+
+    <main class="demo-screen">
+      <section class="shell demo-hero reveal">
+        <p class="eyebrow">Demo comercial</p>
+        <h1>Tres minutos para vender MLABS como infraestructura musical.</h1>
+        <p>
+          Una historia cerrada: del caos de carpetas a un recordpool comunitario con control de cambios,
+          PRs musicales, owner review y master publicado.
+        </p>
+        <div class="demo-hero-actions">
+          <button class="button primary" type="button" id="startPitchButton">Iniciar pitch mode</button>
+          <a class="button primary" href="#guion">Abrir guion</a>
+          <a class="button ghost" href="/#tutorial">Ver tutorial visual</a>
+        </div>
+      </section>
+
+      <section class="shell demo-grid">
+        <article class="demo-card reveal">
+          <span>Promesa</span>
+          <strong>De Drive compartido a producto defendible.</strong>
+          <p>MLABS organiza comunidad, biblioteca, permisos, actividad y aprobaciones en una experiencia propia.</p>
+        </article>
+        <article class="demo-card reveal">
+          <span>Diferencial</span>
+          <strong>Git musical para DJs.</strong>
+          <p>Snapshots, diffs y PRs hacen que compartir musica sea revisable, seguro y trazable.</p>
+        </article>
+        <article class="demo-card reveal">
+          <span>Cierre</span>
+          <strong>Esto escala por comunidad.</strong>
+          <p>Cada crew, sello, promotora o recordpool puede convertir su catalogo vivo en una plataforma.</p>
+        </article>
+      </section>
+
+      <section class="shell demo-script" id="guion">
+        <div class="section-head reveal">
+          <p class="section-kicker">Guion de 3 minutos</p>
+          <h2>Presentalo como una historia, no como una lista de features.</h2>
+          <p>Lee la columna de guion mientras avanzas por las escenas. Cada bloque tiene un objetivo claro y una captura de apoyo.</p>
+        </div>
+
+        <div class="demo-scenes">
+          {demoScenes.map((scene, index) => (
+            <article class="demo-scene reveal">
+              <div class="demo-scene-copy">
+                <span>{scene.time}</span>
+                <h3>{scene.title}</h3>
+                <p>{scene.point}</p>
+                <blockquote>{scene.script}</blockquote>
+              </div>
+              <figure>
+                <img src={scene.image} alt={`Escena ${index + 1}: ${scene.title}`} loading="lazy" />
+              </figure>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="shell demo-close reveal">
+        <div>
+          <p class="eyebrow">Frase final</p>
+          <h2>“MLABS no es solo una web para DJs. Es el sistema operativo de una comunidad musical que quiere crecer con control.”</h2>
+        </div>
+        <div class="demo-close-actions">
+          <a class="button primary" href="/pricing">Ver pricing</a>
+          <a class="button ghost" href="/for-crews">Pagina compradores</a>
+        </div>
+      </section>
+    </main>
+
+    <section class="pitch-mode" id="pitchMode" aria-hidden="true">
+      <div class="pitch-stage">
+        <div class="pitch-topbar">
+          <span id="pitchCounter">01 / 08</span>
+          <div class="pitch-progress" aria-hidden="true"><span id="pitchProgress"></span></div>
+          <span id="pitchTimer">03:00</span>
+          <button class="pitch-close" type="button" id="closePitchButton" aria-label="Cerrar pitch mode">Cerrar</button>
+        </div>
+
+        <div class="pitch-slide-shell">
+          {pitchSlides.map((slide, index) => (
+            <article
+              class={`pitch-slide ${index === 0 ? 'is-active' : ''}`}
+              data-pitch-slide
+              data-slide-index={index}
+            >
+              <div class="pitch-copy">
+                <p class="eyebrow">{slide.kicker}</p>
+                <h2>{slide.title}</h2>
+                <p>{slide.body}</p>
+                <blockquote>{slide.script}</blockquote>
+              </div>
+              <figure>
+                <img src={slide.image} alt={`Pitch slide ${index + 1}: ${slide.title}`} />
+              </figure>
+            </article>
+          ))}
+        </div>
+
+        <div class="pitch-controls">
+          <button class="button ghost" type="button" id="prevPitchButton">Anterior</button>
+          <button class="button primary" type="button" id="nextPitchButton">Siguiente</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const pitchMode = document.getElementById('pitchMode');
+    const startPitchButton = document.getElementById('startPitchButton');
+    const closePitchButton = document.getElementById('closePitchButton');
+    const prevPitchButton = document.getElementById('prevPitchButton');
+    const nextPitchButton = document.getElementById('nextPitchButton');
+    const pitchCounter = document.getElementById('pitchCounter');
+    const pitchProgress = document.getElementById('pitchProgress');
+    const pitchTimer = document.getElementById('pitchTimer');
+    const pitchSlides = Array.from(document.querySelectorAll('[data-pitch-slide]'));
+    const totalSeconds = 180;
+    let currentSlide = 0;
+    let pitchStartedAt = 0;
+    let timerFrame = 0;
+
+    function formatTimer(seconds) {
+      const safeSeconds = Math.max(0, seconds);
+      const minutes = Math.floor(safeSeconds / 60);
+      const rest = String(safeSeconds % 60).padStart(2, '0');
+      return `${minutes}:${rest}`;
+    }
+
+    function renderPitchSlide(index) {
+      currentSlide = Math.max(0, Math.min(index, pitchSlides.length - 1));
+      pitchSlides.forEach((slide, slideIndex) => {
+        slide.classList.toggle('is-active', slideIndex === currentSlide);
+      });
+      if (pitchCounter) pitchCounter.textContent = `${String(currentSlide + 1).padStart(2, '0')} / ${String(pitchSlides.length).padStart(2, '0')}`;
+      if (pitchProgress) pitchProgress.style.width = `${((currentSlide + 1) / pitchSlides.length) * 100}%`;
+      if (prevPitchButton) prevPitchButton.toggleAttribute('disabled', currentSlide === 0);
+      if (nextPitchButton) nextPitchButton.textContent = currentSlide === pitchSlides.length - 1 ? 'Cerrar con fuerza' : 'Siguiente';
+    }
+
+    function tickPitchTimer() {
+      if (!pitchStartedAt) return;
+      const elapsed = Math.floor((Date.now() - pitchStartedAt) / 1000);
+      if (pitchTimer) pitchTimer.textContent = formatTimer(totalSeconds - elapsed);
+      timerFrame = window.requestAnimationFrame(tickPitchTimer);
+    }
+
+    function openPitchMode() {
+      if (!pitchMode) return;
+      pitchMode.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('is-pitching');
+      pitchStartedAt = Date.now();
+      renderPitchSlide(0);
+      window.cancelAnimationFrame(timerFrame);
+      tickPitchTimer();
+    }
+
+    function closePitchMode() {
+      if (!pitchMode) return;
+      pitchMode.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('is-pitching');
+      pitchStartedAt = 0;
+      window.cancelAnimationFrame(timerFrame);
+    }
+
+    startPitchButton?.addEventListener('click', openPitchMode);
+    closePitchButton?.addEventListener('click', closePitchMode);
+    prevPitchButton?.addEventListener('click', () => renderPitchSlide(currentSlide - 1));
+    nextPitchButton?.addEventListener('click', () => {
+      if (currentSlide === pitchSlides.length - 1) {
+        closePitchMode();
+        return;
+      }
+      renderPitchSlide(currentSlide + 1);
+    });
+
+    window.addEventListener('keydown', (event) => {
+      if (pitchMode?.getAttribute('aria-hidden') === 'true') return;
+      if (event.key === 'Escape') closePitchMode();
+      if (event.key === 'ArrowRight' || event.key === ' ') {
+        event.preventDefault();
+        if (currentSlide === pitchSlides.length - 1) closePitchMode();
+        else renderPitchSlide(currentSlide + 1);
+      }
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        renderPitchSlide(currentSlide - 1);
+      }
+    });
+  </script>
+</BaseLayout>

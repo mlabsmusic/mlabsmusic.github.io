@@ -4,8 +4,8 @@ export const gitMusicPrinciples = [
     body: 'La música sigue en el ordenador del DJ. La web ayuda a verla, ordenarla y controlar qué cambia, sin obligarte a subirlo todo.',
   },
   {
-    title: 'Borrador y versión estable',
-    body: 'Cada DJ puede probar cambios con calma y decidir cuándo pasan a su biblioteca lista para usar.',
+    title: 'Ramas por crate o set',
+    body: 'Cada DJ puede abrir una rama para preparar promos, limpiar tags o probar un set sin tocar su version estable.',
   },
   {
     title: 'Aportes a la biblioteca común',
@@ -16,8 +16,8 @@ export const gitMusicPrinciples = [
 export const gitMusicMetrics = [
   { value: '6', label: 'bibliotecas dj' },
   { value: '4', label: 'zonas principales' },
+  { value: '4', label: 'ramas musicales' },
   { value: '3', label: 'estados de revisión' },
-  { value: '0', label: 'canciones visibles hoy' },
 ];
 
 export const gitMusicFlow = [
@@ -33,8 +33,8 @@ export const gitMusicFlow = [
   },
   {
     step: '03',
-    title: 'Ordenar y confirmar',
-    body: 'El DJ revisa los cambios y decide qué se queda como borrador y qué pasa a su biblioteca estable.',
+    title: 'Crear ramas musicales',
+    body: 'El DJ hace checkout a working, crate/latin-promos o set/afterhours y decide donde guardar cada cambio.',
   },
   {
     step: '04',
@@ -46,6 +46,41 @@ export const gitMusicFlow = [
 export const demoWorkingChanges = [];
 
 export const demoPullRequests = [];
+
+export const demoBranches = [
+  {
+    id: 'published',
+    name: 'published',
+    label: 'Biblioteca estable',
+    status: 'protected',
+    source: 'current_published_snapshot_id',
+    description: 'La version lista para pinchar. Solo cambia cuando haces merge desde una rama de trabajo.',
+  },
+  {
+    id: 'working',
+    name: 'working',
+    label: 'Trabajo diario',
+    status: 'active',
+    source: 'current_working_snapshot_id',
+    description: 'La rama donde llegan lecturas del agente, cambios locales y pruebas antes de publicar.',
+  },
+  {
+    id: 'crate-latin-promos',
+    name: 'crate/latin-promos',
+    label: 'Crate Latin promos',
+    status: 'review',
+    source: 'working',
+    description: 'Rama de preparacion para seleccionar promos latinos antes de abrir PR musical.',
+  },
+  {
+    id: 'set-afterhours',
+    name: 'set/afterhours',
+    label: 'Set afterhours',
+    status: 'draft',
+    source: 'working',
+    description: 'Rama privada para probar una seleccion de set sin tocar published ni master.',
+  },
+];
 
 export const sampleLocalTree = [
   {

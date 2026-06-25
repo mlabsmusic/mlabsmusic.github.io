@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import {
   demoPullRequests,
+  demoBranches,
   demoWorkingChanges,
   gitMusicFlow,
   gitMusicMetrics,
@@ -103,6 +104,78 @@ import {
                 <small id="workspaceCloudLibrary">No hay libreria cloud activa.</small>
               </div>
             </article>
+          </section>
+
+          <section class="workspace-panel workspace-branch-panel">
+            <div class="workspace-panel-head">
+              <div>
+                <p class="workspace-kicker">Ramas musicales</p>
+                <h3>Trabaja como Git, pero con crates, sets y master</h3>
+              </div>
+              <span class="workspace-badge" id="workspaceBranchBadge">working</span>
+            </div>
+
+            <div class="workspace-branch-layout">
+              <div>
+                <p class="workspace-sidebar-copy">
+                  Crea ramas para preparar un crate, limpiar tags, probar un set o seleccionar promos. Nada toca la rama estable hasta que haces merge.
+                </p>
+                <form class="workspace-branch-form" id="branchForm">
+                  <label>
+                    Nueva rama
+                    <input id="branchNameInput" type="text" placeholder="crate/latin-promos" autocomplete="off" />
+                  </label>
+                  <button class="recordpool-row-button is-primary" type="submit">Crear rama</button>
+                </form>
+              </div>
+              <div class="workspace-branch-list" id="workspaceBranchList"></div>
+            </div>
+          </section>
+
+          <section class="workspace-panel workspace-graph-panel">
+            <div class="workspace-panel-head">
+              <div>
+                <p class="workspace-kicker">Git graph musical</p>
+                <h3>Historial visual de ramas, snapshots y PRs</h3>
+              </div>
+              <span class="workspace-badge" id="workspaceGraphSummary">Graph local</span>
+            </div>
+            <div class="workspace-graph-shell">
+              <div class="workspace-graph-head" aria-hidden="true">
+                <span>Graph</span>
+                <span>Commit musical</span>
+                <span>Rama</span>
+                <span>Estado</span>
+              </div>
+              <div class="workspace-graph-list" id="workspaceGitGraph"></div>
+            </div>
+          </section>
+
+          <section class="workspace-panel workspace-agent-panel">
+            <div class="workspace-panel-head">
+              <div>
+                <p class="workspace-kicker">Ingesta local</p>
+                <h3>La ruta recomendada para traer música real</h3>
+              </div>
+              <span class="workspace-badge">Mac agent</span>
+            </div>
+            <div class="workspace-agent-grid">
+              <article>
+                <strong>1. App macOS</strong>
+                <p>Selecciona una carpeta desde Finder, guarda credenciales y deja el watch activo mientras trabajas tu librería.</p>
+                <code>dist/MLABSFolderAgent.app</code>
+              </article>
+              <article>
+                <strong>2. Agent CLI</strong>
+                <p>Para demo o diagnóstico, el mismo motor puede lanzar una lectura puntual o quedarse vigilando una ruta.</p>
+                <code>npm run agent:watch -- "/ruta/a/libreria"</code>
+              </article>
+              <article>
+                <strong>3. Review owner</strong>
+                <p>Los cambios llegan como snapshots y change sets. El DJ decide qué comparte y owner publica el master.</p>
+                <a class="recordpool-row-button is-primary" href="/admin">Abrir owner review</a>
+              </article>
+            </div>
           </section>
 
           <section class="workspace-grid">
@@ -229,6 +302,11 @@ import {
           </div>
 
           <div class="workspace-sidebar-block">
+            <p class="workspace-sidebar-title">Branch graph</p>
+            <div class="workspace-branch-graph" id="workspaceBranchGraph"></div>
+          </div>
+
+          <div class="workspace-sidebar-block">
             <p class="workspace-sidebar-title">Base actual del pool</p>
             <div class="workspace-tree">
               {sampleLocalTree.map((node) => (
@@ -257,6 +335,8 @@ import {
     </main>
   </div>
 
+  <script id="workspaceBranchSeed" type="application/json" set:html={JSON.stringify(demoBranches)}></script>
+
   <script>
     import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
@@ -280,14 +360,25 @@ import {
     const cloudLibrary = document.getElementById('workspaceCloudLibrary');
     const snapshotTimeline = document.getElementById('workspaceSnapshotTimeline');
     const snapshotCount = document.getElementById('workspaceSnapshotCount');
+    const branchSeed = JSON.parse(document.getElementById('workspaceBranchSeed')?.textContent || '[]');
+    const branchList = document.getElementById('workspaceBranchList');
+    const branchGraph = document.getElementById('workspaceBranchGraph');
+    const branchBadge = document.getElementById('workspaceBranchBadge');
+    const branchForm = document.getElementById('branchForm');
+    const branchNameInput = document.getElementById('branchNameInput');
+    const gitGraph = document.getElementById('workspaceGitGraph');
+    const graphSummary = document.getElementById('workspaceGraphSummary');
 
     const STORAGE_KEY = 'mlabs_git_music_snapshot_v1';
+    const BRANCH_STORAGE_KEY = 'mlabs_git_music_branches_v1';
     let currentSnapshot = [];
     let currentChanges = [];
     let currentProfile = null;
     let currentLibrary = null;
     let currentWorkingSnapshotId = '';
     let hasLocalSelection = false;
+    let branches = readStoredBranches();
+    let activeBranchId = branches.find((branch) => branch.status === 'active')?.id || 'working';
 
     function readStoredSnapshot() {
       try {
@@ -299,6 +390,272 @@ import {
 
     function writeStoredSnapshot(snapshot) {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
+    }
+
+    function readStoredBranches() {
+      try {
+        const saved = JSON.parse(window.localStorage.getItem(BRANCH_STORAGE_KEY) || '[]');
+        if (Array.isArray(saved) && saved.length) return saved;
+      } catch {}
+      return branchSeed;
+    }
+
+    function writeStoredBranches(nextBranches = branches) {
+      window.localStorage.setItem(BRANCH_STORAGE_KEY, JSON.stringify(nextBranches));
+    }
+
+    function slugifyBranchName(value) {
+      return String(value || '')
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9/_-]+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^[-/]+|[-/]+$/g, '');
+    }
+
+    function activeBranch() {
+      return branches.find((branch) => branch.id === activeBranchId) || branches.find((branch) => branch.id === 'working') || branches[0];
+    }
+
+    function branchStatusLabel(status) {
+      const labels = {
+        active: 'checkout',
+        protected: 'protegida',
+        review: 'en review',
+        draft: 'borrador',
+      };
+      return labels[status] || status || 'branch';
+    }
+
+    function graphLaneForBranch(branchName = '') {
+      if (branchName.includes('published')) return 'published';
+      if (branchName.includes('master') || branchName.includes('0_MASTER')) return 'master';
+      if (branchName.includes('crate/')) return 'crate';
+      if (branchName.includes('set/')) return 'set';
+      return 'working';
+    }
+
+    function graphLabelFromSnapshot(snapshot) {
+      const label = snapshot?.label || 'Snapshot local';
+      const rootPath = snapshot?.root_path || '';
+      const branchFromRoot = rootPath.includes(':') ? rootPath.split(':')[0] : '';
+      const branchFromLabel = label.includes(' · ') ? label.split(' · ')[0] : '';
+      return branchFromRoot || branchFromLabel || 'working';
+    }
+
+    function graphStatusLabel(status) {
+      const labels = {
+        merged: 'merge',
+        open: 'review',
+        draft: 'draft',
+        rejected: 'rejected',
+        snapshot: 'snapshot',
+        branch: 'branch',
+      };
+      return labels[status] || status || 'commit';
+    }
+
+    function buildFallbackGraphRows() {
+      const active = activeBranch()?.name || 'working';
+      const rows = [
+        {
+          id: 'master-live',
+          lane: 'master',
+          branch: '0_MASTER',
+          title: '0_MASTER LIBRARY publicado',
+          detail: 'La biblioteca compartida solo cambia con PR aprobada por owner.',
+          status: 'merged',
+          meta: 'master',
+        },
+        {
+          id: 'published',
+          lane: 'published',
+          branch: 'published',
+          title: 'Biblioteca estable del DJ',
+          detail: 'Version lista para pinchar. Recibe merges desde ramas de trabajo.',
+          status: 'merged',
+          meta: 'local',
+        },
+        {
+          id: active,
+          lane: graphLaneForBranch(active),
+          branch: active,
+          title: `Checkout activo en ${active}`,
+          detail: 'Los siguientes snapshots y PRs se etiquetan con esta rama musical.',
+          status: 'branch',
+          meta: 'HEAD',
+        },
+        ...branches
+          .filter((branch) => branch.name !== active && branch.name !== 'published')
+          .slice(0, 4)
+          .map((branch) => ({
+            id: branch.id,
+            lane: graphLaneForBranch(branch.name),
+            branch: branch.name,
+            title: branch.label || branch.name,
+            detail: branch.description,
+            status: branch.status || 'branch',
+            meta: branch.source || 'working',
+          })),
+      ];
+      return rows;
+    }
+
+    function buildCloudGraphRows(snapshots = [], changeSets = []) {
+      const rows = [];
+
+      for (const pr of changeSets.slice(0, 8)) {
+        const branchName = pr.title?.includes('PR ')
+          ? pr.title.replace(/^PR\s+/, '').split(' -> ')[0]
+          : pr.title?.includes('Merge ')
+            ? pr.title.replace(/^Merge\s+/, '').split(' -> ')[0]
+            : pr.target_kind === 'master'
+              ? '0_MASTER'
+              : 'working';
+        rows.push({
+          id: `cs-${pr.id}`,
+          lane: pr.target_kind === 'master' ? 'master' : graphLaneForBranch(branchName),
+          branch: branchName,
+          title: pr.title || 'Change set',
+          detail: pr.description || pr.review_notes || 'Cambio cloud registrado.',
+          status: pr.status || 'open',
+          meta: `${pr.target_kind === 'master' ? 'PR master' : 'merge local'} · ${formatDate(pr.created_at)}`,
+        });
+      }
+
+      for (const snapshot of snapshots.slice(0, 8)) {
+        const branchName = graphLabelFromSnapshot(snapshot);
+        rows.push({
+          id: `snap-${snapshot.id}`,
+          lane: graphLaneForBranch(branchName),
+          branch: branchName,
+          title: snapshot.label || 'Snapshot',
+          detail: `${snapshot.file_count || 0} archivos · ${formatBytes(snapshot.total_bytes || 0)} · ${snapshot.source_kind || 'source'}`,
+          status: 'snapshot',
+          meta: formatDate(snapshot.created_at),
+        });
+      }
+
+      return rows.length ? rows : buildFallbackGraphRows();
+    }
+
+    function renderGitGraph(rows = buildFallbackGraphRows()) {
+      if (!gitGraph) return;
+      const safeRows = rows.slice(0, 14);
+      if (graphSummary) graphSummary.textContent = `${safeRows.length} commits`;
+      gitGraph.innerHTML = safeRows.map((row, index) => `
+        <article class="workspace-graph-row is-${row.lane}" data-graph-row="${row.id}">
+          <div class="workspace-graph-lanes" aria-hidden="true">
+            <span class="workspace-graph-line lane-master"></span>
+            <span class="workspace-graph-line lane-published"></span>
+            <span class="workspace-graph-line lane-working"></span>
+            <span class="workspace-graph-line lane-feature"></span>
+            <strong class="workspace-graph-dot lane-${row.lane}">${index + 1}</strong>
+          </div>
+          <div class="workspace-graph-copy">
+            <strong>${row.title}</strong>
+            <p>${row.detail || 'Sin detalle.'}</p>
+            <small>${row.meta || ''}</small>
+          </div>
+          <span class="workspace-graph-branch">${row.branch}</span>
+          <span class="workspace-graph-state is-${row.status}">${graphStatusLabel(row.status)}</span>
+        </article>
+      `).join('');
+    }
+
+    function checkoutBranch(branchId) {
+      const target = branches.find((branch) => branch.id === branchId);
+      if (!target) return;
+      activeBranchId = branchId;
+      branches = branches.map((branch) => ({
+        ...branch,
+        status: branch.id === branchId && branch.status !== 'protected' ? 'active' : (branch.id !== branchId && branch.status === 'active' ? 'draft' : branch.status),
+      }));
+      writeStoredBranches();
+      renderBranches();
+      syncBranchContext();
+      renderGitGraph();
+    }
+
+    function createBranch(name) {
+      const cleanName = slugifyBranchName(name);
+      if (!cleanName) {
+        if (sourceMeta) sourceMeta.textContent = 'Escribe un nombre de rama, por ejemplo crate/latin-promos.';
+        return;
+      }
+      const id = cleanName.replaceAll('/', '-');
+      if (branches.some((branch) => branch.id === id || branch.name === cleanName)) {
+        checkoutBranch(id);
+        return;
+      }
+      const baseBranch = activeBranch();
+      const nextBranch = {
+        id,
+        name: cleanName,
+        label: cleanName.replaceAll('-', ' ').replaceAll('/', ' / '),
+        status: 'active',
+        source: baseBranch?.name || 'working',
+        description: `Rama creada desde ${baseBranch?.name || 'working'} para preparar musica sin tocar published.`,
+        createdAt: new Date().toISOString(),
+      };
+      branches = branches.map((branch) => ({
+        ...branch,
+        status: branch.status === 'active' ? 'draft' : branch.status,
+      })).concat(nextBranch);
+      activeBranchId = id;
+      writeStoredBranches();
+      renderBranches();
+      syncBranchContext();
+      renderGitGraph();
+      if (branchNameInput instanceof HTMLInputElement) branchNameInput.value = '';
+      if (sourceMeta) sourceMeta.textContent = `Checkout a ${cleanName}. Los siguientes cambios se guardan en esta rama musical.`;
+    }
+
+    function renderBranches() {
+      const current = activeBranch();
+      if (branchBadge) branchBadge.textContent = current?.name || 'working';
+
+      if (branchList) {
+        branchList.innerHTML = branches.map((branch) => `
+          <article class="workspace-branch-card ${branch.id === activeBranchId ? 'is-active' : ''} is-${branch.status}">
+            <div>
+              <span>${branchStatusLabel(branch.status)}</span>
+              <strong>${branch.name}</strong>
+              <p>${branch.description || 'Rama musical sin descripcion.'}</p>
+              <small>base: ${branch.source || 'working'}</small>
+            </div>
+            <button class="recordpool-row-button ${branch.id === activeBranchId ? 'is-selected' : ''}" type="button" data-checkout-branch="${branch.id}">
+              ${branch.id === activeBranchId ? 'Activa' : 'Checkout'}
+            </button>
+          </article>
+        `).join('');
+
+        for (const button of branchList.querySelectorAll('[data-checkout-branch]')) {
+          button.addEventListener('click', () => checkoutBranch(button.getAttribute('data-checkout-branch') || ''));
+        }
+      }
+
+      if (branchGraph) {
+        branchGraph.innerHTML = branches.map((branch) => `
+          <button class="workspace-branch-node ${branch.id === activeBranchId ? 'is-active' : ''}" type="button" data-graph-branch="${branch.id}">
+            <span>${branchStatusLabel(branch.status)}</span>
+            <strong>${branch.name}</strong>
+          </button>
+        `).join('');
+
+        for (const button of branchGraph.querySelectorAll('[data-graph-branch]')) {
+          button.addEventListener('click', () => checkoutBranch(button.getAttribute('data-graph-branch') || ''));
+        }
+      }
+    }
+
+    function syncBranchContext() {
+      const branch = activeBranch();
+      if (!branch) return;
+      if (title) {
+        const owner = currentProfile?.display_name || sourceName?.textContent || 'DJ';
+        title.textContent = `${owner} / ${branch.name}`;
+      }
     }
 
     function totalBytes(snapshot) {
@@ -573,7 +930,7 @@ import {
       currentLibrary = library;
       currentWorkingSnapshotId = library.current_working_snapshot_id || '';
       if (title && profile?.display_name) {
-        title.textContent = `${profile.display_name} / Biblioteca en curso`;
+        title.textContent = `${profile.display_name} / ${activeBranch()?.name || 'working'}`;
       }
       updateCloudStatus('Cloud activo', 'Cada estado que guardes puede quedar disponible para el historial de tu biblioteca.');
       if (cloudUser) cloudUser.textContent = profile?.display_name || profile?.email || session.user.email || 'Usuario conectado';
@@ -609,6 +966,7 @@ import {
 
       renderCloudSnapshots(snapshots);
       renderCloudChangeSets(changeSets);
+      renderGitGraph(buildCloudGraphRows(snapshots, changeSets));
 
       const latestOpenChangeSet = changeSets.find((item) => item.status === 'open' || item.status === 'draft') || null;
       let latestChanges = [];
@@ -646,6 +1004,7 @@ import {
       sourceName.textContent = root;
       sourceMeta.textContent = `${snapshot.length} archivos detectados en esta lectura local.`;
       refreshFromSnapshot(snapshot);
+      syncBranchContext();
     });
 
     saveSnapshotButton?.addEventListener('click', async () => {
@@ -662,9 +1021,9 @@ import {
         const payload = {
           library_id: currentLibrary.id,
           created_by: currentProfile.id,
-          label: `${sourceName?.textContent || 'Workspace'} estado`,
+          label: `${activeBranch()?.name || 'working'} · ${sourceName?.textContent || 'Workspace'} estado`,
           source_kind: 'browser_demo',
-          root_path: sourceName?.textContent || null,
+          root_path: `${activeBranch()?.name || 'working'}:${sourceName?.textContent || 'local'}`,
           file_count: currentSnapshot.length,
           total_bytes: totalBytes(currentSnapshot),
           snapshot_json: currentSnapshot,
@@ -711,9 +1070,9 @@ import {
           library_id: currentLibrary.id,
           created_by: currentProfile.id,
           reviewed_by: currentProfile.id,
-          title: `Paso a estable · ${new Date().toLocaleDateString('es-ES')}`,
-          description: `${currentChanges.length} cambios aceptados hacia la biblioteca estable.`,
-          review_notes: 'Merge directo desde el workspace del DJ.',
+          title: `Merge ${activeBranch()?.name || 'working'} -> published · ${new Date().toLocaleDateString('es-ES')}`,
+          description: `${currentChanges.length} cambios aceptados desde la rama ${activeBranch()?.name || 'working'} hacia la biblioteca estable.`,
+          review_notes: `Merge directo desde la rama ${activeBranch()?.name || 'working'} del DJ.`,
           target_kind: 'library',
           status: 'merged',
           to_snapshot_id: currentWorkingSnapshotId,
@@ -763,8 +1122,8 @@ import {
         .insert({
           library_id: currentLibrary.id,
           created_by: currentProfile.id,
-          title: `Cambios preparados · ${new Date().toLocaleDateString('es-ES')}`,
-          description: `${selected.length} cambios preparados para revisión antes de entrar en la biblioteca compartida.`,
+          title: `PR ${activeBranch()?.name || 'working'} -> 0_MASTER · ${new Date().toLocaleDateString('es-ES')}`,
+          description: `${selected.length} cambios preparados desde la rama ${activeBranch()?.name || 'working'} para revisión antes de entrar en la biblioteca compartida.`,
           target_kind: 'master',
           status: 'open',
           from_snapshot_id: currentLibrary.current_published_snapshot_id || null,
@@ -805,6 +1164,14 @@ import {
       sourceMeta.textContent = `Hay un estado guardado con ${previousSnapshot.length} archivos listo para comparar.`;
     }
 
+    branchForm?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      createBranch(branchNameInput instanceof HTMLInputElement ? branchNameInput.value : '');
+    });
+
+    renderBranches();
+    syncBranchContext();
+    renderGitGraph();
     loadCloudHistory();
   </script>
 </BaseLayout>

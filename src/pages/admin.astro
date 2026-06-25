@@ -31,6 +31,29 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <p id="ownerSummary">Validando permisos owner y cargando solicitudes musicales...</p>
       </section>
 
+      <section class="shell admin-review-summary" aria-label="Resumen owner">
+        <article class="admin-review-stat">
+          <span>Pendientes</span>
+          <strong id="ownerPendingMetric">0</strong>
+          <small>PRs esperando decision</small>
+        </article>
+        <article class="admin-review-stat">
+          <span>Master</span>
+          <strong id="ownerMasterMetric">0</strong>
+          <small>tracks publicados</small>
+        </article>
+        <article class="admin-review-stat">
+          <span>Impacto</span>
+          <strong id="ownerImpactMetric">0</strong>
+          <small>cambios en la PR activa</small>
+        </article>
+        <article class="admin-review-stat">
+          <span>Ultimo merge</span>
+          <strong id="ownerLastMergeMetric">-</strong>
+          <small>actividad master</small>
+        </article>
+      </section>
+
       <section class="shell admin-layout admin-layout-review">
         <aside class="admin-panel">
           <h2>PRs pendientes</h2>
@@ -43,11 +66,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               <h2>Detalle de revision</h2>
               <p id="selectedPrLabel">Selecciona una PR musical.</p>
             </div>
+            <span class="workspace-badge" id="selectedPrStatus">Sin PR</span>
           </div>
 
           <div class="workspace-timeline" id="prMetaPanel">
             <div class="workspace-empty">Esperando una PR a master.</div>
           </div>
+
+          <section class="admin-impact-panel" aria-label="Impacto del merge">
+            <div class="admin-impact-head">
+              <div>
+                <p class="workspace-kicker">Impacto previsto</p>
+                <h3>Que cambiara en master</h3>
+              </div>
+              <span class="workspace-badge" id="reviewImpactBadge">Sin cambios</span>
+            </div>
+            <div class="admin-impact-grid" id="reviewImpactGrid">
+              <article><span>Añadidos</span><strong id="impactAdded">0</strong></article>
+              <article><span>Actualizados</span><strong id="impactUpdated">0</strong></article>
+              <article><span>Eliminados</span><strong id="impactRemoved">0</strong></article>
+              <article><span>Master antes</span><strong id="impactBefore">0</strong></article>
+              <article><span>Master despues</span><strong id="impactAfter">0</strong></article>
+              <article><span>Peso final</span><strong id="impactBytes">0 B</strong></article>
+            </div>
+          </section>
 
           <h2 class="admin-subtitle">Cambios incluidos</h2>
           <div class="admin-list" id="prChangesList"></div>
@@ -72,6 +114,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             </div>
           </div>
           <div class="admin-list" id="reviewHistoryList"></div>
+          <h2 class="admin-subtitle">Snapshots master</h2>
+          <div class="admin-list" id="masterSnapshotList"></div>
         </section>
       </section>
     </main>
@@ -86,18 +130,33 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     const prMetaPanel = document.getElementById('prMetaPanel');
     const prChangesList = document.getElementById('prChangesList');
     const reviewHistoryList = document.getElementById('reviewHistoryList');
+    const masterSnapshotList = document.getElementById('masterSnapshotList');
     const ownerReviewForm = document.getElementById('ownerReviewForm');
     const ownerReviewNotes = document.getElementById('ownerReviewNotes');
     const rejectPrButton = document.getElementById('rejectPrButton');
     const signOutButton = document.getElementById('ownerSignOutButton');
+    const ownerPendingMetric = document.getElementById('ownerPendingMetric');
+    const ownerMasterMetric = document.getElementById('ownerMasterMetric');
+    const ownerImpactMetric = document.getElementById('ownerImpactMetric');
+    const ownerLastMergeMetric = document.getElementById('ownerLastMergeMetric');
+    const selectedPrStatus = document.getElementById('selectedPrStatus');
+    const reviewImpactBadge = document.getElementById('reviewImpactBadge');
+    const impactAdded = document.getElementById('impactAdded');
+    const impactUpdated = document.getElementById('impactUpdated');
+    const impactRemoved = document.getElementById('impactRemoved');
+    const impactBefore = document.getElementById('impactBefore');
+    const impactAfter = document.getElementById('impactAfter');
+    const impactBytes = document.getElementById('impactBytes');
 
     let ownerProfile = null;
     let masterLibrary = null;
     let pendingPrs = [];
     let reviewHistory = [];
+    let masterSnapshots = [];
     let currentPrId = '';
     let currentPrChanges = [];
     let masterSnapshotFiles = [];
+    let isReviewing = false;
 
     function setSummary(text) {
       if (ownerSummary) ownerSummary.textContent = text;
@@ -113,10 +172,45 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
 
     function formatDate(value) {
+      if (!value) return '-';
       return new Date(value).toLocaleString('es-ES', {
         dateStyle: 'short',
         timeStyle: 'short',
       });
+    }
+
+    function formatShortDate(value) {
+      if (!value) return '-';
+      return new Date(value).toLocaleDateString('es-ES', {
+        day: '2-digit',
+        month: 'short',
+      });
+    }
+
+    function formatBytes(bytes) {
+      const value = Number(bytes || 0);
+      if (value < 1024) return `${value} B`;
+      if (value < 1024 * 1024) return `${(value / 1024).toFixed(1)} KB`;
+      if (value < 1024 * 1024 * 1024) return `${(value / (1024 * 1024)).toFixed(1)} MB`;
+      return `${(value / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+    }
+
+    function statusLabel(status) {
+      const labels = {
+        open: 'Pendiente',
+        draft: 'Borrador',
+        merged: 'Mergeado',
+        rejected: 'Rechazado',
+      };
+      return labels[status] || status || '-';
+    }
+
+    function getChangeCounts(changes) {
+      return changes.reduce((counts, change) => {
+        counts.total += 1;
+        counts[change.change_type] = (counts[change.change_type] || 0) + 1;
+        return counts;
+      }, { total: 0, added: 0, updated: 0, removed: 0 });
     }
 
     async function requireOwner() {
@@ -157,6 +251,28 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       return true;
     }
 
+    function renderReviewMetrics() {
+      const lastMerged = reviewHistory.find((row) => row.status === 'merged');
+      if (ownerPendingMetric) ownerPendingMetric.textContent = `${pendingPrs.length}`;
+      if (ownerMasterMetric) ownerMasterMetric.textContent = `${masterSnapshotFiles.length}`;
+      if (ownerImpactMetric) ownerImpactMetric.textContent = `${currentPrChanges.length}`;
+      if (ownerLastMergeMetric) ownerLastMergeMetric.textContent = lastMerged ? formatShortDate(lastMerged.merged_at || lastMerged.updated_at || lastMerged.created_at) : '-';
+    }
+
+    function renderImpact() {
+      const counts = getChangeCounts(currentPrChanges);
+      const mergedSnapshotFiles = buildMasterSnapshot(masterSnapshotFiles, currentPrChanges);
+
+      if (reviewImpactBadge) reviewImpactBadge.textContent = counts.total ? `${counts.total} cambios` : 'Sin cambios';
+      if (impactAdded) impactAdded.textContent = `${counts.added}`;
+      if (impactUpdated) impactUpdated.textContent = `${counts.updated}`;
+      if (impactRemoved) impactRemoved.textContent = `${counts.removed}`;
+      if (impactBefore) impactBefore.textContent = `${masterSnapshotFiles.length}`;
+      if (impactAfter) impactAfter.textContent = `${mergedSnapshotFiles.length}`;
+      if (impactBytes) impactBytes.textContent = formatBytes(totalBytes(mergedSnapshotFiles));
+      renderReviewMetrics();
+    }
+
     function renderPendingPrs() {
       if (!pendingPrList) return;
 
@@ -171,7 +287,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <strong>${escapeHtml(pr.title)}</strong>
             <small>${escapeHtml(pr.profile_name || 'DJ')} · ${formatDate(pr.created_at)}</small>
           </span>
-          <em>${escapeHtml(pr.status)}</em>
+          <em>${escapeHtml(statusLabel(pr.status))}</em>
         </button>
       `).join('');
 
@@ -190,16 +306,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       if (!currentPr) {
         if (selectedPrLabel) selectedPrLabel.textContent = 'Selecciona una PR musical.';
+        if (selectedPrStatus) selectedPrStatus.textContent = 'Sin PR';
         if (prMetaPanel) prMetaPanel.innerHTML = '<div class="workspace-empty">Esperando una PR a master.</div>';
         if (prChangesList) prChangesList.innerHTML = '<div class="workspace-empty">No hay cambios cargados.</div>';
         if (ownerReviewNotes) ownerReviewNotes.value = '';
+        currentPrChanges = [];
+        renderImpact();
         return;
       }
 
       if (selectedPrLabel) selectedPrLabel.textContent = `${currentPr.title} · ${currentPr.profile_name || 'DJ'}`;
+      if (selectedPrStatus) selectedPrStatus.textContent = statusLabel(currentPr.status);
       if (ownerReviewNotes) ownerReviewNotes.value = currentPr.review_notes || '';
 
       if (prMetaPanel) {
+        const counts = getChangeCounts(currentPrChanges);
         prMetaPanel.innerHTML = `
           <article class="workspace-timeline-card">
             <div class="workspace-timeline-head">
@@ -207,7 +328,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               <span>${formatDate(currentPr.created_at)}</span>
             </div>
             <p>${escapeHtml(currentPr.description || 'Sin descripcion')}</p>
-            <small>Origen: ${escapeHtml(currentPr.library_name || 'Library')} · owner review hacia 0_MASTER LIBRARY</small>
+            <small>Origen: ${escapeHtml(currentPr.library_name || 'Library')} · ${counts.added} nuevos · ${counts.updated} actualizados · ${counts.removed} eliminados</small>
           </article>
         `;
       }
@@ -222,11 +343,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <article class="workspace-change-row is-${change.change_type}">
           <div>
             <strong>${escapeHtml(change.entity_key)}</strong>
-            <p>${escapeHtml(change.change_type)} · ${escapeHtml(change.after_json?.detail || change.before_json?.detail || 'Cambio sin detalle')}</p>
+            <p>${escapeHtml(change.after_json?.path || change.before_json?.path || change.after_json?.detail || change.before_json?.detail || 'Cambio sin detalle')}</p>
           </div>
-          <span>${escapeHtml(change.change_type)}</span>
+          <span>${escapeHtml(statusLabel(change.change_type))}</span>
         </article>
       `).join('');
+
+      renderImpact();
     }
 
     function renderHistory() {
@@ -238,13 +361,33 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       }
 
       reviewHistoryList.innerHTML = reviewHistory.map((pr) => `
-        <article class="workspace-timeline-card">
+        <article class="workspace-timeline-card admin-history-card is-${escapeHtml(pr.status)}">
           <div class="workspace-timeline-head">
             <strong>${escapeHtml(pr.title)}</strong>
-            <span>${formatDate(pr.created_at)}</span>
+            <span>${formatDate(pr.merged_at || pr.updated_at || pr.created_at)}</span>
           </div>
           <p>${escapeHtml(pr.description || 'Sin descripcion')}</p>
-          <small>${escapeHtml(pr.status)}${pr.review_notes ? ` · ${escapeHtml(pr.review_notes)}` : ''}</small>
+          <small>${escapeHtml(statusLabel(pr.status))}${pr.profile_name ? ` · ${escapeHtml(pr.profile_name)}` : ''}${pr.review_notes ? ` · ${escapeHtml(pr.review_notes)}` : ''}</small>
+        </article>
+      `).join('');
+    }
+
+    function renderMasterSnapshots() {
+      if (!masterSnapshotList) return;
+
+      if (!masterSnapshots.length) {
+        masterSnapshotList.innerHTML = '<div class="workspace-empty">Todavia no hay snapshots publicados en master.</div>';
+        return;
+      }
+
+      masterSnapshotList.innerHTML = masterSnapshots.map((snapshot) => `
+        <article class="workspace-timeline-card">
+          <div class="workspace-timeline-head">
+            <strong>${escapeHtml(snapshot.label || 'Snapshot master')}</strong>
+            <span>${formatDate(snapshot.created_at)}</span>
+          </div>
+          <p>${Number(snapshot.file_count || 0)} tracks · ${formatBytes(snapshot.total_bytes)} · ${escapeHtml(snapshot.source_kind || 'source')}</p>
+          <small>${escapeHtml(snapshot.root_path || '0_MASTER LIBRARY')}</small>
         </article>
       `).join('');
     }
@@ -263,6 +406,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           target_kind,
           status,
           created_at,
+          updated_at,
+          merged_at,
+          to_snapshot_id,
           library_id,
           created_by,
           libraries!inner(name),
@@ -287,13 +433,32 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       currentPrId = pendingPrs[0]?.id || '';
 
       if (masterLibrary?.current_published_snapshot_id) {
-        const { data: masterSnapshot } = await supabase
-          .from('library_snapshots')
-          .select('snapshot_json')
-          .eq('id', masterLibrary.current_published_snapshot_id)
-          .single();
+        const [{ data: masterSnapshot }, { data: snapshots }] = await Promise.all([
+          supabase
+            .from('library_snapshots')
+            .select('snapshot_json')
+            .eq('id', masterLibrary.current_published_snapshot_id)
+            .single(),
+          supabase
+            .from('library_snapshots')
+            .select('id, label, source_kind, root_path, file_count, total_bytes, created_at')
+            .eq('library_id', masterLibrary.id)
+            .order('created_at', { ascending: false })
+            .limit(5),
+        ]);
+        masterSnapshots = snapshots || [];
         masterSnapshotFiles = Array.isArray(masterSnapshot?.snapshot_json) ? masterSnapshot.snapshot_json : [];
+      } else if (masterLibrary?.id) {
+        const { data: snapshots } = await supabase
+          .from('library_snapshots')
+          .select('id, label, source_kind, root_path, file_count, total_bytes, created_at')
+          .eq('library_id', masterLibrary.id)
+          .order('created_at', { ascending: false })
+          .limit(5);
+        masterSnapshots = snapshots || [];
+        masterSnapshotFiles = [];
       } else {
+        masterSnapshots = [];
         masterSnapshotFiles = [];
       }
 
@@ -302,6 +467,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       renderPendingPrs();
       renderCurrentPr();
       renderHistory();
+      renderMasterSnapshots();
+      renderReviewMetrics();
+      setSummary(`${pendingPrs.length} PRs pendientes · ${masterSnapshotFiles.length} tracks publicados en master.`);
     }
 
     async function loadCurrentPrChanges() {
@@ -310,11 +478,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         return;
       }
 
-      const { data: changes } = await supabase
+      const { data: changes, error } = await supabase
         .from('library_changes')
-        .select('id, entity_key, change_type, before_json, after_json, selected_for_master')
+        .select('id, entity_key, change_type, before_json, after_json, selected_for_master, created_at')
         .eq('change_set_id', currentPrId)
         .order('created_at', { ascending: true });
+
+      if (error) {
+        setSummary(`No he podido cargar los cambios de la PR: ${error.message}`);
+        currentPrChanges = [];
+        return;
+      }
 
       currentPrChanges = changes || [];
     }
@@ -351,9 +525,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     async function approveCurrentPr(status) {
       const currentPr = pendingPrs.find((pr) => pr.id === currentPrId);
-      if (!currentPr || !ownerProfile || !supabase || !masterLibrary) return;
+      if (!currentPr || !ownerProfile || !supabase || !masterLibrary || isReviewing) return;
 
       const notes = ownerReviewNotes?.value?.trim() || '';
+      isReviewing = true;
+      if (rejectPrButton) rejectPrButton.disabled = true;
+      const submitButton = ownerReviewForm?.querySelector('button[type="submit"]');
+      if (submitButton) submitButton.disabled = true;
+      setSummary(status === 'merged' ? 'Creando snapshot master y registrando merge...' : 'Registrando rechazo...');
 
       if (status === 'merged') {
         const mergedSnapshotFiles = buildMasterSnapshot(masterSnapshotFiles, currentPrChanges);
@@ -377,6 +556,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
         if (snapshotInsert.error) {
           setSummary(`No he podido crear el snapshot master: ${snapshotInsert.error.message}`);
+          isReviewing = false;
+          if (rejectPrButton) rejectPrButton.disabled = false;
+          if (submitButton) submitButton.disabled = false;
           return;
         }
 
@@ -393,6 +575,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
         if (libraryUpdate.error) {
           setSummary(`He creado el snapshot master, pero no actualice la libreria: ${libraryUpdate.error.message}`);
+          isReviewing = false;
+          if (rejectPrButton) rejectPrButton.disabled = false;
+          if (submitButton) submitButton.disabled = false;
           return;
         }
 
@@ -413,10 +598,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       if (updateResult.error) {
         setSummary(`No he podido actualizar la PR: ${updateResult.error.message}`);
+        isReviewing = false;
+        if (rejectPrButton) rejectPrButton.disabled = false;
+        if (submitButton) submitButton.disabled = false;
         return;
       }
 
       setSummary(status === 'merged' ? 'PR aprobada y mergeada a 0_MASTER LIBRARY.' : 'PR rechazada.');
+      isReviewing = false;
+      if (rejectPrButton) rejectPrButton.disabled = false;
+      if (submitButton) submitButton.disabled = false;
       await loadReviewData();
     }
 

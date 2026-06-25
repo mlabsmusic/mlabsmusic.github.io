@@ -78,8 +78,11 @@ case "$MODE" in
     sleep 2
     pgrep -x "$APP_NAME" >/dev/null
     ;;
+  --package|package)
+    echo "$APP_BUNDLE"
+    ;;
   *)
-    echo "usage: $0 [run|--debug|--logs|--telemetry|--verify]" >&2
+    echo "usage: $0 [run|--debug|--logs|--telemetry|--verify|--package]" >&2
     exit 2
     ;;
 esac

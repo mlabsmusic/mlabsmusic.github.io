@@ -1,8 +1,47 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { macAgentFeatures, musicOpsBenefits, musicOpsFlow, pricingTiers, productMoats } from '../data/businessData';
 import { drivePlan, getCommunityProfiles, libraryBlueprint, platformStats } from '../data/communityData';
 
 const profiles = getCommunityProfiles();
+
+const tutorialSteps = [
+  {
+    step: '01',
+    title: 'El DJ conecta su carpeta real',
+    body: 'La música sigue en su entorno de trabajo. El agente macOS lee la carpeta, detecta audios compatibles y prepara un snapshot sin mover archivos ni romper rutinas.',
+    image: '/assets/tutorial/01-connect-folder.png',
+    alt: 'Captura del agente macOS conectando una carpeta musical',
+  },
+  {
+    step: '02',
+    title: 'MLABS detecta cambios como un Git musical',
+    body: 'Altas, updates y eliminaciones aparecen en el workspace como cambios revisables. El DJ entiende qué pasó antes de publicar nada.',
+    image: '/assets/tutorial/02-detect-changes.png',
+    alt: 'Captura del workspace mostrando cambios detectados en la biblioteca',
+  },
+  {
+    step: '03',
+    title: 'El DJ abre una PR hacia el master',
+    body: 'Solo se selecciona lo que merece compartirse. Cada aporte entra como una PR musical con destino, estado y detalle de tracks.',
+    image: '/assets/tutorial/03-create-pr.png',
+    alt: 'Captura de una PR musical preparada para entrar en master',
+  },
+  {
+    step: '04',
+    title: 'Owner aprueba con control total',
+    body: 'Antes del merge, owner ve impacto, notas y cambios incluidos. Nada entra en 0_MASTER LIBRARY sin criterio editorial.',
+    image: '/assets/tutorial/04-owner-review.png',
+    alt: 'Captura del panel owner revisando una PR musical',
+  },
+  {
+    step: '05',
+    title: 'El master queda publicado y trazable',
+    body: 'El recordpool muestra actividad real: snapshots, merges y reviews. La comunidad ve una biblioteca viva, no un Drive sin contexto.',
+    image: '/assets/tutorial/05-master-live.png',
+    alt: 'Captura del master publicado con actividad reciente',
+  },
+];
 ---
 
 <BaseLayout
@@ -19,6 +58,11 @@ const profiles = getCommunityProfiles();
         </button>
         <div class="nav-links" id="primaryMenu">
           <a href="#vision">Vision</a>
+          <a href="#mac-agent">App Mac</a>
+          <a href="#tutorial">Tutorial</a>
+          <a href="/demo">Demo</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/for-crews">Para crews</a>
           <a href="/djs">DJs</a>
           <a href="#estructura">Biblioteca</a>
           <a href="/workspace">Workspace</a>
@@ -51,7 +95,7 @@ const profiles = getCommunityProfiles();
           </p>
           <div class="hero-actions">
             <a class="button primary" href="/djs">Explorar perfiles</a>
-            <a class="button ghost" href="/workspace">Entrar al workspace</a>
+            <a class="button ghost" href="/pricing">Ver pricing</a>
           </div>
           <div class="recordpool-stat-row">
             {platformStats.map((stat) => (
@@ -61,6 +105,160 @@ const profiles = getCommunityProfiles();
               </article>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section class="section music-ops-section" id="music-ops">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="section-kicker">End-to-End Music Ops Platform</p>
+            <h2>MLABS es Git para comunidades musicales: carpeta local, ramas, PRs, review y master publicado.</h2>
+            <p>
+              El comprador no paga por ver una lista de canciones. Paga por un sistema que convierte
+              aportes privados en una biblioteca comun gobernada, trazable y lista para crecer.
+            </p>
+          </div>
+
+          <div class="music-ops-diagram reveal" aria-label="Flujo end-to-end de MLABS">
+            {musicOpsFlow.map((item) => (
+              <article class="music-ops-node">
+                <span>{item.step}</span>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </article>
+            ))}
+          </div>
+
+          <div class="music-ops-benefits">
+            {musicOpsBenefits.map((benefit) => (
+              <article class="music-ops-benefit reveal">
+                <h3>{benefit.title}</h3>
+                <p>{benefit.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section commercial-section" id="negocio">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="section-kicker">Producto vendible</p>
+            <h2>El negocio no es almacenar tracks. Es vender control editorial para comunidades musicales.</h2>
+            <p>
+              MLABS se puede presentar como una capa B2B para crews, sellos, promotoras y recordpools:
+              cada cliente compra un sistema privado para operar su catalogo con historial, permisos y criterio.
+            </p>
+          </div>
+
+          <div class="commercial-grid">
+            {productMoats.map((moat) => (
+              <article class="commercial-card reveal">
+                <h3>{moat.title}</h3>
+                <p>{moat.body}</p>
+              </article>
+            ))}
+          </div>
+
+          <div class="pricing-preview reveal">
+            <div>
+              <p class="eyebrow">Oferta inicial</p>
+              <h3>Empieza con piloto, sube a Community OS y deja Enterprise para el white label.</h3>
+            </div>
+            <div class="pricing-preview-row">
+              {pricingTiers.map((tier) => (
+                <article>
+                  <span>{tier.name}</span>
+                  <strong>{tier.price}</strong>
+                  <small>{tier.cadence || tier.badge}</small>
+                </article>
+              ))}
+            </div>
+            <div class="pricing-preview-actions">
+              <a class="button primary" href="/pricing">Ver planes</a>
+              <a class="button ghost" href="/for-crews">Pagina para compradores</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section mac-agent-section" id="mac-agent">
+        <div class="shell mac-agent-layout">
+          <div class="mac-agent-copy reveal">
+            <p class="section-kicker">App macOS Apple Silicon</p>
+            <h2>El DJ no sube canciones una a una. Conecta su carpeta y MLABS detecta el cambio.</h2>
+            <p>
+              MLABS Folder Agent es la app local que convierte una biblioteca real del Mac en snapshots,
+              ramas y PRs musicales dentro del workspace. Por ahora la descarga es para Macs con procesador M.
+            </p>
+            <div class="mac-agent-actions">
+              <a
+                class="button primary"
+                href="/downloads/MLABSFolderAgent-apple-silicon.zip"
+                download
+              >
+                Descargar para Mac M
+              </a>
+              <a class="button ghost" href="/workspace">Ver workspace</a>
+            </div>
+            <div class="mac-agent-note">
+              <strong>Beta privada</strong>
+              <span>macOS 14+ · Apple Silicon M1/M2/M3/M4 · build sin notarizar para pilotos controlados</span>
+            </div>
+          </div>
+
+          <div class="mac-app-preview reveal" aria-label="Vista de MLABS Folder Agent">
+            <div class="mac-window-bar">
+              <span></span><span></span><span></span>
+              <strong>MLABS Folder Agent</strong>
+            </div>
+            <div class="mac-app-shell">
+              <aside>
+                <span>Estado</span>
+                <strong>Watch activo</strong>
+                <small>Latin Promos conectado</small>
+                <button type="button">Elegir carpeta</button>
+                <button type="button">Detener watch</button>
+              </aside>
+              <main>
+                <p class="eyebrow">Control local de tu libreria</p>
+                <h3>Preparado para sincronizar</h3>
+                <div class="mac-readiness-list">
+                  <span>Carpeta musical conectada</span>
+                  <span>Cuenta MLABS lista</span>
+                  <span>Destino cloud configurado</span>
+                </div>
+                <div class="mac-agent-stats">
+                  <article>
+                    <strong>128</strong>
+                    <small>Audios detectados</small>
+                  </article>
+                  <article>
+                    <strong>12</strong>
+                    <small>Subcarpetas</small>
+                  </article>
+                  <article>
+                    <strong>2.5s</strong>
+                    <small>Intervalo watch</small>
+                  </article>
+                </div>
+                <div class="mac-log-lines">
+                  <span>snapshot creado en working</span>
+                  <span>3 cambios listos para PR musical</span>
+                  <span>workspace actualizado</span>
+                </div>
+              </main>
+            </div>
+          </div>
+        </div>
+
+        <div class="shell mac-agent-feature-grid">
+          {macAgentFeatures.map((feature) => (
+            <article class="mac-agent-feature reveal">
+              <h3>{feature.title}</h3>
+              <p>{feature.body}</p>
+            </article>
+          ))}
         </div>
       </section>
 
@@ -92,6 +290,63 @@ const profiles = getCommunityProfiles();
                 <p>{item.description}</p>
               </article>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section recordpool-tutorial-section" id="tutorial">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="section-kicker">Tutorial PR</p>
+            <h2>Así entra música al pool sin perder control, criterio ni propiedad.</h2>
+            <p>
+              El flujo está pensado para vender confianza: cada DJ mantiene su biblioteca privada,
+              cada aporte pasa por revisión y el master solo crece cuando hay una decisión editorial clara.
+            </p>
+          </div>
+
+          <div class="tutorial-value-strip reveal">
+            <article>
+              <span>Para DJs</span>
+              <strong>Menos caos, más control</strong>
+              <p>Trabajan desde su carpeta real y entienden cada cambio antes de compartirlo.</p>
+            </article>
+            <article>
+              <span>Para owners</span>
+              <strong>Review antes del merge</strong>
+              <p>Aprueban con impacto visible, notas y trazabilidad completa.</p>
+            </article>
+            <article>
+              <span>Para negocio</span>
+              <strong>Un asset defendible</strong>
+              <p>La comunidad, el historial y el master publicado se convierten en producto.</p>
+            </article>
+          </div>
+
+          <div class="tutorial-showcase">
+            {tutorialSteps.map((item) => (
+              <article class="tutorial-step reveal">
+                <div class="tutorial-step-copy">
+                  <span>{item.step}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.body}</p>
+                </div>
+                <figure>
+                  <img src={item.image} alt={item.alt} loading="lazy" />
+                </figure>
+              </article>
+            ))}
+          </div>
+
+          <div class="tutorial-close reveal">
+            <div>
+              <p class="eyebrow">Por qué importa</p>
+              <h3>Esto no es una carpeta bonita. Es infraestructura para convertir una comunidad musical en un producto serio.</h3>
+            </div>
+            <div class="tutorial-close-actions">
+              <a class="button primary" href="/demo">Ver demo de 3 minutos</a>
+              <a class="button ghost" href="/workspace">Probar workflow</a>
+            </div>
           </div>
         </div>
       </section>
@@ -163,12 +418,15 @@ const profiles = getCommunityProfiles();
           </div>
           <div class="contact-actions">
             <a class="button primary" href="/djs">Ver directorio de DJs</a>
-            <a class="button ghost" href="/workspace">Abrir workspace</a>
+            <a class="button ghost" href="/pricing">Abrir pricing</a>
           </div>
         </div>
       </section>
     </main>
+
   </div>
+
+  <a class="sticky-pilot-cta" href="/for-crews">Reservar piloto de 7 dias</a>
 
   <script>
     const heroVideo = document.querySelector('.hero-video');

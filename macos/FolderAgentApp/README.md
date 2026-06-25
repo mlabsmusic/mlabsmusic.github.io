@@ -8,6 +8,17 @@ App nativa para macOS que vigila una carpeta local de música y lanza el agente 
 - guardar email, contraseña e intervalo de lectura
 - iniciar y detener el watch local
 - ver actividad del agente en tiempo real
+- mostrar una preparación rápida antes de arrancar: carpeta, cuenta y destino cloud
+
+## Flujo recomendado de demo
+
+1. Abre la app generada en `dist/MLABSFolderAgent.app`.
+2. En ajustes, introduce el email y contraseña del DJ de prueba.
+3. Confirma que la URL y publishable key de Supabase apuntan al proyecto de MLABS.
+4. Elige una carpeta local con archivos de audio.
+5. Pulsa `Iniciar` y espera a que el log confirme el sync.
+6. Abre `/workspace` con la misma cuenta y revisa snapshots/change sets.
+7. Marca cambios para master y aprueba o rechaza la PR desde `/admin`.
 
 ## Ejecutar desde Codex
 
@@ -22,3 +33,32 @@ La app compilada se deja en:
 ```bash
 ../../dist/MLABSFolderAgent.app
 ```
+
+Para compilar sin abrir la app:
+
+```bash
+./script/build_and_run.sh --package
+```
+
+Para preparar la descarga web para Macs con Apple Silicon:
+
+```bash
+mkdir -p ../../public/downloads
+ditto -c -k --sequesterRsrc --keepParent ../../dist/MLABSFolderAgent.app ../../public/downloads/MLABSFolderAgent-apple-silicon.zip
+```
+
+## Verificación rápida por CLI
+
+Para una lectura puntual:
+
+```bash
+npm run agent:scan -- "/ruta/a/libreria" --email "dj@example.com" --password "password"
+```
+
+Para dejar el watch activo:
+
+```bash
+npm run agent:watch -- "/ruta/a/libreria" --email "dj@example.com" --password "password"
+```
+
+El agente guarda una cache local `.mlabs-git-music-cache.json` dentro de la carpeta vigilada para comparar cambios entre lecturas.

@@ -1,6 +1,6 @@
 # PROJECT STATUS
 
-Ultima actualizacion: 2026-06-23
+Ultima actualizacion: 2026-06-24
 
 ## Direccion del producto
 
@@ -14,6 +14,7 @@ Vision actual:
 - los cambios se guardan como snapshots y cambios revisables
 - el owner revisa aportaciones hacia `0_MASTER LIBRARY`
 - el recordpool publico refleja la estructura visible de Google Drive
+- el producto se presenta como una **End-to-End Music Ops Platform**: carpeta local, agente, ramas, PR musical, owner review y master publicado
 
 ## Lo que ya esta montado
 
@@ -24,9 +25,20 @@ Vision actual:
 - Perfil individual en `/djs/[slug]`
 - Recordpool en `/recordpool`
 - Workspace tipo Git musical en `/workspace`
+- Pricing comercial en `/pricing`
+- Pagina de venta para crews, sellos, promotoras y recordpools en `/for-crews`
+- Demo comercial de 3 minutos en `/demo`
 - Login en `/login`
 - Panel owner en `/admin`
 - Hidratacion cloud del workspace cuando el agente local ya ha subido snapshots
+- Cabina owner con metricas, impacto previsto del merge y snapshots master recientes
+- Actividad de `0_MASTER LIBRARY` visible desde `/recordpool`
+- Bloque de ingesta local dentro de `/workspace`
+- Ramas musicales en `/workspace`: `published`, `working`, `crate/*`, `set/*`, checkout y creacion local de ramas
+- Git graph musical en `/workspace`, estilo SourceTree, para ver commits, ramas, snapshots, merges y PRs
+- Captura de leads desde paginas comerciales, guardada localmente para preparar demos
+- Seccion Music Ops en home y `/for-crews`, con diagrama end-to-end, beneficios B2B, FAQ de objeciones y CTA fijo de piloto
+- Seccion App Mac en home con preview de `MLABS Folder Agent` y descarga para Apple Silicon
 
 ### Datos reales del Drive
 
@@ -66,6 +78,9 @@ Existe una app macOS nativa funcional:
 - guarda configuracion basica
 - arranca y detiene el agente
 - muestra estado, log y vista previa local
+- muestra checklist de preparacion antes de iniciar el watch
+- build descargable para pilotos Apple Silicon: `public/downloads/MLABSFolderAgent-apple-silicon.zip`
+- requisito comunicado en web: macOS 14+ y Macs con procesador M1/M2/M3/M4
 
 Scripts disponibles:
 
@@ -129,13 +144,14 @@ Ya validado extremo a extremo:
 - aprobacion owner desde `/admin`
 - merge owner que publica snapshot real en master
 - lectura de snapshots cloud en `/workspace`
+- capa de ramas compatible con snapshots/change sets actuales sin migracion nueva
 
 Pendiente de endurecer y terminar:
 
-- convertir la publicacion a master en una experiencia mas editorial y menos tecnica
-- mostrar mejor la actividad master en la web publica
-- mejor lectura del Drive o estrategia de ingestion alternativa
-- instalacion mas pulida del agente/app macOS
+- credenciales validas para smoke tests privados en CI/local
+- preparar distribucion firmada/notarizada de la app macOS si se quiere entregar fuera de este equipo
+- mejorar lectura profunda de Drive si Google expone permisos de subcarpetas/canciones
+- conectar el lead capture a Supabase/CRM cuando se decida el flujo comercial real
 
 ## Validacion operativa hecha hoy
 
@@ -175,13 +191,28 @@ Refrescar snapshot visible del Drive:
 npm run drive:sync
 ```
 
+Tests:
+
+```bash
+npm run build
+npx playwright test
+TEST_DJ_EMAIL="..." TEST_DJ_PASSWORD="..." npx playwright test
+```
+
+Los tests privados de recordpool/workspace se saltan si no se definen credenciales validas.
+
+Validacion actual:
+
+- `npm run build`: OK, 16 paginas generadas.
+- `npx playwright test`: 15 passed, 5 skipped por falta de credenciales privadas.
+
 ## Rama de trabajo
 
 - revisar rama actual antes de commit con `git branch --show-current`
 
 ## Siguiente objetivo recomendado
 
-1. mejorar la UX del owner review y la visibilidad del master
-2. mostrar actividad master y ultimos merges en la web
-3. definir ingestion real de canciones desde Drive o desde carpeta local
-4. preparar commit, push y demo externa
+1. conectar credenciales validas para correr los smoke tests privados completos
+2. hacer build de demo y revisar `/recordpool`, `/workspace`, `/admin`
+3. preparar commit, push y demo externa
+4. decidir si se firma/notariza `MLABSFolderAgent.app`

@@ -117,6 +117,36 @@
     }
   });
 
+  for (const form of document.querySelectorAll('[data-lead-form]')) {
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      const lead = {
+        id: `lead-${Date.now()}`,
+        name: String(data.get('name') || '').trim(),
+        email: String(data.get('email') || '').trim(),
+        need: String(data.get('need') || '').trim(),
+        note: String(data.get('note') || '').trim(),
+        source: window.location.pathname,
+        createdAt: new Date().toISOString(),
+      };
+
+      try {
+        const leads = JSON.parse(localStorage.getItem('mlabs_sales_leads_v1') || '[]');
+        leads.unshift(lead);
+        localStorage.setItem('mlabs_sales_leads_v1', JSON.stringify(leads.slice(0, 40)));
+      } catch {}
+
+      const status = form.querySelector('[data-lead-status]');
+      if (status) {
+        status.textContent = lead.email
+          ? `Lead guardado: ${lead.name || lead.email}. Siguiente paso: preparar demo ${lead.need || 'MLABS'}.`
+          : 'Lead guardado. Siguiente paso: preparar demo MLABS.';
+      }
+      form.reset();
+    });
+  }
+
   const shotModal = document.getElementById('shotModal');
   const shotImage = document.getElementById('shotImage');
   const shotTitle = document.getElementById('shotTitle');

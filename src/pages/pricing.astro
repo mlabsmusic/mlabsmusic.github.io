@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { commercialMetrics, pricingTiers, productMoats } from '../data/businessData';
+---
+
+<BaseLayout
+  title="Pricing | MLABS Recordpool"
+  description="Planes comerciales de MLABS Recordpool: pilotos, community OS y white label para crews, sellos, promotoras y recordpools."
+  canonicalPath="/pricing"
+>
+  <div class="page-wrap">
+    <header class="site-header">
+      <nav class="nav" aria-label="Principal">
+        <a class="brand" href="/">MLABS RECORDPOOL</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" aria-label="Abrir menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="nav-links" id="primaryMenu">
+          <a href="/">Home</a>
+          <a href="/for-crews">Para crews</a>
+          <a href="/demo">Demo</a>
+          <a href="/workspace">Workspace</a>
+          <a href="/pricing">Pricing</a>
+        </div>
+        <button class="button primary" type="button" data-contact-modal data-pack="Community OS">Reservar demo</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="section sales-hero">
+        <div class="shell sales-hero-grid">
+          <div class="sales-hero-copy reveal">
+            <p class="eyebrow">Pricing B2B</p>
+            <h1>Precio de software serio para una biblioteca musical que tambien es negocio.</h1>
+            <p>
+              MLABS se vende como infraestructura: onboarding, control editorial, versionado musical
+              y una plataforma que convierte comunidad en un asset operable.
+            </p>
+            <div class="hero-actions">
+              <button class="button primary" type="button" data-contact-modal data-pack="Community OS">Quiero vender esto</button>
+              <a class="button ghost" href="/demo">Ver demo de 3 minutos</a>
+            </div>
+          </div>
+          <div class="sales-snapshot reveal" aria-label="Resumen comercial">
+            {commercialMetrics.map((metric) => (
+              <article>
+                <strong>{metric.value}</strong>
+                <span>{metric.label}</span>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section pricing-section">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="section-kicker">Oferta empaquetada</p>
+            <h2>Tres formas de comprarlo, una misma historia de valor.</h2>
+            <p>El objetivo no es competir por precio bajo. Es vender control, confianza y una forma nueva de operar catalogos comunitarios.</p>
+          </div>
+
+          <div class="pricing-grid">
+            {pricingTiers.map((tier) => (
+              <article class={`pricing-card reveal ${tier.highlighted ? 'is-highlighted' : ''}`}>
+                <div class="pricing-card-head">
+                  <span>{tier.badge}</span>
+                  <h3>{tier.name}</h3>
+                  <p>{tier.description}</p>
+                </div>
+                <div class="pricing-price">
+                  <strong>{tier.price}</strong>
+                  <small>{tier.cadence}</small>
+                </div>
+                <ul>
+                  {tier.features.map((feature) => <li>{feature}</li>)}
+                </ul>
+                <button class="button primary" type="button" data-contact-modal data-pack={tier.name}>{tier.cta}</button>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section moat-section">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="section-kicker">Por que puede valer mucho</p>
+            <h2>La defensa esta en el workflow, no en una lista de canciones.</h2>
+          </div>
+          <div class="moat-grid">
+            {productMoats.map((moat) => (
+              <article class="moat-card reveal">
+                <h3>{moat.title}</h3>
+                <p>{moat.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="contact">
+        <div class="shell contact-layout">
+          <div>
+            <p class="eyebrow">Cierre</p>
+            <h2>No vendas “una web de musica”. Vende el sistema operativo privado de una comunidad musical.</h2>
+            <p>El comprador entiende control, permisos, historial, reporting y marca. Eso permite ticket B2B.</p>
+          </div>
+          <div class="contact-actions">
+            <button class="button primary" type="button" data-contact-modal data-pack="Enterprise">Preparar propuesta</button>
+            <a class="button ghost" href="/for-crews">Ver pagina para compradores</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal-backdrop" id="contactModal" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="leadTitle">
+        <h3 id="leadTitle">Reservar demo MLABS</h3>
+        <p>Deja los datos del posible cliente. Se guarda localmente y queda listo para preparar el siguiente paso.</p>
+        <form class="lead-form" data-lead-form>
+          <label>
+            Nombre
+            <input name="name" type="text" placeholder="Nombre y equipo" required />
+          </label>
+          <label>
+            Email
+            <input name="email" type="email" placeholder="cliente@empresa.com" required />
+          </label>
+          <label>
+            Interes
+            <select id="leadNeed" name="need">
+              <option>Pilot</option>
+              <option selected>Community OS</option>
+              <option>Enterprise</option>
+            </select>
+          </label>
+          <label>
+            Nota
+            <textarea name="note" rows="4" placeholder="Crew, sello, promotora, volumen de DJs, urgencia..."></textarea>
+          </label>
+          <button class="action-link button primary" type="submit">Guardar lead</button>
+          <p class="lead-form-status" data-lead-status aria-live="polite"></p>
+        </form>
+        <button class="close" type="button">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

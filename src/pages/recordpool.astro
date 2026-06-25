@@ -152,6 +152,40 @@ import {
             <div id="recordpoolFolderBrowser" class="recordpool-folder-browser"></div>
           </section>
 
+          <section class="recordpool-master-panel" aria-label="Actividad master">
+            <div class="recordpool-master-head">
+              <div>
+                <p class="eyebrow">Master live</p>
+                <h2>Actividad de 0_MASTER LIBRARY</h2>
+                <p id="recordpoolMasterCopy" class="recordpool-copy">Cargando snapshots y merges recientes del master publicado.</p>
+              </div>
+              <div class="recordpool-master-stats">
+                <article>
+                  <span>Tracks</span>
+                  <strong id="recordpoolMasterTracks">0</strong>
+                </article>
+                <article>
+                  <span>Ultimo snapshot</span>
+                  <strong id="recordpoolMasterSnapshotDate">-</strong>
+                </article>
+              </div>
+            </div>
+            <div class="recordpool-master-grid">
+              <div>
+                <h3>Ultimos snapshots</h3>
+                <div class="recordpool-master-list" id="recordpoolMasterSnapshots">
+                  <div class="workspace-empty">Esperando actividad master.</div>
+                </div>
+              </div>
+              <div>
+                <h3>Ultimos reviews</h3>
+                <div class="recordpool-master-list" id="recordpoolMasterReviews">
+                  <div class="workspace-empty">Esperando reviews owner.</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
           <div class="recordpool-table-wrap">
             <table class="recordpool-table">
               <thead>
@@ -248,6 +282,11 @@ import {
     const browserMeta = document.getElementById('recordpoolBrowserMeta');
     const tableEmpty = document.getElementById('recordpoolTableEmpty');
     const openCurrentButton = document.getElementById('recordpoolOpenCurrent');
+    const masterCopy = document.getElementById('recordpoolMasterCopy');
+    const masterTracks = document.getElementById('recordpoolMasterTracks');
+    const masterSnapshotDate = document.getElementById('recordpoolMasterSnapshotDate');
+    const masterSnapshots = document.getElementById('recordpoolMasterSnapshots');
+    const masterReviews = document.getElementById('recordpoolMasterReviews');
     const folderData = JSON.parse(document.getElementById('recordpoolFolderData')?.textContent || '[]');
     let selectedStatus = 'all';
     let selectedFolderIds = [];
@@ -286,8 +325,130 @@ import {
       return lineage;
     }
 
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function formatDate(value) {
+      if (!value) return '-';
+      return new Date(value).toLocaleString('es-ES', {
+        dateStyle: 'short',
+        timeStyle: 'short',
+      });
+    }
+
+    function formatShortDate(value) {
+      if (!value) return '-';
+      return new Date(value).toLocaleDateString('es-ES', {
+        day: '2-digit',
+        month: 'short',
+      });
+    }
+
+    function formatBytes(bytes) {
+      const value = Number(bytes || 0);
+      if (value < 1024) return `${value} B`;
+      if (value < 1024 * 1024) return `${(value / 1024).toFixed(1)} KB`;
+      if (value < 1024 * 1024 * 1024) return `${(value / (1024 * 1024)).toFixed(1)} MB`;
+      return `${(value / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+    }
+
+    function statusLabel(status) {
+      const labels = {
+        merged: 'Mergeado',
+        rejected: 'Rechazado',
+        open: 'Pendiente',
+        draft: 'Borrador',
+      };
+      return labels[status] || status || '-';
+    }
+
     function visibleRows() {
       return rows.filter((row) => row.style.display !== 'none');
+    }
+
+    function renderMasterEmpty(message) {
+      if (masterCopy) masterCopy.textContent = message;
+      if (masterTracks) masterTracks.textContent = `${rows.length}`;
+      if (masterSnapshotDate) masterSnapshotDate.textContent = '-';
+      if (masterSnapshots) masterSnapshots.innerHTML = '<div class="workspace-empty">El master todavia no expone snapshots publicados para esta sesion.</div>';
+      if (masterReviews) masterReviews.innerHTML = '<div class="workspace-empty">Los reviews apareceran aqui cuando owner apruebe o rechace PRs musicales.</div>';
+    }
+
+    async function loadMasterActivity() {
+      if (!isSupabaseConfigured || !supabase) {
+        renderMasterEmpty('La estructura visible viene de Drive. Configura Supabase para añadir actividad master en vivo.');
+        return;
+      }
+
+      const { data: library, error: libraryError } = await supabase
+        .from('libraries')
+        .select('id, name, current_published_snapshot_id')
+        .eq('kind', 'master')
+        .maybeSingle();
+
+      if (libraryError || !library) {
+        renderMasterEmpty(libraryError?.message || 'Aun no hay biblioteca master configurada en Supabase.');
+        return;
+      }
+
+      const [snapshotResult, reviewResult] = await Promise.all([
+        supabase
+          .from('library_snapshots')
+          .select('id, label, source_kind, root_path, file_count, total_bytes, created_at')
+          .eq('library_id', library.id)
+          .order('created_at', { ascending: false })
+          .limit(4),
+        supabase
+          .from('library_change_sets')
+          .select('id, title, description, status, review_notes, created_at, updated_at, merged_at, libraries(name), profiles!library_change_sets_created_by_fkey(display_name,email)')
+          .eq('target_kind', 'master')
+          .neq('status', 'open')
+          .order('updated_at', { ascending: false })
+          .limit(4),
+      ]);
+
+      const snapshots = snapshotResult.data || [];
+      const reviews = reviewResult.data || [];
+      const currentSnapshot = snapshots[0];
+
+      if (masterCopy) {
+        masterCopy.textContent = currentSnapshot
+          ? `${library.name || '0_MASTER LIBRARY'} tiene un snapshot publicado y actividad owner reciente.`
+          : `${library.name || '0_MASTER LIBRARY'} esta creada, pero aun no tiene snapshot publicado.`;
+      }
+
+      if (masterTracks) masterTracks.textContent = `${Number(currentSnapshot?.file_count || 0)}`;
+      if (masterSnapshotDate) masterSnapshotDate.textContent = formatShortDate(currentSnapshot?.created_at);
+
+      if (masterSnapshots) {
+        masterSnapshots.innerHTML = snapshots.length
+          ? snapshots.map((snapshot) => `
+              <article class="recordpool-master-item">
+                <strong>${escapeHtml(snapshot.label || 'Snapshot master')}</strong>
+                <span>${formatDate(snapshot.created_at)}</span>
+                <small>${Number(snapshot.file_count || 0)} tracks · ${formatBytes(snapshot.total_bytes)} · ${escapeHtml(snapshot.source_kind || 'source')}</small>
+              </article>
+            `).join('')
+          : '<div class="workspace-empty">Aun no hay snapshots publicados en master.</div>';
+      }
+
+      if (masterReviews) {
+        masterReviews.innerHTML = reviews.length
+          ? reviews.map((review) => `
+              <article class="recordpool-master-item is-${escapeHtml(review.status)}">
+                <strong>${escapeHtml(review.title || 'Review master')}</strong>
+                <span>${statusLabel(review.status)} · ${formatDate(review.merged_at || review.updated_at || review.created_at)}</span>
+                <small>${escapeHtml(review.profiles?.display_name || review.profiles?.email || 'DJ')}${review.review_notes ? ` · ${escapeHtml(review.review_notes)}` : ''}</small>
+              </article>
+            `).join('')
+          : '<div class="workspace-empty">Todavia no hay reviews cerrados por owner.</div>';
+      }
     }
 
     function syncTransportState() {
@@ -442,6 +603,8 @@ import {
         window.location.assign('/login?next=/recordpool');
       }
     }
+
+    await loadMasterActivity();
 
     searchInput?.addEventListener('input', applyFilters);
 
