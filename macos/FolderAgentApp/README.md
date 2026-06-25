@@ -43,9 +43,10 @@ Para compilar sin abrir la app:
 Para preparar la descarga web para Macs con Apple Silicon:
 
 ```bash
-mkdir -p ../../public/downloads
-ditto -c -k --sequesterRsrc --keepParent ../../dist/MLABSFolderAgent.app ../../public/downloads/MLABSFolderAgent-apple-silicon.zip
+CODESIGN_IDENTITY="Developer ID Application: Tu Nombre (TEAMID)" ./script/build_and_run.sh --package
 ```
+
+Si no se define `CODESIGN_IDENTITY`, el script usa firma ad-hoc (`-`) para builds locales. Para una descarga pública que macOS abra sin advertencias hace falta firmar con `Developer ID Application` y notarizar el zip/app con Apple. Un certificado `Apple Development` o una firma ad-hoc corrigen la integridad del bundle, pero Gatekeeper seguirá tratándolo como build de piloto no notarizada.
 
 ## Verificación rápida por CLI
 

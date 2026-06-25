@@ -5,6 +5,7 @@ MODE="${1:-run}"
 APP_NAME="MLABSFolderAgent"
 BUNDLE_ID="com.mlabsmusic.folderagent"
 MIN_SYSTEM_VERSION="14.0"
+SIGN_IDENTITY="${CODESIGN_IDENTITY:--}"
 
 APP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 REPO_ROOT="$(cd "$APP_ROOT/../.." && pwd)"
@@ -17,6 +18,7 @@ APP_BINARY="$APP_MACOS/$APP_NAME"
 INFO_PLIST="$APP_CONTENTS/Info.plist"
 SOURCE_AGENT="$REPO_ROOT/app/music-agent.mjs"
 TARGET_AGENT="$APP_ROOT/Sources/MLABSFolderAgent/Resources/music-agent.mjs"
+DOWNLOAD_ZIP="$REPO_ROOT/public/downloads/$APP_NAME-apple-silicon.zip"
 
 pkill -x "$APP_NAME" >/dev/null 2>&1 || true
 
@@ -54,6 +56,9 @@ cat >"$INFO_PLIST" <<PLIST
 </plist>
 PLIST
 
+codesign --force --deep --options runtime --sign "$SIGN_IDENTITY" "$APP_BUNDLE"
+codesign --verify --deep --strict --verbose=2 "$APP_BUNDLE"
+
 open_app() {
   /usr/bin/open -n "$APP_BUNDLE"
 }
@@ -79,6 +84,12 @@ case "$MODE" in
     pgrep -x "$APP_NAME" >/dev/null
     ;;
   --package|package)
+    mkdir -p "$(dirname "$DOWNLOAD_ZIP")"
+    rm -f "$DOWNLOAD_ZIP"
+    /usr/bin/ditto -c -k --sequesterRsrc --keepParent "$APP_BUNDLE" "$DOWNLOAD_ZIP"
+    echo "signed app: $APP_BUNDLE"
+    echo "zip: $DOWNLOAD_ZIP"
+    echo "codesign identity: $SIGN_IDENTITY"
     echo "$APP_BUNDLE"
     ;;
   *)
