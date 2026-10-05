@@ -1,78 +1,85 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { macAgentFeatures, musicOpsBenefits, musicOpsFlow, pricingTiers, productMoats } from '../data/businessData';
-import { drivePlan, getCommunityProfiles, libraryBlueprint, platformStats } from '../data/communityData';
+import { appCatalog } from '../data/appCatalog';
 
-const profiles = getCommunityProfiles();
+const companyPillars = [
+  {
+    title: 'Software musical a medida',
+    body: 'Diseñamos herramientas web, apps de escritorio y flujos internos para DJs, crews, sellos, promotoras y marcas musicales.',
+  },
+  {
+    title: 'Bibliotecas que se entienden',
+    body: 'Convertimos carpetas, catálogos y archivos dispersos en interfaces claras para buscar, revisar, preparar y compartir música.',
+  },
+  {
+    title: 'Automatización para operar mejor',
+    body: 'Creamos sistemas que reducen trabajo repetitivo: lectura de carpetas, snapshots, playlists, diagnósticos, revisión y reporting.',
+  },
+];
 
-const tutorialSteps = [
+const serviceLines = [
+  {
+    label: 'Apps para DJs',
+    title: 'Herramientas que nacen de problemas reales de cabina y biblioteca.',
+    body: 'Organización musical, preparación de sesiones, sincronización, control de duplicados, análisis de librería y utilidades para Rekordbox, Apple Music y flujos locales.',
+  },
+  {
+    label: 'Web apps musicales',
+    title: 'Plataformas privadas para crews, sellos y comunidades.',
+    body: 'Dashboards, workspaces, perfiles, catálogos, portales de acceso, áreas privadas y sistemas de revisión para operar música como un producto.',
+  },
+  {
+    label: 'Producto y prototipos',
+    title: 'De idea musical a MVP enseñable.',
+    body: 'Definimos narrativa, pantallas, arquitectura, demo funcional y roadmap para validar una app antes de invertir en un desarrollo más grande.',
+  },
+];
+
+const processSteps = [
   {
     step: '01',
-    title: 'El DJ conecta su carpeta real',
-    body: 'La música sigue en su entorno de trabajo. El agente macOS lee la carpeta, detecta audios compatibles y prepara un snapshot sin mover archivos ni romper rutinas.',
-    image: '/assets/tutorial/01-connect-folder.png',
-    alt: 'Captura del agente macOS conectando una carpeta musical',
+    title: 'Detectar el flujo real',
+    body: 'Partimos de cómo trabaja el DJ o equipo hoy: carpetas, programas, exportaciones, errores y tareas repetidas.',
   },
   {
     step: '02',
-    title: 'MLABS detecta cambios como un Git musical',
-    body: 'Altas, updates y eliminaciones aparecen en el workspace como cambios revisables. El DJ entiende qué pasó antes de publicar nada.',
-    image: '/assets/tutorial/02-detect-changes.png',
-    alt: 'Captura del workspace mostrando cambios detectados en la biblioteca',
+    title: 'Diseñar la herramienta',
+    body: 'Transformamos ese flujo en pantallas simples, estados claros, permisos, datos y acciones que ahorran tiempo.',
   },
   {
     step: '03',
-    title: 'El DJ abre una PR hacia el master',
-    body: 'Solo se selecciona lo que merece compartirse. Cada aporte entra como una PR musical con destino, estado y detalle de tracks.',
-    image: '/assets/tutorial/03-create-pr.png',
-    alt: 'Captura de una PR musical preparada para entrar en master',
-  },
-  {
-    step: '04',
-    title: 'Owner aprueba con control total',
-    body: 'Antes del merge, owner ve impacto, notas y cambios incluidos. Nada entra en 0_MASTER LIBRARY sin criterio editorial.',
-    image: '/assets/tutorial/04-owner-review.png',
-    alt: 'Captura del panel owner revisando una PR musical',
-  },
-  {
-    step: '05',
-    title: 'El master queda publicado y trazable',
-    body: 'El recordpool muestra actividad real: snapshots, merges y reviews. La comunidad ve una biblioteca viva, no un Drive sin contexto.',
-    image: '/assets/tutorial/05-master-live.png',
-    alt: 'Captura del master publicado con actividad reciente',
+    title: 'Construir el piloto',
+    body: 'Creamos una versión usable para probar con música real, usuarios concretos y una decisión clara de siguiente fase.',
   },
 ];
 ---
 
 <BaseLayout
-  title="MLabs Recordpool | Comunidad y bibliotecas para DJs"
-  description="Recordpool comunitario para DJs: perfiles públicos, portfolio, bibliotecas personales conectadas a Drive y música compartida dentro de una comunidad."
+  title="MLABS Music | Software, apps y herramientas digitales para DJs"
+  description="MLABS desarrolla software, apps y herramientas digitales para el sector musical: DJs, crews, sellos, promotoras y empresas que necesitan operar mejor su música."
   canonicalPath="/"
 >
   <div class="page-wrap">
     <header class="site-header">
       <nav class="nav" aria-label="Principal">
-        <a class="brand" href="/">MLABS RECORDPOOL</a>
+        <a class="brand" href="/">MLABS MUSIC</a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" aria-label="Abrir menu">
           <span></span><span></span><span></span>
         </button>
         <div class="nav-links" id="primaryMenu">
-          <a href="#vision">Vision</a>
-          <a href="#mac-agent">App Mac</a>
-          <a href="#tutorial">Tutorial</a>
-          <a href="/demo">Demo</a>
-          <a href="/pricing">Pricing</a>
-          <a href="/for-crews">Para crews</a>
-          <a href="/djs">DJs</a>
-          <a href="#estructura">Biblioteca</a>
+          <a href="#empresa">Empresa</a>
+          <a href="#portfolio">Portfolio</a>
+          <a href="#servicios">Software</a>
+          <a href="#proceso">Proceso</a>
           <a href="/workspace">Workspace</a>
+          <a href="/recordpool">Recordpool</a>
         </div>
-        <a class="button primary" href="/login">Acceso privado</a>
+        <a class="button primary" href="mailto:info@mlabsmusic.com?subject=Proyecto%20software%20musical%20MLABS">Hablar de un proyecto</a>
       </nav>
     </header>
 
     <main>
-      <section class="hero recordpool-hero">
+      <section class="hero recordpool-hero company-hero">
         <video
           class="hero-video"
           autoplay
@@ -81,327 +88,143 @@ const tutorialSteps = [
           playsinline
           preload="auto"
           poster="/assets/video/mlabs-hero-poster.jpg"
-          aria-label="Visual del recordpool"
+          aria-label="Visual de MLABS Music"
         >
           <source src="/assets/video/mlabs-hero-fast.webm" type="video/webm" />
           <source src="/assets/video/mlabs-hero-fast.mp4" type="video/mp4" />
         </video>
         <div class="shell hero-content">
-          <p class="eyebrow">Recordpool comunitario</p>
-          <h1>La forma más clara de presentar, ordenar y compartir la música de una comunidad de DJs.</h1>
+          <p class="eyebrow">Software para música y DJs</p>
+          <h1>Desarrollamos apps para que DJs y equipos musicales trabajen con más control.</h1>
           <p>
-            MLABS convierte carpetas sueltas en una plataforma con identidad, criterio y acceso rápido:
-            descubres a cada DJ, entras en su librería y entiendes su selección sin perderte entre ventanas y enlaces.
+            MLABS Music crea herramientas digitales para ordenar bibliotecas, automatizar tareas,
+            preparar sesiones, revisar catálogos y convertir procesos musicales en software usable.
           </p>
           <div class="hero-actions">
-            <a class="button primary" href="/djs">Explorar perfiles</a>
-            <a class="button ghost" href="/pricing">Ver pricing</a>
+            <a class="button primary" href="#portfolio">Ver apps en desarrollo</a>
+            <a class="button ghost" href="mailto:info@mlabsmusic.com?subject=Proyecto%20software%20musical%20MLABS">Solicitar propuesta</a>
           </div>
-          <div class="recordpool-stat-row">
-            {platformStats.map((stat) => (
-              <article class="recordpool-stat-card">
-                <strong>{stat.value}</strong>
-                <span>{stat.label}</span>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section class="section music-ops-section" id="music-ops">
-        <div class="shell">
-          <div class="section-head reveal">
-            <p class="section-kicker">End-to-End Music Ops Platform</p>
-            <h2>MLABS es Git para comunidades musicales: carpeta local, ramas, PRs, review y master publicado.</h2>
-            <p>
-              El comprador no paga por ver una lista de canciones. Paga por un sistema que convierte
-              aportes privados en una biblioteca comun gobernada, trazable y lista para crecer.
-            </p>
-          </div>
-
-          <div class="music-ops-diagram reveal" aria-label="Flujo end-to-end de MLABS">
-            {musicOpsFlow.map((item) => (
-              <article class="music-ops-node">
-                <span>{item.step}</span>
-                <h3>{item.title}</h3>
-                <p>{item.body}</p>
-              </article>
-            ))}
-          </div>
-
-          <div class="music-ops-benefits">
-            {musicOpsBenefits.map((benefit) => (
-              <article class="music-ops-benefit reveal">
-                <h3>{benefit.title}</h3>
-                <p>{benefit.body}</p>
-              </article>
-            ))}
+          <div class="recordpool-stat-row company-stat-row">
+            <article class="recordpool-stat-card">
+              <strong>Web</strong>
+              <span>plataformas privadas y dashboards</span>
+            </article>
+            <article class="recordpool-stat-card">
+              <strong>Mac</strong>
+              <span>apps locales para librerías reales</span>
+            </article>
+            <article class="recordpool-stat-card">
+              <strong>DJ</strong>
+              <span>herramientas pensadas para cabina</span>
+            </article>
+            <article class="recordpool-stat-card">
+              <strong>Ops</strong>
+              <span>automatización y control de procesos</span>
+            </article>
           </div>
         </div>
       </section>
 
-      <section class="section commercial-section" id="negocio">
+      <section class="section" id="empresa">
         <div class="shell">
           <div class="section-head reveal">
-            <p class="section-kicker">Producto vendible</p>
-            <h2>El negocio no es almacenar tracks. Es vender control editorial para comunidades musicales.</h2>
+            <p class="section-kicker">Qué es MLABS</p>
+            <h2>Una empresa de software especializada en el sector musical.</h2>
             <p>
-              MLABS se puede presentar como una capa B2B para crews, sellos, promotoras y recordpools:
-              cada cliente compra un sistema privado para operar su catalogo con historial, permisos y criterio.
+              No hacemos webs genéricas. Creamos productos digitales para gente que trabaja con música:
+              DJs, clubs, crews, sellos, productores, promotoras y equipos que necesitan orden, velocidad y criterio.
             </p>
           </div>
 
           <div class="commercial-grid">
-            {productMoats.map((moat) => (
+            {companyPillars.map((pillar) => (
               <article class="commercial-card reveal">
-                <h3>{moat.title}</h3>
-                <p>{moat.body}</p>
+                <h3>{pillar.title}</h3>
+                <p>{pillar.body}</p>
               </article>
             ))}
           </div>
-
-          <div class="pricing-preview reveal">
-            <div>
-              <p class="eyebrow">Oferta inicial</p>
-              <h3>Empieza con piloto, sube a Community OS y deja Enterprise para el white label.</h3>
-            </div>
-            <div class="pricing-preview-row">
-              {pricingTiers.map((tier) => (
-                <article>
-                  <span>{tier.name}</span>
-                  <strong>{tier.price}</strong>
-                  <small>{tier.cadence || tier.badge}</small>
-                </article>
-              ))}
-            </div>
-            <div class="pricing-preview-actions">
-              <a class="button primary" href="/pricing">Ver planes</a>
-              <a class="button ghost" href="/for-crews">Pagina para compradores</a>
-            </div>
-          </div>
         </div>
       </section>
 
-      <section class="section mac-agent-section" id="mac-agent">
-        <div class="shell mac-agent-layout">
-          <div class="mac-agent-copy reveal">
-            <p class="section-kicker">App macOS Apple Silicon</p>
-            <h2>El DJ no sube canciones una a una. Conecta su carpeta y MLABS detecta el cambio.</h2>
-            <p>
-              MLABS Folder Agent es la app local que convierte una biblioteca real del Mac en snapshots,
-              ramas y PRs musicales dentro del workspace. Durante desarrollo la activamos solo en pilotos guiados.
-            </p>
-            <div class="mac-agent-actions">
-              <a
-                class="button primary"
-                href="mailto:info@mlabsmusic.com?subject=Acceso%20beta%20MLABS%20Folder%20Agent"
-              >
-                Solicitar acceso beta
-              </a>
-              <a class="button ghost" href="/workspace">Ver workspace</a>
-            </div>
-            <div class="mac-agent-note">
-              <strong>Beta privada</strong>
-              <span>macOS 14+ · Apple Silicon M1/M2/M3/M4 · entrega manual para pilotos controlados</span>
-            </div>
-          </div>
-
-          <div class="mac-app-preview reveal" aria-label="Vista de MLABS Folder Agent">
-            <div class="mac-window-bar">
-              <span></span><span></span><span></span>
-              <strong>MLABS Folder Agent</strong>
-            </div>
-            <div class="mac-app-shell">
-              <aside>
-                <span>Estado</span>
-                <strong>Watch activo</strong>
-                <small>Latin Promos conectado</small>
-                <button type="button">Elegir carpeta</button>
-                <button type="button">Detener watch</button>
-              </aside>
-              <main>
-                <p class="eyebrow">Control local de tu libreria</p>
-                <h3>Preparado para sincronizar</h3>
-                <div class="mac-readiness-list">
-                  <span>Carpeta musical conectada</span>
-                  <span>Cuenta MLABS lista</span>
-                  <span>Destino cloud configurado</span>
-                </div>
-                <div class="mac-agent-stats">
-                  <article>
-                    <strong>128</strong>
-                    <small>Audios detectados</small>
-                  </article>
-                  <article>
-                    <strong>12</strong>
-                    <small>Subcarpetas</small>
-                  </article>
-                  <article>
-                    <strong>2.5s</strong>
-                    <small>Intervalo watch</small>
-                  </article>
-                </div>
-                <div class="mac-log-lines">
-                  <span>snapshot creado en working</span>
-                  <span>3 cambios listos para PR musical</span>
-                  <span>workspace actualizado</span>
-                </div>
-              </main>
-            </div>
-          </div>
-        </div>
-
-        <div class="shell mac-agent-feature-grid">
-          {macAgentFeatures.map((feature) => (
-            <article class="mac-agent-feature reveal">
-              <h3>{feature.title}</h3>
-              <p>{feature.body}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section class="section recordpool-band" id="vision">
-        <div class="shell recordpool-band-grid">
-          {drivePlan.map((item) => (
-            <article class="recordpool-band-card reveal">
-              <span>{item.title}</span>
-              <p>{item.body}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section class="section" id="estructura">
+      <section class="section portfolio-section" id="portfolio">
         <div class="shell">
           <div class="section-head reveal">
-            <p class="section-kicker">Estructura</p>
-            <h2>Una buena librería no solo se guarda bien. También se entiende bien.</h2>
+            <p class="section-kicker">Portfolio de producto</p>
+            <h2>Apps y herramientas que estamos construyendo.</h2>
             <p>
-              La plataforma respeta la estructura real del DJ y la eleva con una interfaz pensada para encontrar antes, decidir mejor y trabajar con más criterio.
+              El portfolio de MLABS irá creciendo con productos propios y pilotos privados.
+              Algunos módulos ya son navegables; otros están en fase de diseño, validación o beta interna.
             </p>
           </div>
 
-          <div class="recordpool-blueprint-grid">
-            {libraryBlueprint.map((item) => (
-              <article class="recordpool-blueprint-card reveal">
+          <div class="portfolio-app-grid">
+            {appCatalog.map((app) => (
+              <article class="portfolio-app-card reveal">
+                <div class="portfolio-app-card-head">
+                  <span class="app-icon">{app.icon}</span>
+                  <span class="tag">{app.category}</span>
+                </div>
+                <h3>{app.name}</h3>
+                <p>{app.description}</p>
+                <div class="portfolio-app-meta">
+                  <span>{app.stage}</span>
+                  <span>{app.audience}</span>
+                </div>
+                {app.launch_url && app.launch_url !== '#' ? (
+                  <a class="button ghost" href={app.launch_url}>Ver módulo</a>
+                ) : (
+                  <span class="portfolio-app-note">En desarrollo privado</span>
+                )}
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section commercial-section" id="servicios">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="section-kicker">Líneas de software</p>
+            <h2>Construimos herramientas prácticas, no escaparates vacíos.</h2>
+            <p>
+              El objetivo es que cada app tenga un uso claro: ahorrar tiempo, ordenar datos musicales,
+              mejorar decisiones y hacer que un equipo pueda trabajar con menos caos.
+            </p>
+          </div>
+
+          <div class="service-line-grid">
+            {serviceLines.map((line) => (
+              <article class="service-line-card reveal">
+                <span>{line.label}</span>
+                <h3>{line.title}</h3>
+                <p>{line.body}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section recordpool-tutorial-section" id="proceso">
+        <div class="shell">
+          <div class="section-head reveal">
+            <p class="section-kicker">Cómo trabajamos</p>
+            <h2>Primero entendemos el flujo musical. Después lo convertimos en producto.</h2>
+            <p>
+              Una buena app musical no empieza por tecnología. Empieza por saber qué duele:
+              biblioteca desordenada, exportaciones manuales, duplicados, playlists lentas,
+              catálogos invisibles o procesos que dependen de memoria y paciencia.
+            </p>
+          </div>
+
+          <ol class="steps reveal company-process-steps">
+            {processSteps.map((item) => (
+              <li class="step">
+                <span>{item.step}</span>
                 <h3>{item.title}</h3>
-                <p>{item.description}</p>
-              </article>
+                <p>{item.body}</p>
+              </li>
             ))}
-          </div>
-        </div>
-      </section>
-
-      <section class="section recordpool-tutorial-section" id="tutorial">
-        <div class="shell">
-          <div class="section-head reveal">
-            <p class="section-kicker">Tutorial PR</p>
-            <h2>Así entra música al pool sin perder control, criterio ni propiedad.</h2>
-            <p>
-              El flujo está pensado para vender confianza: cada DJ mantiene su biblioteca privada,
-              cada aporte pasa por revisión y el master solo crece cuando hay una decisión editorial clara.
-            </p>
-          </div>
-
-          <div class="tutorial-value-strip reveal">
-            <article>
-              <span>Para DJs</span>
-              <strong>Menos caos, más control</strong>
-              <p>Trabajan desde su carpeta real y entienden cada cambio antes de compartirlo.</p>
-            </article>
-            <article>
-              <span>Para owners</span>
-              <strong>Review antes del merge</strong>
-              <p>Aprueban con impacto visible, notas y trazabilidad completa.</p>
-            </article>
-            <article>
-              <span>Para negocio</span>
-              <strong>Un asset defendible</strong>
-              <p>La comunidad, el historial y el master publicado se convierten en producto.</p>
-            </article>
-          </div>
-
-          <div class="tutorial-showcase">
-            {tutorialSteps.map((item) => (
-              <article class="tutorial-step reveal">
-                <div class="tutorial-step-copy">
-                  <span>{item.step}</span>
-                  <h3>{item.title}</h3>
-                  <p>{item.body}</p>
-                </div>
-                <figure>
-                  <img src={item.image} alt={item.alt} loading="lazy" />
-                </figure>
-              </article>
-            ))}
-          </div>
-
-          <div class="tutorial-close reveal">
-            <div>
-              <p class="eyebrow">Por qué importa</p>
-              <h3>Esto no es una carpeta bonita. Es infraestructura para convertir una comunidad musical en un producto serio.</h3>
-            </div>
-            <div class="tutorial-close-actions">
-              <a class="button primary" href="/demo">Ver demo de 3 minutos</a>
-              <a class="button ghost" href="/workspace">Probar workflow</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section recordpool-community-section">
-        <div class="shell">
-          <div class="section-head reveal">
-            <p class="section-kicker">Comunidad</p>
-            <h2>Antes de escuchar un solo track, ya entiendes quién está detrás de cada librería.</h2>
-            <p>
-              La parte pública sirve para presentar talento, ordenar mejor la comunidad y hacer que cada perfil tenga presencia propia dentro del pool.
-            </p>
-          </div>
-
-          <div class="recordpool-profile-grid">
-            {profiles.map((profile) => (
-              <article class="recordpool-profile-card reveal">
-                <img src={profile.heroImage} alt={`Visual de ${profile.name}`} />
-                <div class="recordpool-profile-card-body">
-                  <h3>{profile.name}</h3>
-                  <p>{profile.summary}</p>
-                  <div class="recordpool-profile-meta">
-                    <span>{profile.city}</span>
-                    <span>{profile.trackCount} tracks</span>
-                    <span>{profile.rootCount} roots</span>
-                  </div>
-                  <a class="button ghost" href={`/djs/${profile.slug}`}>Ver perfil</a>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section class="section recordpool-process-section">
-        <div class="shell">
-          <div class="section-head reveal">
-            <p class="section-kicker">Fases</p>
-            <h2>Un flujo pensado para cuidar la librería personal sin frenar lo que merece compartirse.</h2>
-          </div>
-          <ol class="steps reveal">
-            <li class="step">
-              <span>01</span>
-              <h3>Lectura local</h3>
-              <p>La música se lee desde el punto de trabajo real del DJ para entender su colección sin romper su rutina.</p>
-            </li>
-            <li class="step">
-              <span>02</span>
-              <h3>Control de cambios</h3>
-              <p>Cada cambio queda claro: qué es nuevo, qué se ha movido y qué está listo para quedarse como versión buena.</p>
-            </li>
-            <li class="step">
-              <span>03</span>
-              <h3>Aportes al pool</h3>
-              <p>Lo mejor de cada librería puede subir al pool común con revisión, criterio y una estructura limpia.</p>
-            </li>
           </ol>
         </div>
       </section>
@@ -410,22 +233,22 @@ const tutorialSteps = [
         <div class="shell contact-layout">
           <div>
             <p class="eyebrow">Siguiente paso</p>
-            <h2>Una comunidad musical merece algo mejor que un Drive compartido sin contexto.</h2>
+            <h2>Si el problema se repite cada semana, probablemente merece una herramienta propia.</h2>
             <p>
-              MLABS está pensado para dar forma, valor y orden a la música de una red de DJs que quiere crecer con una herramienta propia.
+              MLABS puede ayudarte a convertir una idea, un flujo de DJ o una necesidad de equipo musical
+              en una app enseñable, usable y preparada para crecer.
             </p>
           </div>
           <div class="contact-actions">
-            <a class="button primary" href="/djs">Ver directorio de DJs</a>
-            <a class="button ghost" href="/pricing">Abrir pricing</a>
+            <a class="button primary" href="mailto:info@mlabsmusic.com?subject=Proyecto%20software%20musical%20MLABS">Contactar</a>
+            <a class="button ghost" href="/apps">Área privada</a>
           </div>
         </div>
       </section>
     </main>
-
   </div>
 
-  <a class="sticky-pilot-cta" href="/for-crews">Reservar piloto de 7 dias</a>
+  <a class="sticky-pilot-cta" href="mailto:info@mlabsmusic.com?subject=Proyecto%20software%20musical%20MLABS">Proyecto software musical</a>
 
   <script>
     const heroVideo = document.querySelector('.hero-video');

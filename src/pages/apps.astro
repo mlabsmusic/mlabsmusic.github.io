@@ -4,21 +4,21 @@ import { appCatalog } from '../data/appCatalog';
 ---
 
 <BaseLayout
-  title="Herramientas privadas | MLabs Recordpool"
-  description="Panel privado con las herramientas activadas dentro de MLabs Recordpool."
+  title="Portfolio privado de apps | MLABS Music"
+  description="Panel privado con el portfolio de apps y herramientas musicales activadas dentro de MLABS Music."
   canonicalPath="/apps"
   bodyClass="app-body"
 >
   <div class="page-wrap">
     <header class="site-header">
       <nav class="nav" aria-label="Principal">
-        <a class="brand" href="/">MLABS RECORDPOOL</a>
+        <a class="brand" href="/">MLABS MUSIC</a>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primaryMenu" aria-label="Abrir menu">
           <span></span><span></span><span></span>
         </button>
         <div class="nav-links" id="primaryMenu">
           <a href="/">Inicio</a>
-          <a href="/djs">DJs</a>
+          <a href="/#portfolio">Portfolio</a>
           <a href="/workspace">Workspace</a>
           <a class="is-auth-hidden" href="/admin" data-auth-link="admin">Owner Review</a>
         </div>
@@ -28,8 +28,8 @@ import { appCatalog } from '../data/appCatalog';
 
     <main class="dashboard-screen">
       <section class="dashboard-hero dashboard-hero-compact shell reveal">
-        <p class="eyebrow">Panel privado</p>
-        <h1>Herramientas activadas</h1>
+        <p class="eyebrow">Portfolio privado</p>
+        <h1>Apps musicales activadas</h1>
         <p id="userSummary">Comprobando sesion y cargando tu espacio privado...</p>
       </section>
 
@@ -41,7 +41,7 @@ import { appCatalog } from '../data/appCatalog';
               <span class="tag">{app.category}</span>
               <h2>{app.name}</h2>
               <p>{app.description}</p>
-              <span class="app-status">Pendiente de validar</span>
+              <span class="app-status">{app.stage}</span>
             </article>
           ))}
         </div>

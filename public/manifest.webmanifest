@@ -1,7 +1,7 @@
 {
-  "name": "MLABS Recordpool",
+  "name": "MLABS Music",
   "short_name": "MLABS",
-  "description": "Recordpool comunitario con perfiles de DJs, bibliotecas personales y control de cambios musical.",
+  "description": "Software, apps y herramientas digitales para DJs, comunidades musicales y empresas del sector musical.",
   "lang": "es",
   "start_url": "/",
   "scope": "/",

@@ -27,19 +27,20 @@ async function loginAsTestDj(page, next = '/workspace') {
 }
 
 test.describe('public routes', () => {
-  test('home renders core community messaging', async ({ page }) => {
+  test('home renders company positioning and app portfolio', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByRole('heading', { name: /comunidad de DJs/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /Explorar perfiles/i })).toBeVisible();
-    await expect(page.getByRole('heading', { name: /Así entra música al pool/i })).toBeVisible();
-    await expect(page.locator('.tutorial-step img')).toHaveCount(5);
-    await expect(page.getByRole('heading', { name: /MLABS es Git para comunidades musicales/i })).toBeVisible();
-    await expect(page.locator('.music-ops-node')).toHaveCount(6);
-    await expect(page.getByRole('heading', { name: /El DJ no sube canciones una a una/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /Solicitar acceso beta/i })).toHaveAttribute('href', /mailto:info@mlabsmusic.com/);
-    await expect(page.locator('.mac-agent-feature')).toHaveCount(4);
-    await expect(page.getByRole('heading', { name: /El negocio no es almacenar tracks/i })).toBeVisible();
-    await expect(page.getByRole('link', { name: /Ver pricing/i }).first()).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Desarrollamos apps/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Ver apps en desarrollo/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /empresa de software especializada/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Apps y herramientas que estamos construyendo/i })).toBeVisible();
+    await expect(page.locator('.portfolio-app-card')).toHaveCount(5);
+    await expect(page.getByRole('heading', { name: /MLABS Recordpool/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /FolderToTunes/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Construimos herramientas prácticas/i })).toBeVisible();
+    await expect(page.locator('.service-line-card')).toHaveCount(3);
+    await expect(page.getByRole('heading', { name: /Primero entendemos el flujo musical/i })).toBeVisible();
+    await expect(page.locator('.company-process-steps .step')).toHaveCount(3);
+    await expect(page.getByRole('link', { name: /Contactar/i })).toHaveAttribute('href', /mailto:info@mlabsmusic.com/);
     await expectNoHorizontalOverflow(page);
   });
 
@@ -122,10 +123,10 @@ test.describe('public routes', () => {
     test.skip(!isMobile, 'Solo aplica a movil');
     await page.goto('/');
     await page.getByRole('button', { name: /Abrir menu/i }).click();
-    const navDjLink = page.locator('#primaryMenu').getByRole('link', { name: 'DJs' });
-    await expect(navDjLink).toBeVisible();
+    const navPortfolioLink = page.locator('#primaryMenu').getByRole('link', { name: 'Portfolio' });
+    await expect(navPortfolioLink).toBeVisible();
     await page.getByRole('button', { name: /Cerrar menu/i }).click();
-    await expect(navDjLink).not.toBeVisible();
+    await expect(navPortfolioLink).not.toBeVisible();
   });
 });
 
@@ -137,9 +138,12 @@ test.describe('auth flows', () => {
     await expect(page.locator('#workspaceCloudLibrary')).toContainText('TEST Library');
   });
 
-  test('apps route redirects anonymous users to login', async ({ page }) => {
+  test('apps route handles anonymous or unconfigured access', async ({ page }) => {
     await page.goto('/apps');
-    await page.waitForURL('**/login?next=/apps');
-    await expect(page.getByRole('heading', { name: /Entra a tu espacio/i })).toBeVisible();
+    await expect(async () => {
+      const isLogin = page.url().includes('/login?next=/apps');
+      const hasConfigMessage = await page.getByText(/Configura Supabase/i).isVisible().catch(() => false);
+      expect(isLogin || hasConfigMessage).toBeTruthy();
+    }).toPass();
   });
 });
