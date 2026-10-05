@@ -19,7 +19,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <a href="/">Inicio</a>
           <a href="/#portfolio">Portfolio</a>
           <a href="/workspace">Workspace</a>
-          <a href="/register">Registro</a>
           <a class="is-auth-hidden" href="/admin" data-auth-link="admin">Admin</a>
         </div>
       </nav>
@@ -28,43 +27,36 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <main class="auth-screen">
       <section class="auth-panel reveal" aria-labelledby="loginTitle">
         <p class="eyebrow">Acceso privado</p>
-        <h1 id="loginTitle">Entra o crea tu cuenta en MLABS.</h1>
+        <h1 id="loginTitle">Accede con tu email.</h1>
         <p id="authIntro">
-          Accede a las apps privadas, prototipos y herramientas musicales de MLABS Music.
+          Primero dinos tu email. Si no hay una sesión activa, podrás crear tu contraseña y confirmar la cuenta.
         </p>
 
-        <div class="auth-tabs" role="tablist" aria-label="Tipo de acceso">
-          <button class="auth-tab" type="button" data-auth-mode="signin" role="tab">Iniciar sesión</button>
-          <button class="auth-tab" type="button" data-auth-mode="signup" role="tab">Crear cuenta</button>
-        </div>
-
         <form class="auth-form" id="authForm">
-          <label data-signup-only>
-            Nombre visible
-            <input id="displayName" name="displayName" type="text" autocomplete="name" maxlength="80" placeholder="Nombre artístico, equipo o empresa" />
-          </label>
+          <div class="auth-email-summary" data-email-summary hidden>
+            <span>Email</span>
+            <strong id="selectedEmailLabel"></strong>
+          </div>
           <label data-email-field>
             Email
             <input id="email" name="email" type="email" autocomplete="email" required placeholder="tu@email.com" />
           </label>
           <label data-password-field>
             <span id="passwordLabel">Contraseña</span>
-            <input id="password" name="password" type="password" autocomplete="current-password" minlength="6" required />
+            <input id="password" name="password" type="password" autocomplete="current-password" minlength="6" />
           </label>
           <label data-confirm-field>
             Confirmar contraseña
             <input id="passwordConfirm" name="passwordConfirm" type="password" autocomplete="new-password" minlength="6" />
           </label>
-          <label class="auth-check" data-signup-only>
-            <input id="termsAccepted" name="termsAccepted" type="checkbox" />
-            <span>Acepto crear una cuenta para acceder a herramientas privadas de MLABS Music.</span>
-          </label>
           <div class="auth-actions">
-            <button class="button primary" type="submit" id="authSubmitButton">Iniciar sesión</button>
+            <button class="button primary" type="submit" id="authSubmitButton">Continuar</button>
           </div>
           <div class="auth-secondary-actions">
-            <button type="button" data-auth-mode="recover">He olvidado mi contraseña</button>
-            <button type="button" data-auth-mode="signin" data-return-signin>Volver al login</button>
+            <button type="button" data-auth-action="signin" hidden>Ya tengo cuenta</button>
+            <button type="button" data-auth-action="signup" hidden>Crear cuenta nueva</button>
+            <button type="button" data-auth-action="recover" hidden>He olvidado mi contraseña</button>
+            <button type="button" data-auth-action="change-email" hidden>Cambiar email</button>
           </div>
           <p class="auth-message" id="authMessage" role="status"></p>
         </form>
@@ -81,15 +73,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     const message = document.getElementById('authMessage');
     const submitButton = document.getElementById('authSubmitButton');
     const passwordLabel = document.getElementById('passwordLabel');
+    const emailSummary = document.querySelector('[data-email-summary]');
+    const selectedEmailLabel = document.getElementById('selectedEmailLabel');
     const emailField = document.querySelector('[data-email-field]');
     const passwordField = document.querySelector('[data-password-field]');
     const confirmField = document.querySelector('[data-confirm-field]');
-    const signupOnlyFields = document.querySelectorAll('[data-signup-only]');
-    const returnSigninButton = document.querySelector('[data-return-signin]');
-    const modeButtons = document.querySelectorAll('[data-auth-mode]');
+    const actionButtons = document.querySelectorAll('[data-auth-action]');
     const nextUrl = new URL(window.location.href).searchParams.get('next') || '/workspace';
-    const initialMode = new URL(window.location.href).searchParams.get('mode') || 'signin';
-    let currentMode = ['signin', 'signup', 'recover', 'update'].includes(initialMode) ? initialMode : 'signin';
+    const initialMode = new URL(window.location.href).searchParams.get('mode') || '';
+    const preferredMode = initialMode === 'signin' ? 'signin' : 'signup';
+    let currentMode = initialMode === 'update' ? 'update' : 'email';
+    let selectedEmail = '';
+    let detectedSessionEmail = '';
 
     function setMessage(text, tone = 'info') {
       if (!message) return;
@@ -110,67 +105,76 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       currentMode = mode;
       setMessage('');
 
+      const isEmail = mode === 'email';
       const isSignup = mode === 'signup';
       const isRecover = mode === 'recover';
       const isUpdate = mode === 'update';
+      const isSignin = mode === 'signin';
+      const hasEmail = Boolean(selectedEmail);
 
-      title.textContent = isSignup
-        ? 'Crea tu cuenta en MLABS.'
+      title.textContent = isEmail
+        ? 'Accede con tu email.'
+        : isSignup
+          ? 'Crea tu contraseña.'
         : isRecover
           ? 'Recupera el acceso a tu cuenta.'
           : isUpdate
             ? 'Crea una contraseña nueva.'
-            : 'Entra a tu cuenta MLABS.';
+            : 'Escribe tu contraseña.';
 
-      intro.textContent = isSignup
-        ? 'Regístrate para acceder a apps privadas, betas y herramientas musicales de MLABS Music.'
+      intro.textContent = isEmail
+        ? 'Primero dinos tu email. Si no hay una sesión activa, podrás crear tu contraseña y confirmar la cuenta.'
+        : isSignup
+          ? 'No hay una sesión activa en este navegador. Crea una contraseña para abrir tu cuenta MLABS.'
         : isRecover
           ? 'Te enviaremos un enlace seguro para recuperar tu contraseña.'
           : isUpdate
             ? 'Introduce una nueva contraseña para terminar la recuperación de acceso.'
-            : 'Usa tu email y contraseña para entrar a tu espacio privado.';
+            : detectedSessionEmail
+              ? 'Sesión detectada. Confirma tu contraseña para entrar a tu espacio privado.'
+              : 'Usa la contraseña de tu cuenta MLABS para entrar.';
 
-      for (const field of signupOnlyFields) setFieldHidden(field, !isSignup);
-      setFieldHidden(emailField, isUpdate);
-      setFieldHidden(passwordField, isRecover);
+      setFieldHidden(emailField, !isEmail);
+      setFieldHidden(emailSummary, isEmail || isUpdate || !hasEmail);
+      setFieldHidden(passwordField, isEmail || isRecover);
       setFieldHidden(confirmField, !(isSignup || isUpdate));
 
       const emailInput = document.getElementById('email');
       const passwordInput = document.getElementById('password');
       const confirmInput = document.getElementById('passwordConfirm');
-      const displayNameInput = document.getElementById('displayName');
-      const termsInput = document.getElementById('termsAccepted');
 
-      emailInput.required = !isUpdate;
-      passwordInput.required = !isRecover;
+      if (selectedEmailLabel) selectedEmailLabel.textContent = selectedEmail;
+      emailInput.required = isEmail;
+      passwordInput.required = isSignin || isSignup || isUpdate;
       confirmInput.required = isSignup || isUpdate;
-      displayNameInput.required = isSignup;
-      termsInput.required = isSignup;
       passwordInput.autocomplete = isSignup || isUpdate ? 'new-password' : 'current-password';
-      passwordLabel.textContent = isUpdate ? 'Nueva contraseña' : 'Contraseña';
+      passwordLabel.textContent = isSignup ? 'Crear contraseña' : isUpdate ? 'Nueva contraseña' : 'Contraseña';
 
-      submitButton.textContent = isSignup
-        ? 'Crear cuenta'
+      submitButton.textContent = isEmail
+        ? 'Continuar'
+        : isSignup
+          ? 'Crear cuenta'
         : isRecover
           ? 'Enviar enlace'
           : isUpdate
             ? 'Guardar contraseña'
             : 'Iniciar sesión';
 
-      for (const button of modeButtons) {
-        const isActive = button.dataset.authMode === mode;
-        button.classList.toggle('is-active', isActive);
-        button.setAttribute('aria-selected', String(isActive));
-      }
-
-      if (returnSigninButton) {
-        returnSigninButton.hidden = !(isRecover || isUpdate);
+      for (const button of actionButtons) {
+        const action = button.dataset.authAction;
+        const visible = (
+          (action === 'signin' && (isSignup || isRecover)) ||
+          (action === 'signup' && (isSignin || isRecover) && !detectedSessionEmail) ||
+          (action === 'recover' && isSignin) ||
+          (action === 'change-email' && !isEmail && !isUpdate)
+        );
+        button.hidden = !visible;
       }
 
       if (replaceUrl) {
         const url = new URL(window.location.href);
-        if (mode === 'signin') url.searchParams.delete('mode');
-        else url.searchParams.set('mode', mode);
+        if (mode === 'email') url.searchParams.delete('mode');
+        else if (mode !== 'signup' || initialMode === 'signup') url.searchParams.set('mode', mode);
         window.history.replaceState({}, '', url);
       }
     }
@@ -179,7 +183,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       setMessage('Faltan PUBLIC_SUPABASE_URL y PUBLIC_SUPABASE_ANON_KEY en el entorno.', 'error');
     } else {
       const { data } = await supabase.auth.getSession();
-      if (data.session && currentMode !== 'update') window.location.assign(nextUrl);
+      if (data.session?.user?.email && currentMode !== 'update') {
+        detectedSessionEmail = data.session.user.email.toLowerCase();
+        selectedEmail = detectedSessionEmail;
+        setMode('signin', false);
+        setMessage(`Sesión detectada para ${selectedEmail}.`, 'success');
+      }
 
       supabase.auth.onAuthStateChange((event) => {
         if (event === 'PASSWORD_RECOVERY') {
@@ -191,8 +200,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     setMode(currentMode, false);
 
-    for (const button of modeButtons) {
-      button.addEventListener('click', () => setMode(button.dataset.authMode || 'signin'));
+    for (const button of actionButtons) {
+      button.addEventListener('click', () => {
+        const action = button.dataset.authAction;
+        if (action === 'change-email') {
+          selectedEmail = '';
+          detectedSessionEmail = '';
+          setMode('email');
+          return;
+        }
+        if (action === 'signin' || action === 'signup' || action === 'recover') {
+          setMode(action);
+        }
+      });
     }
 
     form?.addEventListener('submit', async (event) => {
@@ -201,18 +221,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const email = String(formData.get('email') || '').trim().toLowerCase();
       const password = String(formData.get('password') || '');
       const passwordConfirm = String(formData.get('passwordConfirm') || '');
-      const displayName = String(formData.get('displayName') || '').trim();
-      const termsAccepted = formData.get('termsAccepted') === 'on';
 
-      if (!supabase) return;
-
-      if ((currentMode === 'signup' || currentMode === 'update') && password !== passwordConfirm) {
-        setMessage('Las contraseñas no coinciden.', 'error');
+      if (currentMode === 'email') {
+        if (!email) {
+          setMessage('Escribe tu email para continuar.', 'error');
+          return;
+        }
+        selectedEmail = email;
+        setMode(detectedSessionEmail && selectedEmail === detectedSessionEmail ? 'signin' : preferredMode);
         return;
       }
 
-      if (currentMode === 'signup' && !termsAccepted) {
-        setMessage('Acepta la creación de cuenta para continuar.', 'error');
+      if (!supabase) {
+        setMessage('Faltan PUBLIC_SUPABASE_URL y PUBLIC_SUPABASE_ANON_KEY en el entorno.', 'error');
+        return;
+      }
+
+      if ((currentMode === 'signup' || currentMode === 'update') && password !== passwordConfirm) {
+        setMessage('Las contraseñas no coinciden.', 'error');
         return;
       }
 
@@ -230,29 +256,33 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const redirectTo = `${window.location.origin}/login?next=${encodeURIComponent(nextUrl)}`;
       const result = currentMode === 'signup'
         ? await supabase.auth.signUp({
-            email,
+            email: selectedEmail,
             password,
             options: {
               emailRedirectTo: redirectTo,
               data: {
-                display_name: displayName,
                 account_type: 'music_user',
                 source: 'mlabs_music_web',
               },
             },
           })
         : currentMode === 'recover'
-          ? await supabase.auth.resetPasswordForEmail(email, {
+          ? await supabase.auth.resetPasswordForEmail(selectedEmail, {
               redirectTo: `${window.location.origin}/login?mode=update&next=${encodeURIComponent(nextUrl)}`,
             })
           : currentMode === 'update'
             ? await supabase.auth.updateUser({ password })
-            : await supabase.auth.signInWithPassword({ email, password });
+            : await supabase.auth.signInWithPassword({ email: selectedEmail, password });
 
       submitButton.disabled = false;
 
       if (result.error) {
-        setMessage(result.error.message, 'error');
+        setMessage(
+          currentMode === 'signin'
+            ? 'No hemos podido entrar con ese email y contraseña. Puedes recuperar la contraseña o crear una cuenta nueva si es tu primer acceso.'
+            : result.error.message,
+          'error',
+        );
         return;
       }
 

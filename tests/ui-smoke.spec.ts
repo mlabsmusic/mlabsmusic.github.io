@@ -14,8 +14,9 @@ async function expectNoHorizontalOverflow(page) {
 }
 
 async function loginAsTestDj(page, next = '/workspace') {
-  await page.goto(`/login?next=${encodeURIComponent(next)}`);
-  await page.getByLabel('Email').fill(TEST_EMAIL);
+  await page.goto(`/login?mode=signin&next=${encodeURIComponent(next)}`);
+  await page.getByRole('textbox', { name: 'Email' }).fill(TEST_EMAIL);
+  await page.getByRole('button', { name: /Continuar/i }).click();
   await page.getByLabel('Contraseña').fill(TEST_PASSWORD);
   await page.getByRole('button', { name: /Iniciar sesi[oó]n/i }).click();
   try {
@@ -150,14 +151,21 @@ test.describe('auth flows', () => {
     }).toPass();
   });
 
-  test('login page exposes sign in, sign up and recovery modes', async ({ page }) => {
+  test('login page uses email-first account flow', async ({ page }) => {
     await page.goto('/login');
-    await expect(page.getByRole('heading', { name: /Entra a tu cuenta MLABS/i })).toBeVisible();
-    await expect(page.getByRole('button', { name: /Iniciar sesi[oó]n/i })).toBeVisible();
-    await page.getByRole('tab', { name: /Crear cuenta/i }).click();
-    await expect(page.getByRole('heading', { name: /Crea tu cuenta en MLABS/i })).toBeVisible();
-    await expect(page.getByLabel(/Nombre visible/i)).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Accede con tu email/i })).toBeVisible();
+    await expect(page.getByRole('textbox', { name: 'Email' })).toBeVisible();
+    await expect(page.getByLabel('Contraseña', { exact: true })).not.toBeVisible();
+    await page.getByRole('textbox', { name: 'Email' }).fill('nuevo@example.com');
+    await page.getByRole('button', { name: /Continuar/i }).click();
+    await expect(page.getByRole('heading', { name: /Crea tu contraseña/i })).toBeVisible();
+    await expect(page.getByLabel(/Crear contraseña/i)).toBeVisible();
     await expect(page.getByLabel(/Confirmar contraseña/i)).toBeVisible();
+    await expect(page.getByRole('button', { name: /Crear cuenta/i })).toBeVisible();
+    await page.getByRole('button', { name: /Ya tengo cuenta/i }).click();
+    await expect(page.getByRole('heading', { name: /Escribe tu contraseña/i })).toBeVisible();
+    await expect(page.getByLabel('Contraseña', { exact: true })).toBeVisible();
+    await expect(page.getByLabel(/Confirmar contraseña/i)).not.toBeVisible();
     await page.getByRole('button', { name: /He olvidado/i }).click();
     await expect(page.getByRole('heading', { name: /Recupera el acceso/i })).toBeVisible();
     await expect(page.getByLabel('Contraseña', { exact: true })).not.toBeVisible();
@@ -167,8 +175,12 @@ test.describe('auth flows', () => {
   test('register route opens the sign up flow', async ({ page }) => {
     await page.goto('/register');
     await page.waitForURL('**/login?mode=signup');
-    await expect(page.getByRole('heading', { name: /Crea tu cuenta en MLABS/i })).toBeVisible();
-    await expect(page.getByLabel(/Nombre visible/i)).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Accede con tu email/i })).toBeVisible();
+    await page.getByRole('textbox', { name: 'Email' }).fill('registro@example.com');
+    await page.getByRole('button', { name: /Continuar/i }).click();
+    await expect(page.getByRole('heading', { name: /Crea tu contraseña/i })).toBeVisible();
+    await expect(page.getByLabel(/Crear contraseña/i)).toBeVisible();
+    await expect(page.getByLabel(/Confirmar contraseña/i)).toBeVisible();
     await expectNoHorizontalOverflow(page);
   });
 });
