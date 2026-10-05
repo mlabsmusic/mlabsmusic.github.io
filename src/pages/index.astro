@@ -73,9 +73,8 @@ const processSteps = [
           <a href="#proceso">Proceso</a>
           <a href="/workspace">Workspace</a>
           <a href="/recordpool">Recordpool</a>
-          <a href="/login">Acceso</a>
         </div>
-        <a class="button primary" href="mailto:info@mlabsmusic.com?subject=Proyecto%20software%20musical%20MLABS">Hablar de un proyecto</a>
+        <a class="button primary" href="/login">Iniciar sesión</a>
       </nav>
     </header>
 
@@ -102,8 +101,8 @@ const processSteps = [
             preparar sesiones, revisar catálogos y convertir procesos musicales en software usable.
           </p>
           <div class="hero-actions">
-            <a class="button primary" href="#portfolio">Ver apps en desarrollo</a>
-            <a class="button ghost" href="mailto:info@mlabsmusic.com?subject=Proyecto%20software%20musical%20MLABS">Solicitar propuesta</a>
+            <a class="button primary" href="/login">Iniciar sesión</a>
+            <a class="button ghost" href="#portfolio">Ver apps en desarrollo</a>
           </div>
           <div class="recordpool-stat-row company-stat-row">
             <article class="recordpool-stat-card">
@@ -241,15 +240,24 @@ const processSteps = [
             </p>
           </div>
           <div class="contact-actions">
-            <a class="button primary" href="mailto:info@mlabsmusic.com?subject=Proyecto%20software%20musical%20MLABS">Contactar</a>
+            <a class="button primary" href="/login">Iniciar sesión</a>
             <a class="button ghost" href="/apps">Área privada</a>
           </div>
         </div>
       </section>
+
+      <footer class="site-footer home-footer">
+        <div class="shell footer-inner">
+          <p>¿Quieres hablar de un proyecto musical?</p>
+          <nav aria-label="Contacto y legal">
+            <a href="mailto:info@mlabsmusic.com?subject=Proyecto%20software%20musical%20MLABS">Hablar de un proyecto</a>
+            <a href="/privacy-policy">Privacidad</a>
+            <a href="/terms-of-use">Términos</a>
+          </nav>
+        </div>
+      </footer>
     </main>
   </div>
-
-  <a class="sticky-pilot-cta" href="mailto:info@mlabsmusic.com?subject=Proyecto%20software%20musical%20MLABS">Proyecto software musical</a>
 
   <script>
     const heroVideo = document.querySelector('.hero-video');

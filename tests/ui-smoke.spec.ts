@@ -30,8 +30,10 @@ test.describe('public routes', () => {
   test('home renders company positioning and app portfolio', async ({ page }) => {
     await page.goto('/');
     await expect(page.getByRole('heading', { name: /Desarrollamos apps/i })).toBeVisible();
+    await expect(page.locator('.nav > .button.primary')).toHaveText(/Iniciar sesi[oó]n/i);
+    await expect(page.locator('.nav > .button.primary')).toHaveAttribute('href', '/login');
+    await expect(page.locator('.hero-actions .button.primary')).toHaveAttribute('href', '/login');
     await expect(page.getByRole('link', { name: /Ver apps en desarrollo/i })).toBeVisible();
-    await expect(page.locator('#primaryMenu a[href="/login"]')).toHaveCount(1);
     await expect(page.getByRole('heading', { name: /empresa de software especializada/i })).toBeVisible();
     await expect(page.getByRole('heading', { name: /Apps y herramientas que estamos construyendo/i })).toBeVisible();
     await expect(page.locator('.portfolio-app-card')).toHaveCount(5);
@@ -41,7 +43,7 @@ test.describe('public routes', () => {
     await expect(page.locator('.service-line-card')).toHaveCount(3);
     await expect(page.getByRole('heading', { name: /Primero entendemos el flujo musical/i })).toBeVisible();
     await expect(page.locator('.company-process-steps .step')).toHaveCount(3);
-    await expect(page.getByRole('link', { name: /Contactar/i })).toHaveAttribute('href', /mailto:info@mlabsmusic.com/);
+    await expect(page.locator('.home-footer').getByRole('link', { name: /Hablar de un proyecto/i })).toHaveAttribute('href', /mailto:info@mlabsmusic.com/);
     await expectNoHorizontalOverflow(page);
   });
 

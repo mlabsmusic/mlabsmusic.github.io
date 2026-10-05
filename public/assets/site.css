@@ -1064,6 +1064,12 @@ body.is-entered .page-wrap {
   gap: 18px;
 }
 
+.footer-inner p {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 800;
+}
+
 .footer-inner nav {
   display: flex;
   flex-wrap: wrap;
@@ -1078,6 +1084,12 @@ body.is-entered .page-wrap {
 
 .footer-inner a:hover {
   color: var(--accent);
+}
+
+.home-footer {
+  background:
+    linear-gradient(180deg, rgba(245, 251, 251, .92), rgba(229, 248, 249, .82)),
+    var(--panel-2);
 }
 
 .modal-backdrop {
@@ -1768,17 +1780,48 @@ body.is-entered .page-wrap {
 }
 
 .company-process-steps .step {
-  border-color: rgba(255, 255, 255, .16);
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, .12), rgba(255, 255, 255, .04)),
-    rgba(255, 255, 255, .06);
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-height: 218px;
+  border: 1px solid rgba(245, 251, 251, .2);
+  background: rgba(245, 251, 251, .075);
+  box-shadow: inset 0 1px rgba(255, 255, 255, .14), 0 22px 60px rgba(0, 0, 0, .2);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.company-process-steps .step::before,
+.company-process-steps .step::after {
+  display: none;
+}
+
+.company-process-steps .step span,
+.company-process-steps .step h3,
+.company-process-steps .step p {
+  position: relative;
+  z-index: 1;
+}
+
+.company-process-steps .step span {
+  width: fit-content;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
+  border: 1px solid rgba(142, 232, 238, .34);
+  border-radius: 8px;
+  color: #8ee8ee;
+  background: rgba(0, 169, 183, .1);
 }
 
 .company-process-steps .step h3 {
+  margin: 2px 0 0;
   color: var(--white);
 }
 
 .company-process-steps .step p {
+  margin: 0;
   color: rgba(245, 251, 251, .72);
 }
 
