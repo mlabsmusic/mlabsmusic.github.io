@@ -8,6 +8,48 @@
     body.classList.add('is-entered');
   });
 
+  function shouldHandlePageTransition(link) {
+    if (!(link instanceof HTMLAnchorElement)) return false;
+    if (!link.href || link.target || link.hasAttribute('download')) return false;
+    if (link.protocol === 'mailto:' || link.protocol === 'tel:') return false;
+    const url = new URL(link.href, window.location.href);
+    if (url.origin !== window.location.origin) return false;
+    if (url.pathname === window.location.pathname && url.hash) return false;
+    return url.href !== window.location.href;
+  }
+
+  function markFocusedSection(target) {
+    target.classList.remove('is-focus-section');
+    void target.offsetWidth;
+    target.classList.add('is-focus-section');
+    window.setTimeout(() => target.classList.remove('is-focus-section'), 900);
+  }
+
+  document.addEventListener('click', (event) => {
+    const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
+    if (!(link instanceof HTMLAnchorElement)) return;
+
+    const url = new URL(link.href, window.location.href);
+    if (url.origin === window.location.origin && url.pathname === window.location.pathname && url.hash) {
+      const target = document.querySelector(url.hash);
+      if (!target) return;
+      event.preventDefault();
+      closeNav();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      markFocusedSection(target);
+      window.history.pushState({}, '', url.hash);
+      return;
+    }
+
+    if (!shouldHandlePageTransition(link) || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    closeNav();
+    body.classList.add('is-leaving');
+    window.setTimeout(() => {
+      window.location.assign(link.href);
+    }, 240);
+  });
+
   if (header) {
     const updateHeader = () => {
       const headerScrolled = window.scrollY > 20;

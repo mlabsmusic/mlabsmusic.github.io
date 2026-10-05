@@ -263,6 +263,7 @@ const processSteps = [
     const heroVideo = document.querySelector('.hero-video');
 
     if (heroVideo instanceof HTMLVideoElement) {
+      let lastVideoTime = 0;
       const tryPlay = async () => {
         try {
           heroVideo.muted = true;
@@ -277,6 +278,20 @@ const processSteps = [
           void tryPlay();
         }, { once: true });
       }
+
+      heroVideo.addEventListener('loadedmetadata', () => {
+        if (heroVideo.currentTime === 0) {
+          heroVideo.currentTime = 0.04;
+        }
+      }, { once: true });
+
+      heroVideo.addEventListener('timeupdate', () => {
+        if (heroVideo.currentTime < lastVideoTime && lastVideoTime > 1) {
+          heroVideo.classList.add('is-loop-cycle');
+          window.setTimeout(() => heroVideo.classList.remove('is-loop-cycle'), 440);
+        }
+        lastVideoTime = heroVideo.currentTime;
+      });
     }
   </script>
 </BaseLayout>
