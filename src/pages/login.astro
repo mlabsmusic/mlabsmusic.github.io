@@ -29,10 +29,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <p class="eyebrow">Acceso privado</p>
         <h1 id="loginTitle">Accede con tu email.</h1>
         <p id="authIntro">
-          Primero dinos tu email. Si no hay una sesión activa, podrás crear tu contraseña y confirmar la cuenta.
+          Escribe tu email y comprobaremos si ya hay una sesión activa para continuar.
         </p>
 
         <form class="auth-form" id="authForm">
+          <div class="auth-progress" aria-hidden="true"></div>
           <div class="auth-email-summary" data-email-summary hidden>
             <span>Email</span>
             <strong id="selectedEmailLabel"></strong>
@@ -54,7 +55,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </div>
           <div class="auth-secondary-actions">
             <button type="button" data-auth-action="signin" hidden>Ya tengo cuenta</button>
-            <button type="button" data-auth-action="signup" hidden>Crear cuenta nueva</button>
             <button type="button" data-auth-action="recover" hidden>He olvidado mi contraseña</button>
             <button type="button" data-auth-action="change-email" hidden>Cambiar email</button>
           </div>
@@ -92,6 +92,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       message.dataset.tone = tone;
     }
 
+    function setChecking(isChecking) {
+      form?.classList.toggle('is-checking', isChecking);
+      if (submitButton) submitButton.disabled = isChecking;
+    }
+
     function setFieldHidden(element, hidden) {
       if (!element) return;
       element.toggleAttribute('hidden', hidden);
@@ -115,7 +120,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       title.textContent = isEmail
         ? 'Accede con tu email.'
         : isSignup
-          ? 'Crea tu contraseña.'
+          ? 'Crear cuenta.'
         : isRecover
           ? 'Recupera el acceso a tu cuenta.'
           : isUpdate
@@ -123,9 +128,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             : 'Escribe tu contraseña.';
 
       intro.textContent = isEmail
-        ? 'Primero dinos tu email. Si no hay una sesión activa, podrás crear tu contraseña y confirmar la cuenta.'
+        ? 'Escribe tu email y comprobaremos si ya hay una sesión activa para continuar.'
         : isSignup
-          ? 'No hay una sesión activa en este navegador. Crea una contraseña para abrir tu cuenta MLABS.'
+          ? 'No hay una sesión activa para este email. Crea una contraseña y confirma la contraseña para abrir tu cuenta MLABS.'
         : isRecover
           ? 'Te enviaremos un enlace seguro para recuperar tu contraseña.'
           : isUpdate
@@ -148,12 +153,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       passwordInput.required = isSignin || isSignup || isUpdate;
       confirmInput.required = isSignup || isUpdate;
       passwordInput.autocomplete = isSignup || isUpdate ? 'new-password' : 'current-password';
-      passwordLabel.textContent = isSignup ? 'Crear contraseña' : isUpdate ? 'Nueva contraseña' : 'Contraseña';
+      passwordLabel.textContent = isUpdate ? 'Nueva contraseña' : 'Contraseña';
 
       submitButton.textContent = isEmail
         ? 'Continuar'
         : isSignup
-          ? 'Crear cuenta'
+          ? 'Crear cuenta y entrar'
         : isRecover
           ? 'Enviar enlace'
           : isUpdate
@@ -164,7 +169,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         const action = button.dataset.authAction;
         const visible = (
           (action === 'signin' && (isSignup || isRecover)) ||
-          (action === 'signup' && (isSignin || isRecover) && !detectedSessionEmail) ||
           (action === 'recover' && isSignin) ||
           (action === 'change-email' && !isEmail && !isUpdate)
         );
@@ -227,7 +231,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           setMessage('Escribe tu email para continuar.', 'error');
           return;
         }
+        setChecking(true);
+        setMessage('Comprobando sesión...', 'info');
+        if (supabase) {
+          const { data } = await supabase.auth.getSession();
+          detectedSessionEmail = data.session?.user?.email?.toLowerCase() || '';
+        }
         selectedEmail = email;
+        await new Promise((resolve) => window.setTimeout(resolve, 260));
+        setChecking(false);
         setMode(detectedSessionEmail && selectedEmail === detectedSessionEmail ? 'signin' : preferredMode);
         return;
       }
@@ -288,10 +300,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       if (currentMode === 'signup') {
         if (result.data?.session) {
-          setMessage('Cuenta creada. Redirigiendo a tu espacio...', 'success');
+          setMessage('Cuenta creada. Entrando al portal...', 'success');
           window.location.assign(nextUrl);
         } else {
-          setMessage('Cuenta creada. Revisa tu email para confirmar el acceso antes de entrar.', 'success');
+          setMessage('Cuenta creada. Entrando al portal...', 'success');
+          const signInResult = await supabase.auth.signInWithPassword({ email: selectedEmail, password });
+          if (!signInResult.error) {
+            window.location.assign(nextUrl);
+            return;
+          }
+          setMessage('Cuenta creada. Supabase requiere confirmar el email antes de poder entrar directo.', 'success');
         }
         return;
       }

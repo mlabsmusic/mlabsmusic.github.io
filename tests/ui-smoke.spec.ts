@@ -158,10 +158,10 @@ test.describe('auth flows', () => {
     await expect(page.getByLabel('Contraseña', { exact: true })).not.toBeVisible();
     await page.getByRole('textbox', { name: 'Email' }).fill('nuevo@example.com');
     await page.getByRole('button', { name: /Continuar/i }).click();
-    await expect(page.getByRole('heading', { name: /Crea tu contraseña/i })).toBeVisible();
-    await expect(page.getByLabel(/Crear contraseña/i)).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Crear cuenta/i })).toBeVisible();
+    await expect(page.getByLabel('Contraseña', { exact: true })).toBeVisible();
     await expect(page.getByLabel(/Confirmar contraseña/i)).toBeVisible();
-    await expect(page.getByRole('button', { name: /Crear cuenta/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Crear cuenta y entrar/i })).toBeVisible();
     await page.getByRole('button', { name: /Ya tengo cuenta/i }).click();
     await expect(page.getByRole('heading', { name: /Escribe tu contraseña/i })).toBeVisible();
     await expect(page.getByLabel('Contraseña', { exact: true })).toBeVisible();
@@ -178,8 +178,8 @@ test.describe('auth flows', () => {
     await expect(page.getByRole('heading', { name: /Accede con tu email/i })).toBeVisible();
     await page.getByRole('textbox', { name: 'Email' }).fill('registro@example.com');
     await page.getByRole('button', { name: /Continuar/i }).click();
-    await expect(page.getByRole('heading', { name: /Crea tu contraseña/i })).toBeVisible();
-    await expect(page.getByLabel(/Crear contraseña/i)).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Crear cuenta/i })).toBeVisible();
+    await expect(page.getByLabel('Contraseña', { exact: true })).toBeVisible();
     await expect(page.getByLabel(/Confirmar contraseña/i)).toBeVisible();
     await expectNoHorizontalOverflow(page);
   });
