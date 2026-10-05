@@ -3,9 +3,22 @@
   const header = document.querySelector('.site-header');
   const nav = document.querySelector('.nav');
   const navToggle = document.querySelector('.nav-toggle');
+  const shouldStartAtTop = !window.location.hash;
+
+  if ('scrollRestoration' in window.history) {
+    window.history.scrollRestoration = 'manual';
+  }
+
+  if (shouldStartAtTop) {
+    window.scrollTo(0, 0);
+  }
 
   requestAnimationFrame(() => {
+    if (shouldStartAtTop) window.scrollTo(0, 0);
     body.classList.add('is-entered');
+    if (shouldStartAtTop) {
+      requestAnimationFrame(() => window.scrollTo(0, 0));
+    }
   });
 
   function shouldHandlePageTransition(link) {
