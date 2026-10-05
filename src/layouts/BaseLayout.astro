@@ -46,10 +46,17 @@ const canonical = new URL(canonicalPath, 'https://www.mlabsmusic.com').toString(
   </head>
   <body class={bodyClass}>
     <svg class="liquid-glass-filter" aria-hidden="true" focusable="false">
-      <filter id="liquid-glass" x="-20%" y="-20%" width="140%" height="140%">
-        <feTurbulence type="fractalNoise" baseFrequency="0.018 0.045" numOctaves="2" seed="8" result="noise" />
-        <feGaussianBlur in="noise" stdDeviation="0.7" result="softNoise" />
-        <feDisplacementMap in="SourceGraphic" in2="softNoise" scale="16" xChannelSelector="R" yChannelSelector="G" />
+      <filter id="liquid-glass" x="-18%" y="-18%" width="136%" height="136%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.038" numOctaves="2" seed="8" result="noise" />
+        <feGaussianBlur in="noise" stdDeviation="1.1" result="lensMap" />
+        <feDisplacementMap in="SourceGraphic" in2="lensMap" scale="18" xChannelSelector="R" yChannelSelector="G" result="displacedR" />
+        <feColorMatrix in="displacedR" type="matrix" result="redShift" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" />
+        <feDisplacementMap in="SourceGraphic" in2="lensMap" scale="14" xChannelSelector="R" yChannelSelector="G" result="displacedG" />
+        <feColorMatrix in="displacedG" type="matrix" result="greenShift" values="0 0 0 0 0  0 1 0 0 0  0 0 0 0 0  0 0 0 1 0" />
+        <feDisplacementMap in="SourceGraphic" in2="lensMap" scale="10" xChannelSelector="R" yChannelSelector="G" result="displacedB" />
+        <feColorMatrix in="displacedB" type="matrix" result="blueShift" values="0 0 0 0 0  0 0 0 0 0  0 0 1 0 0  0 0 0 1 0" />
+        <feBlend in="redShift" in2="greenShift" mode="screen" result="rgShift" />
+        <feBlend in="rgShift" in2="blueShift" mode="screen" />
       </filter>
     </svg>
     <slot />
