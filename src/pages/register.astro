@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Crear cuenta | MLABS Music"
+  description="Crea una cuenta en MLABS Music para acceder a apps privadas, betas y herramientas digitales para DJs y proyectos musicales."
+  canonicalPath="/register"
+  bodyClass="app-body"
+>
+  <div class="page-wrap">
+    <main class="auth-screen auth-redirect-screen">
+      <section class="auth-panel reveal" aria-labelledby="registerTitle">
+        <p class="eyebrow">Registro</p>
+        <h1 id="registerTitle">Abriendo registro de MLABS.</h1>
+        <p>Te llevamos al formulario seguro de creación de cuenta.</p>
+        <a class="button primary" href="/login?mode=signup">Crear cuenta</a>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const target = new URL('/login', window.location.origin);
+    target.searchParams.set('mode', 'signup');
+    const next = new URL(window.location.href).searchParams.get('next');
+    if (next) target.searchParams.set('next', next);
+    window.location.replace(target.toString());
+  </script>
+</BaseLayout>

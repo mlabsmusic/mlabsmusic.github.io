@@ -17,7 +17,7 @@ async function loginAsTestDj(page, next = '/workspace') {
   await page.goto(`/login?next=${encodeURIComponent(next)}`);
   await page.getByLabel('Email').fill(TEST_EMAIL);
   await page.getByLabel('Contraseña').fill(TEST_PASSWORD);
-  await page.getByRole('button', { name: /Iniciar sesion/i }).click();
+  await page.getByRole('button', { name: /Iniciar sesi[oó]n/i }).click();
   try {
     await page.waitForURL(new RegExp(`${next.replace('/', '\\/')}`), { timeout: 10000 });
   } catch (error) {
@@ -31,6 +31,7 @@ test.describe('public routes', () => {
     await page.goto('/');
     await expect(page.getByRole('heading', { name: /Desarrollamos apps/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /Ver apps en desarrollo/i })).toBeVisible();
+    await expect(page.locator('#primaryMenu a[href="/login"]')).toHaveCount(1);
     await expect(page.getByRole('heading', { name: /empresa de software especializada/i })).toBeVisible();
     await expect(page.getByRole('heading', { name: /Apps y herramientas que estamos construyendo/i })).toBeVisible();
     await expect(page.locator('.portfolio-app-card')).toHaveCount(5);
@@ -145,5 +146,27 @@ test.describe('auth flows', () => {
       const hasConfigMessage = await page.getByText(/Configura Supabase/i).isVisible().catch(() => false);
       expect(isLogin || hasConfigMessage).toBeTruthy();
     }).toPass();
+  });
+
+  test('login page exposes sign in, sign up and recovery modes', async ({ page }) => {
+    await page.goto('/login');
+    await expect(page.getByRole('heading', { name: /Entra a tu cuenta MLABS/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Iniciar sesi[oó]n/i })).toBeVisible();
+    await page.getByRole('tab', { name: /Crear cuenta/i }).click();
+    await expect(page.getByRole('heading', { name: /Crea tu cuenta en MLABS/i })).toBeVisible();
+    await expect(page.getByLabel(/Nombre visible/i)).toBeVisible();
+    await expect(page.getByLabel(/Confirmar contraseña/i)).toBeVisible();
+    await page.getByRole('button', { name: /He olvidado/i }).click();
+    await expect(page.getByRole('heading', { name: /Recupera el acceso/i })).toBeVisible();
+    await expect(page.getByLabel('Contraseña', { exact: true })).not.toBeVisible();
+    await expectNoHorizontalOverflow(page);
+  });
+
+  test('register route opens the sign up flow', async ({ page }) => {
+    await page.goto('/register');
+    await page.waitForURL('**/login?mode=signup');
+    await expect(page.getByRole('heading', { name: /Crea tu cuenta en MLABS/i })).toBeVisible();
+    await expect(page.getByLabel(/Nombre visible/i)).toBeVisible();
+    await expectNoHorizontalOverflow(page);
   });
 });
