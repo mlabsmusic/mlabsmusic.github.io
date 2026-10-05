@@ -240,6 +240,21 @@
 
   setupElasticGridScroll();
 
+  for (const video of document.querySelectorAll('.hero-video[loop]')) {
+    let lastTime = 0;
+
+    video.addEventListener('timeupdate', () => {
+      if (video.currentTime < lastTime - 0.6) {
+        video.classList.remove('is-loop-cycle');
+        void video.offsetWidth;
+        video.classList.add('is-loop-cycle');
+        window.setTimeout(() => video.classList.remove('is-loop-cycle'), 460);
+      }
+
+      lastTime = video.currentTime;
+    });
+  }
+
   function openModal(modal) {
     if (!modal) return;
     modal.classList.add('is-open');
