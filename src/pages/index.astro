@@ -158,9 +158,9 @@ const processSteps = [
             </p>
           </div>
 
-          <div class="portfolio-app-grid">
+          <div class="portfolio-app-grid" data-elastic-grid>
             {appCatalog.map((app) => (
-              <article class="portfolio-app-card reveal">
+              <article class="portfolio-app-card reveal" data-elastic-item>
                 <div class="portfolio-app-card-head">
                   <span class="app-icon">{app.icon}</span>
                   <span class="tag">{app.category}</span>

@@ -328,6 +328,11 @@ body.is-leaving .page-wrap {
   transition: transform .24s var(--ease-apple), box-shadow .24s var(--ease-apple), background .24s ease;
 }
 
+[data-elastic-item] {
+  --elastic-y: 0px;
+  --elastic-tilt: 0deg;
+}
+
 .button:hover {
   transform: translateY(-2px);
 }
@@ -1695,7 +1700,7 @@ body.is-leaving .page-wrap {
 .commercial-card:hover,
 .portfolio-app-card:hover,
 .service-line-card:hover {
-  transform: translateY(-6px) scale(1.012);
+  transform: translate3d(0, calc(var(--elastic-y, 0px) - 6px), 0) rotate(var(--elastic-tilt, 0deg)) scale(1.012);
   border-color: rgba(255, 255, 255, .76);
   box-shadow:
     var(--liquid-bezel),
@@ -1851,6 +1856,12 @@ body.is-leaving .page-wrap {
   margin-top: 32px;
 }
 
+.portfolio-app-grid[data-elastic-grid] {
+  align-items: start;
+  perspective: 1400px;
+  transform-style: preserve-3d;
+}
+
 .portfolio-app-card,
 .service-line-card {
   position: relative;
@@ -1872,6 +1883,21 @@ body.is-leaving .page-wrap {
   box-shadow: inset 0 1px rgba(255, 255, 255, .18), 0 24px 70px rgba(0, 0, 0, .24);
   backdrop-filter: var(--liquid-lens);
   -webkit-backdrop-filter: var(--liquid-frost);
+  transform: translate3d(0, var(--elastic-y, 0px), 0) rotate(var(--elastic-tilt, 0deg));
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.portfolio-app-card.reveal {
+  transform: translate3d(0, calc(var(--elastic-y, 0px) + 14px), 0) rotate(var(--elastic-tilt, 0deg));
+}
+
+.portfolio-app-card.reveal.is-visible {
+  transform: translate3d(0, var(--elastic-y, 0px), 0) rotate(var(--elastic-tilt, 0deg));
+}
+
+.portfolio-app-card.reveal.is-visible:hover {
+  transform: translate3d(0, calc(var(--elastic-y, 0px) - 6px), 0) rotate(var(--elastic-tilt, 0deg)) scale(1.012);
 }
 
 .portfolio-app-card-head {

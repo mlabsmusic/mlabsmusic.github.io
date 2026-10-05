@@ -112,6 +112,121 @@
     for (const item of revealItems) item.classList.add('is-visible');
   }
 
+  function setupElasticGridScroll() {
+    const grids = [...document.querySelectorAll('[data-elastic-grid]')];
+    if (!grids.length) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (reduceMotion.matches) return;
+
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+    let previousScrollY = window.scrollY;
+    let scrollVelocity = 0;
+    let needsFrame = false;
+
+    const states = grids.map((grid) => ({
+      grid,
+      columns: 1,
+      items: [...grid.querySelectorAll('[data-elastic-item]')],
+      itemStates: [],
+    }));
+
+    function getColumnCount(grid) {
+      const rawColumns = window.getComputedStyle(grid).gridTemplateColumns;
+      return Math.max(1, rawColumns.split(' ').filter(Boolean).length);
+    }
+
+    function measureGrid(state) {
+      state.columns = getColumnCount(state.grid);
+      const mid = (state.columns - 1) / 2;
+      const maxDistance = state.columns % 2 === 1 ? Math.floor(state.columns / 2) : state.columns / 2;
+
+      state.itemStates = state.items.map((item, index) => {
+        const column = index % state.columns;
+        const distance = Math.abs(column - mid);
+        const centerPull = state.columns > 1 ? (maxDistance - distance + 1) / (maxDistance + 1) : 0;
+        const side = mid ? (column - mid) / mid : 0;
+
+        item.style.setProperty('--elastic-y', '0px');
+        item.style.setProperty('--elastic-tilt', '0deg');
+
+        return {
+          item,
+          current: 0,
+          target: 0,
+          side,
+          strength: centerPull,
+        };
+      });
+    }
+
+    function isGridVisible(grid) {
+      const bounds = grid.getBoundingClientRect();
+      return bounds.top < window.innerHeight * 1.08 && bounds.bottom > -window.innerHeight * 0.08;
+    }
+
+    function updateTargets() {
+      const nextScrollY = window.scrollY;
+      scrollVelocity = nextScrollY - previousScrollY;
+      previousScrollY = nextScrollY;
+
+      for (const state of states) {
+        const visible = isGridVisible(state.grid);
+        for (const itemState of state.itemStates) {
+          if (!visible || state.columns < 2) {
+            itemState.target = 0;
+            continue;
+          }
+
+          itemState.target = clamp(scrollVelocity * itemState.strength * 0.035, -42, 42);
+        }
+      }
+
+      if (!needsFrame) {
+        needsFrame = true;
+        requestAnimationFrame(renderElasticGrid);
+      }
+    }
+
+    function renderElasticGrid() {
+      let stillMoving = false;
+
+      for (const state of states) {
+        for (const itemState of state.itemStates) {
+          itemState.current += (itemState.target - itemState.current) * 0.16;
+          itemState.target *= 0.82;
+
+          if (Math.abs(itemState.current) < 0.08 && Math.abs(itemState.target) < 0.08) {
+            itemState.current = 0;
+            itemState.target = 0;
+          } else {
+            stillMoving = true;
+          }
+
+          const tilt = clamp(itemState.current * itemState.side * -0.025, -0.7, 0.7);
+          itemState.item.style.setProperty('--elastic-y', `${itemState.current.toFixed(2)}px`);
+          itemState.item.style.setProperty('--elastic-tilt', `${tilt.toFixed(3)}deg`);
+        }
+      }
+
+      if (stillMoving) {
+        requestAnimationFrame(renderElasticGrid);
+      } else {
+        needsFrame = false;
+      }
+    }
+
+    for (const state of states) measureGrid(state);
+
+    window.addEventListener('scroll', updateTargets, { passive: true });
+    window.addEventListener('resize', () => {
+      for (const state of states) measureGrid(state);
+      updateTargets();
+    }, { passive: true });
+  }
+
+  setupElasticGridScroll();
+
   function openModal(modal) {
     if (!modal) return;
     modal.classList.add('is-open');
