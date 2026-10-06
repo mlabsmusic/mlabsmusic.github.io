@@ -18,7 +18,7 @@ export const appCatalog = [
     category: 'App de biblioteca',
     stage: 'Prototipo interno',
     audience: 'DJs y bibliotecas locales',
-    image: '/assets/product-shots/workspace.jpg',
+    image: '/assets/product-shots/foldertotunes.svg',
     launch_url: '/workspace/',
   },
   {
