@@ -30,12 +30,13 @@ async function loginAsTestDj(page, next = '/workspace') {
 test.describe('public routes', () => {
   test('home renders company positioning and app portfolio', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByRole('heading', { name: /Desarrollamos apps/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Software para operar música/i })).toBeVisible();
     await expect(page.locator('.nav > .button.primary')).toHaveText(/Iniciar sesi[oó]n/i);
     await expect(page.locator('.nav > .button.primary')).toHaveAttribute('href', '/login');
-    await expect(page.locator('.hero-actions .button.primary')).toHaveAttribute('href', '/login');
-    await expect(page.getByRole('link', { name: /Ver apps en desarrollo/i })).toBeVisible();
-    await expect(page.getByRole('heading', { name: /empresa de software especializada/i })).toBeVisible();
+    await expect(page.locator('.hero-actions .button.primary')).toHaveAttribute('href', '/demo');
+    await expect(page.getByRole('link', { name: /Ver portfolio/i })).toBeVisible();
+    await expect(page.getByRole('img', { name: /Interfaz del hub de apps MLABS/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /empresa de software especializada en música/i })).toBeVisible();
     await expect(page.getByRole('heading', { name: /Apps y herramientas que estamos construyendo/i })).toBeVisible();
     await expect(page.locator('.portfolio-app-card')).toHaveCount(5);
     await expect(page.getByRole('heading', { name: /MLABS Recordpool/i })).toBeVisible();

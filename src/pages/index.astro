@@ -52,6 +52,25 @@ const processSteps = [
     body: 'Creamos una versión usable para probar con música real, usuarios concretos y una decisión clara de siguiente fase.',
   },
 ];
+
+const heroHighlights = [
+  'Apps reales',
+  'Bibliotecas',
+  'Workflows DJ',
+];
+
+const productScreens = [
+  {
+    label: 'Hub de apps',
+    src: '/assets/mtools-beta-v2/optimized/01-hub-overview.jpg',
+    alt: 'Interfaz del hub de apps MLABS con módulos para DJs y bibliotecas musicales',
+  },
+  {
+    label: 'FolderToTunes',
+    src: '/assets/mtools-beta-v2/optimized/02-foldertotunes-main.jpg',
+    alt: 'Interfaz de FolderToTunes para conectar carpetas musicales y convertirlas en playlists',
+  },
+];
 ---
 
 <BaseLayout
@@ -94,33 +113,37 @@ const processSteps = [
           <source src="/assets/video/mlabs-hero-fast.mp4" type="video/mp4" />
         </video>
         <div class="shell hero-content">
-          <p class="eyebrow">Software para música y DJs</p>
-          <h1>Desarrollamos apps para que DJs y equipos musicales trabajen con más control.</h1>
-          <p>
-            MLABS Music crea herramientas digitales para ordenar bibliotecas, automatizar tareas,
-            preparar sesiones, revisar catálogos y convertir procesos musicales en software usable.
-          </p>
-          <div class="hero-actions">
-            <a class="button primary" href="/login">Iniciar sesión</a>
-            <a class="button ghost" href="#portfolio">Ver apps en desarrollo</a>
+          <div class="hero-copy">
+            <p class="eyebrow">Software para música y DJs</p>
+            <h1>Software para operar música.</h1>
+            <p>
+              Apps para convertir bibliotecas, carpetas y decisiones de DJ en productos claros,
+              revisables y listos para crecer.
+            </p>
+            <div class="hero-actions">
+              <a class="button primary" href="/demo">Ver demo</a>
+              <a class="button ghost" href="#portfolio">Ver portfolio</a>
+            </div>
+            <div class="hero-proof-row" aria-label="Áreas de producto MLABS">
+              {heroHighlights.map((item) => (
+                <span>{item}</span>
+              ))}
+            </div>
           </div>
-          <div class="recordpool-stat-row company-stat-row">
-            <article class="recordpool-stat-card">
-              <strong>Web</strong>
-              <span>plataformas privadas y dashboards</span>
-            </article>
-            <article class="recordpool-stat-card">
-              <strong>Mac</strong>
-              <span>apps locales para librerías reales</span>
-            </article>
-            <article class="recordpool-stat-card">
-              <strong>DJ</strong>
-              <span>herramientas pensadas para cabina</span>
-            </article>
-            <article class="recordpool-stat-card">
-              <strong>Ops</strong>
-              <span>automatización y control de procesos</span>
-            </article>
+
+          <div class="hero-product-stage" aria-label="Vista de producto MLABS">
+            <figure class="hero-device hero-device-main">
+              <span>{productScreens[0].label}</span>
+              <img src={productScreens[0].src} alt={productScreens[0].alt} loading="eager" decoding="async" />
+            </figure>
+            <figure class="hero-device hero-device-secondary">
+              <span>{productScreens[1].label}</span>
+              <img src={productScreens[1].src} alt={productScreens[1].alt} loading="eager" decoding="async" />
+            </figure>
+            <div class="hero-product-caption">
+              <strong>MLABS Product OS</strong>
+              <span>Recordpool, workspace, agentes locales y herramientas para DJs.</span>
+            </div>
           </div>
         </div>
       </section>
@@ -129,10 +152,10 @@ const processSteps = [
         <div class="shell">
           <div class="section-head reveal">
             <p class="section-kicker">Qué es MLABS</p>
-            <h2>Una empresa de software especializada en el sector musical.</h2>
+            <h2>Una empresa de software especializada en música.</h2>
             <p>
-              No hacemos webs genéricas. Creamos productos digitales para gente que trabaja con música:
-              DJs, clubs, crews, sellos, productores, promotoras y equipos que necesitan orden, velocidad y criterio.
+              Diseñamos sistemas para gente que trabaja con música cada día: DJs, clubs, crews,
+              sellos, promotoras y equipos que necesitan orden, velocidad y criterio.
             </p>
           </div>
 
@@ -161,6 +184,11 @@ const processSteps = [
           <div class="portfolio-app-grid" data-elastic-grid>
             {appCatalog.map((app) => (
               <article class="portfolio-app-card reveal" data-elastic-item>
+                {'image' in app && app.image ? (
+                  <figure class="portfolio-app-shot">
+                    <img src={app.image} alt={`Vista de ${app.name}`} loading="lazy" decoding="async" />
+                  </figure>
+                ) : null}
                 <div class="portfolio-app-card-head">
                   <span class="app-icon">{app.icon}</span>
                   <span class="tag">{app.category}</span>
