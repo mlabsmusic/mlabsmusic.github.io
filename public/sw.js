@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mlabs-music-v13';
+const CACHE_NAME = 'mlabs-music-v14';
 const APP_SHELL = [
   '/',
   '/djs/',
