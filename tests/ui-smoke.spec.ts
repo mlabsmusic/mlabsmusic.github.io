@@ -35,7 +35,7 @@ test.describe('public routes', () => {
     await expect(page.locator('.nav > .button.primary')).toHaveAttribute('href', '/login');
     await expect(page.locator('.hero-actions .button.primary')).toHaveAttribute('href', '/demo');
     await expect(page.getByRole('link', { name: /Ver portfolio/i })).toBeVisible();
-    await expect(page.getByRole('img', { name: /Interfaz del hub de apps MLABS/i })).toBeVisible();
+    await expect(page.getByRole('img', { name: /Interfaz actual de MLABS Recordpool/i })).toBeVisible();
     await expect(page.getByRole('heading', { name: /empresa de software especializada en música/i })).toBeVisible();
     await expect(page.getByRole('heading', { name: /Apps y herramientas que estamos construyendo/i })).toBeVisible();
     await expect(page.locator('.portfolio-app-card')).toHaveCount(5);

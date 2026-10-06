@@ -7,7 +7,7 @@ export const appCatalog = [
     category: 'Plataforma web',
     stage: 'Beta navegable',
     audience: 'Crews, sellos y DJs',
-    image: '/assets/mtools-beta-v2/optimized/01-hub-overview.jpg',
+    image: '/assets/product-shots/recordpool.jpg',
     launch_url: '/recordpool/',
   },
   {
@@ -18,7 +18,7 @@ export const appCatalog = [
     category: 'App de biblioteca',
     stage: 'Prototipo interno',
     audience: 'DJs y bibliotecas locales',
-    image: '/assets/mtools-beta-v2/optimized/02-foldertotunes-main.jpg',
+    image: '/assets/product-shots/workspace.jpg',
     launch_url: '/workspace/',
   },
   {
@@ -29,7 +29,7 @@ export const appCatalog = [
     category: 'Asistente DJ',
     stage: 'Diseño funcional',
     audience: 'DJs y programadores musicales',
-    image: '/assets/mtools-beta-v2/optimized/03-aisessiongenerator-main.jpg',
+    image: '/assets/product-shots/demo.jpg',
     launch_url: '#',
   },
   {
@@ -40,7 +40,7 @@ export const appCatalog = [
     category: 'Diagnóstico',
     stage: 'Investigación',
     audience: 'DJs con librerías grandes',
-    image: '/assets/mtools-beta-v2/optimized/06-diagnostics-main.jpg',
+    image: '/assets/product-shots/crews.jpg',
     launch_url: '#',
   },
   {
@@ -51,7 +51,7 @@ export const appCatalog = [
     category: 'Planificación',
     stage: 'Concepto validable',
     audience: 'DJs open format y clubs',
-    image: '/assets/mtools-beta-v2/optimized/10-whats-next-widget-ai-placeholder.jpg',
+    image: '/assets/product-shots/pricing.jpg',
     launch_url: '#',
   },
 ];
