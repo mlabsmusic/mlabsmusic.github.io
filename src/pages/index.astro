@@ -173,11 +173,11 @@ const productScreens = [
       <section class="section portfolio-section" id="portfolio">
         <div class="shell">
           <div class="section-head reveal">
-            <p class="section-kicker">Portfolio de producto</p>
-            <h2>Apps y herramientas que estamos construyendo.</h2>
+            <p class="section-kicker">Portfolio de producto y web</p>
+            <h2>Apps, webs y herramientas que estamos construyendo.</h2>
             <p>
-              El portfolio de MLABS irá creciendo con productos propios y pilotos privados.
-              Algunos módulos ya son navegables; otros están en fase de diseño, validación o beta interna.
+              El portfolio de MLABS combina productos propios, pilotos privados y webs reales para proyectos musicales.
+              Algunos módulos ya son navegables; otros están publicados, en fase de diseño, validación o beta interna.
             </p>
           </div>
 
@@ -200,7 +200,14 @@ const productScreens = [
                   <span>{app.audience}</span>
                 </div>
                 {app.launch_url && app.launch_url !== '#' ? (
-                  <a class="button ghost" href={app.launch_url}>Ver módulo</a>
+                  <a
+                    class="button ghost"
+                    href={app.launch_url}
+                    target={app.launch_url.startsWith('http') ? '_blank' : undefined}
+                    rel={app.launch_url.startsWith('http') ? 'noreferrer' : undefined}
+                  >
+                    {'link_label' in app && app.link_label ? app.link_label : app.launch_url.startsWith('http') ? 'Ver web' : 'Ver módulo'}
+                  </a>
                 ) : (
                   <span class="portfolio-app-note">En desarrollo privado</span>
                 )}

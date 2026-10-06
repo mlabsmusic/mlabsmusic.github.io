@@ -34,13 +34,15 @@ test.describe('public routes', () => {
     await expect(page.locator('.nav > .button.primary')).toHaveText(/Iniciar sesi[oó]n/i);
     await expect(page.locator('.nav > .button.primary')).toHaveAttribute('href', '/login');
     await expect(page.locator('.hero-actions .button.primary')).toHaveAttribute('href', '/demo');
-    await expect(page.getByRole('link', { name: /Ver portfolio/i })).toBeVisible();
+    await expect(page.locator('.hero-actions').getByRole('link', { name: /Ver portfolio/i })).toBeVisible();
     await expect(page.getByRole('img', { name: /Interfaz actual de MLABS Recordpool/i })).toBeVisible();
     await expect(page.getByRole('heading', { name: /empresa de software especializada en música/i })).toBeVisible();
-    await expect(page.getByRole('heading', { name: /Apps y herramientas que estamos construyendo/i })).toBeVisible();
-    await expect(page.locator('.portfolio-app-card')).toHaveCount(5);
+    await expect(page.getByRole('heading', { name: /Apps, webs y herramientas que estamos construyendo/i })).toBeVisible();
+    await expect(page.locator('.portfolio-app-card')).toHaveCount(7);
     await expect(page.getByRole('heading', { name: /MLABS Recordpool/i })).toBeVisible();
     await expect(page.getByRole('heading', { name: /FolderToTunes/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Nightstage/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Marques Edition/i })).toBeVisible();
     await expect(page.getByRole('heading', { name: /Construimos herramientas prácticas/i })).toBeVisible();
     await expect(page.locator('.service-line-card')).toHaveCount(3);
     await expect(page.getByRole('heading', { name: /Primero entendemos el flujo musical/i })).toBeVisible();
