@@ -3,6 +3,13 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 document.documentElement.classList.add('js');
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+const mobileMenu = window.matchMedia('(max-width: 760px)');
+// Coalesce geometry updates after the response animation, never inside a click.
+const refreshAfterInteraction = gsap.delayedCall(.4, () => ScrollTrigger.refresh()).pause();
+function scheduleRefresh() { refreshAfterInteraction.restart(true); }
+const updateProofs = new Set<() => void>();
+function updateRecordedProofs() { updateProofs.forEach(update => update()); }
+function pageCovered() { return document.querySelector('.menu-toggle[aria-expanded="true"], .image-dialog[open]') !== null; }
 gsap.registerPlugin(ScrollTrigger);
 
 // Recorded GIFs animate only while visible and respect the user's motion preference.
@@ -13,18 +20,21 @@ document.querySelectorAll<HTMLElement>('[data-animated-proof]').forEach(figure =
   let visible = false;
   let paused = false;
   function update() {
-    const playing = visible && !paused && !reduced.matches;
+    const playing = visible && !paused && !reduced.matches && !document.hidden && !pageCovered();
     const source = playing ? picture!.dataset.motionSrc : picture!.dataset.stillSrc;
     if (source && picture!.getAttribute('src') !== source) picture!.src = source;
     control!.hidden = reduced.matches;
     control!.textContent = paused ? 'Reanudar animación' : 'Pausar animación';
   }
+  updateProofs.add(update);
   control.addEventListener('click', () => { paused = !paused; update(); });
   reduced.addEventListener('change', update);
   const observer = new IntersectionObserver(entries => { visible = entries[0].isIntersecting; update(); }, { threshold: .05 });
   observer.observe(figure);
   update();
 });
+
+document.addEventListener('visibilitychange', updateRecordedProofs);
 
 // Native scrolling remains in charge. Animation only follows its progress.
 const motion = gsap.matchMedia();
@@ -52,9 +62,26 @@ document.fonts?.ready.then(() => ScrollTrigger.refresh());
 
 const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
 const menu = document.querySelector<HTMLElement>('#product-menu');
-function closeMenu() { menu?.classList.remove('is-open'); toggle?.setAttribute('aria-expanded', 'false'); toggle?.setAttribute('aria-label', 'Abrir menú'); }
-toggle?.addEventListener('click', () => { const open = toggle.getAttribute('aria-expanded') !== 'true'; menu?.classList.toggle('is-open', open); toggle.setAttribute('aria-expanded', String(open)); toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú'); });
+function setMenu(open: boolean) {
+  open = open && mobileMenu.matches;
+  menu?.classList.toggle('is-open', open);
+  // Hidden links leave the tab order immediately, even during the closing fade.
+  if (menu) menu.inert = mobileMenu.matches && !open;
+  toggle?.setAttribute('aria-expanded', String(open));
+  toggle?.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+  updateRecordedProofs();
+}
+function closeMenu() { setMenu(false); }
+closeMenu();
+toggle?.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
 menu?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+mobileMenu.addEventListener('change', closeMenu);
+document.addEventListener('pointerdown', event => {
+  if (toggle?.getAttribute('aria-expanded') === 'true' && event.target instanceof Node && !document.querySelector('.product-header')?.contains(event.target)) closeMenu();
+});
+document.addEventListener('focusin', event => {
+  if (toggle?.getAttribute('aria-expanded') === 'true' && event.target instanceof Node && !document.querySelector('.product-header')?.contains(event.target)) closeMenu();
+});
 document.addEventListener('keydown', event => { if (event.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') { closeMenu(); toggle.focus(); } });
 
 // One tab state drives screen, copy, selected state, focus and keyboard navigation.
@@ -62,10 +89,11 @@ document.querySelectorAll<HTMLElement>('[data-explorer]').forEach(explorer => {
   const tabs = Array.from(explorer.querySelectorAll<HTMLButtonElement>('[data-tool]'));
   const panels = Array.from(explorer.querySelectorAll<HTMLElement>('[data-tool-panel]'));
   function select(tab: HTMLButtonElement, focus = false) {
+    if (tab.getAttribute('aria-selected') === 'true') { if (focus) tab.focus(); return; }
     tabs.forEach(item => { const active = item === tab; item.setAttribute('aria-selected', String(active)); item.tabIndex = active ? 0 : -1; });
-    panels.forEach(panel => { const active = panel.id === tab.getAttribute('aria-controls'); panel.hidden = !active; if (active && !reduced.matches) gsap.fromTo(panel, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .35, ease: 'power2.out', clearProps: 'opacity,transform', overwrite: true }); });
+    panels.forEach(panel => { const active = panel.id === tab.getAttribute('aria-controls'); gsap.killTweensOf(panel); if (!active || reduced.matches) gsap.set(panel, { clearProps: 'opacity,transform' }); panel.hidden = !active; if (active && !reduced.matches) gsap.fromTo(panel, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .35, ease: 'power2.out', clearProps: 'opacity,transform', overwrite: true }); });
     if (focus) tab.focus();
-    ScrollTrigger.refresh();
+    scheduleRefresh();
   }
   tabs.forEach((tab, index) => {
     tab.addEventListener('click', () => select(tab));
@@ -90,10 +118,12 @@ document.querySelectorAll<HTMLElement>('[data-widget]').forEach(widget => {
   const tablist = widget.querySelector<HTMLElement>('.widget-filters');
   if (results && tablist) { tablist.id = 'widget-criteria'; results.setAttribute('aria-labelledby', tablist.id); }
   function choose(tab: HTMLButtonElement, focus = false) {
+    if (tab.getAttribute('aria-selected') === 'true') { if (focus) tab.focus(); return; }
     const tracks = demoTracks[tab.dataset.filter || 'similar'];
     if (!tracks || !results) return;
     tabs.forEach(item => { const active = item === tab; item.setAttribute('aria-selected', String(active)); item.tabIndex = active ? 0 : -1; });
     results.setAttribute('aria-label', `Sugerencias de ejemplo · ${tab.textContent}`);
+    gsap.killTweensOf(results.children);
     results.replaceChildren(...tracks.map((track, index) => {
       const row = document.createElement('div'); row.className = 'demo-track';
       const position = document.createElement('span'); position.className = 'track-number'; position.textContent = `0${index + 1}`;
@@ -108,7 +138,7 @@ document.querySelectorAll<HTMLElement>('[data-widget]').forEach(widget => {
     tab.addEventListener('click', () => choose(tab));
     tab.addEventListener('keydown', event => { if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return; event.preventDefault(); const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length; choose(tabs[next], true); });
   });
-  collapse?.addEventListener('click', () => { if (!body) return; const open = collapse.getAttribute('aria-expanded') !== 'true'; body.hidden = !open; widget.classList.toggle('is-collapsed', !open); collapse.setAttribute('aria-expanded', String(open)); collapse.setAttribute('aria-label', open ? 'Minimizar widget' : 'Expandir widget'); collapse.textContent = open ? '−' : '+'; ScrollTrigger.refresh(); });
+  collapse?.addEventListener('click', () => { if (!body) return; const open = collapse.getAttribute('aria-expanded') !== 'true'; body.hidden = !open; widget.classList.toggle('is-collapsed', !open); collapse.setAttribute('aria-expanded', String(open)); collapse.setAttribute('aria-label', open ? 'Minimizar widget' : 'Expandir widget'); collapse.textContent = open ? '−' : '+'; scheduleRefresh(); });
 });
 
 const dialog = document.querySelector<HTMLDialogElement>('.image-dialog');
@@ -117,10 +147,10 @@ document.querySelectorAll<HTMLAnchorElement>('[data-zoom]').forEach(link => link
   if (!dialog || typeof dialog.showModal !== 'function' || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
   event.preventDefault(); opener = link;
   const image = dialog.querySelector('img')!; const caption = link.dataset.caption || link.querySelector('img')?.alt || 'Vista de producto';
-  image.src = link.href; image.alt = caption; dialog.querySelector('p')!.textContent = caption; dialog.showModal();
+  image.src = link.href; image.alt = caption; dialog.querySelector('p')!.textContent = caption; dialog.showModal(); updateRecordedProofs();
 }));
 dialog?.querySelector('button')?.addEventListener('click', () => dialog.close());
 dialog?.addEventListener('click', event => { if (event.target === dialog) { const rect = dialog.getBoundingClientRect(); if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close(); } });
-dialog?.addEventListener('close', () => opener?.focus());
+dialog?.addEventListener('close', () => { updateRecordedProofs(); opener?.focus(); });
 
 if ('serviceWorker' in navigator && !['localhost', '127.0.0.1'].includes(location.hostname)) window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js').catch(() => {}); }, { once: true });

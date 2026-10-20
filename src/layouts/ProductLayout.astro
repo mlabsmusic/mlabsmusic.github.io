@@ -13,6 +13,7 @@ const demo = 'mailto:info@mlabsmusic.com?subject=Demo%20MLABS%20Music';
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#f6f8f8" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png" />
@@ -62,6 +63,7 @@ const demo = 'mailto:info@mlabsmusic.com?subject=Demo%20MLABS%20Music';
     </dialog>
     <script>
       import '../scripts/products';
+      if (import.meta.env.DEV) import('../scripts/motion-audit');
     </script>
   </body>
 </html>
