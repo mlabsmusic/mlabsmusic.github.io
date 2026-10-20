@@ -1,0 +1,19 @@
+---
+interface Props { headingLevel?: 'h2' | 'h3'; }
+const { headingLevel = 'h2' } = Astro.props;
+const Heading = headingLevel;
+const StepHeading = headingLevel === 'h2' ? 'h3' : 'h4';
+---
+<article class="pool-copilot-roadmap" data-reveal aria-label="DJ Copilot y el futuro Record Pool">
+  <div class="pool-copilot-heading">
+    <p class="eyebrow">DJ COPILOT × RECORD POOL · FUNCIÓN PREVISTA</p>
+    <Heading>Lo que estás pinchando.<br /><span>Lo que podrías descubrir.</span></Heading>
+    <p>Nuestra visión: que DJ Copilot detecte el tema que está sonando en Rekordbox y te recomiende música de nuestra propia biblioteca de MLABS Music Record Pool, desde el widget.</p>
+  </div>
+  <ol class="pool-copilot-steps">
+    <li><span aria-hidden="true">01</span><StepHeading class="pool-step-title">Tu sesión da el contexto.</StepHeading><p>La canción que estés pinchando será el punto de partida de las recomendaciones.</p></li>
+    <li><span aria-hidden="true">02</span><StepHeading class="pool-step-title">Nuestro catálogo, a tu lado.</StepHeading><p>Descubre sugerencias de nuestro Record Pool junto a las de tu biblioteca, en DJ Copilot.</p></li>
+    <li><span aria-hidden="true">03</span><StepHeading class="pool-step-title">Arrastra. Prepara. Mezcla.</StepHeading><p>El objetivo es arrastrar el tema del widget a tu Rekordbox para reproducirlo por streaming, incorporarlo y analizarlo allí.</p></li>
+  </ol>
+  <p class="pool-copilot-status">Hoja de ruta · Record Pool próximamente. El streaming, la incorporación y el análisis en Rekordbox están pendientes de desarrollo y validación.</p>
+</article>

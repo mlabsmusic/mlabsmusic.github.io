@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mlabs-music-v26';
+const CACHE_NAME = 'mlabs-music-v27';
 const APP_SHELL = [
   '/',
   '/guia-mac/',

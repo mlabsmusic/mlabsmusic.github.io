@@ -1,4 +1,5 @@
 ---
+import RecordPoolCopilot from './RecordPoolCopilot.astro';
 import { recordPoolCreators } from '../../data/recordPoolCreators';
 ---
 <section class="record-pool-section dark-section" id="record-pool" aria-labelledby="record-pool-title">
@@ -14,6 +15,7 @@ import { recordPoolCreators } from '../../data/recordPoolCreators';
         <figcaption><h3>{dj.name}</h3><p class="pool-role">{dj.role}</p></figcaption>
       </figure>)}
     </div>
+    <RecordPoolCopilot headingLevel="h3" />
     <div class="pool-footer"><p>Un nuevo proyecto de la plataforma.<br />En desarrollo. Próximamente.</p><a class="text-link" href="mailto:info@mlabsmusic.com?subject=MLABS%20Music%20Record%20Pool">Hablemos del Record Pool <span aria-hidden="true">↗</span></a></div>
   </div>
 </section>
