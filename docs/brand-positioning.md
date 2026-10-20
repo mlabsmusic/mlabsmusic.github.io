@@ -17,3 +17,5 @@ Tono: ambicioso, claro y cercano. Mostrar una tarea concreta y su beneficio. Apo
 Integraciones: destacar la conexión propia con la base de datos de Rekordbox para consultar pistas, BPM, tonalidades e historiales. La conexión usa consultas de lectura; no prometer control de todas las funciones de Rekordbox ni escritura automática completa. Traktor y Serato son integraciones previstas, todavía no disponibles.
 
 Record Pool: presentar «MLABS Music Record Pool · Próximamente» como proyecto en creación dentro del universo de la plataforma. Participan DJ Fesst, Marqués Edition, DJ Nico y Franjdeejay según indicación del propietario. Se recuperan sus cuatro fotos existentes; el propietario confirmó que «DJ Francisco» se refería al perfil Franjdeejay. No se publican nuevos rankings, biografías, fechas, precios o un catálogo disponible.
+
+Perfiles del equipo: por indicación del propietario, Marqués Edition se presenta como CEO de MLABS Music; DJ Fesst como ingeniero de sonido de MLABS Music; DJ Nico y Franjdeejay como artistas de MLABS Music. Las tarjetas muestran estos cargos en lugar de «Creación del Record Pool».
