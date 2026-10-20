@@ -1,0 +1,12 @@
+---
+import { productTools } from '../../data/productTools';
+---
+<div class="tool-explorer" data-explorer>
+  <div class="tool-tabs" role="tablist" aria-label="Herramientas de Platform">
+    {productTools.map((tool, index) => <button role="tab" id={`tab-${tool.id}`} aria-controls={`panel-${tool.id}`} aria-selected={index === 0 ? 'true' : 'false'} tabindex={index === 0 ? 0 : -1} data-tool={tool.id}>{tool.label}</button>)}
+  </div>
+  {productTools.map((tool, index) => <section id={`panel-${tool.id}`} role="tabpanel" aria-labelledby={`tab-${tool.id}`} tabindex="0" hidden={index !== 0} data-tool-panel>
+    <div class="tool-intro"><div><h3>{tool.title}</h3><p>{tool.description}</p></div><ul>{tool.points.map(point => <li>{point}</li>)}</ul></div>
+    <a class="screen-frame tool-screen" href={`/assets/products/${tool.image}.jpg`} data-zoom data-caption={tool.alt} aria-label={`Ampliar ${tool.label}`}><img src={`/assets/products/${tool.image}.jpg`} width="2000" height={tool.id === 'limiter' || tool.id === 'equalizer' ? 1542 : 1278} alt={tool.alt} loading="lazy" decoding="async" /><span class="zoom-label">Ver en detalle <span aria-hidden="true">↗</span></span></a>
+  </section>)}
+</div>

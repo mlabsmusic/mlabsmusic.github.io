@@ -1,0 +1,67 @@
+---
+import '../styles/products.css';
+interface Props { title: string; description: string; canonicalPath?: string; }
+const { title, description, canonicalPath = '/' } = Astro.props;
+const canonical = new URL(canonicalPath, 'https://www.mlabsmusic.com').toString();
+const demo = 'mailto:info@mlabsmusic.com?subject=Demo%20MLABS%20Music';
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f6f8f8" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png" />
+    <link rel="preload" href="/assets/brand/InstrumentSans.ttf" as="font" type="font/ttf" crossorigin />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content="https://www.mlabsmusic.com/assets/products/platform-apps.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://www.mlabsmusic.com/assets/products/platform-apps.jpg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+    <header class="product-header">
+      <nav class="product-nav wrap" aria-label="Principal">
+        <a class="wordmark" href="/" aria-label="MLABS Music · Inicio"><span class="monogram" aria-hidden="true">M</span><span>MLABS <b>MUSIC</b></span></a>
+        <button class="menu-toggle" aria-expanded="false" aria-controls="product-menu" aria-label="Abrir menú"><span></span><span></span></button>
+        <div class="product-links" id="product-menu">
+          <a href="/platform/" aria-current={canonicalPath === '/platform/' ? 'page' : undefined}>Platform</a>
+          <a href="/dj-copilot/" aria-current={canonicalPath === '/dj-copilot/' ? 'page' : undefined}>DJ Copilot</a>
+          <a href="/platform/#herramientas">Herramientas</a>
+          <a href="/guia-mac/" aria-current={canonicalPath === '/guia-mac/' ? 'page' : undefined}>Guía Mac</a><a href="/#estudio">Nuestro estudio</a>
+        </div>
+        <a class="pill small dark nav-demo" href={demo}>Solicitar demo <span aria-hidden="true">↗</span></a>
+      </nav>
+    </header>
+    <main id="main"><slot /></main>
+    <section class="demo-invite wrap" id="demo">
+      <p class="eyebrow">EL SIGUIENTE PASO</p>
+      <h2>Tu próxima sesión<br />empieza aquí.</h2>
+      <p>Estamos construyendo MLABS con música real y necesidades de cabina.<br class="desktop-break" /> Descubre el producto y cuéntanos cómo trabajas.</p>
+      <a class="pill dark" href={demo}>Solicitar una demo <span aria-hidden="true">↗</span></a>
+      <span class="release-note">Para macOS · Producto en desarrollo · Demos bajo solicitud</span>
+    </section>
+    <footer class="product-footer wrap">
+      <div class="footer-top"><a class="wordmark" href="/"><span class="monogram" aria-hidden="true">M</span><span>MLABS <b>MUSIC</b></span></a><p>Software que entiende<br />tu forma de vivir la música.</p></div>
+      <div class="footer-links"><div><span>Productos</span><a href="/platform/">MLABS Music Platform</a><a href="/dj-copilot/">MLABS Music DJ Copilot</a></div><div><span>Explorar</span><a href="/platform/#herramientas">Todas las herramientas</a><a href="/guia-mac/">Guía de configuración Mac</a><a href="/recordpool/">Recordpool web</a><a href="/workspace/">Workspace web</a><a href="/login/">Área privada</a></div><div><span>Conecta</span><a href={demo}>Solicitar una demo</a><a href="mailto:info@mlabsmusic.com">info@mlabsmusic.com</a><a href="/#estudio">Nuestro estudio</a></div></div>
+      <div class="footer-bottom"><span>© {new Date().getFullYear()} MLABS Music.</span><div><a href="/es/privacy-policy.html">Privacidad</a><a href="/es/terms-of-use.html">Términos</a></div><span>Hecho para gente con música dentro.</span></div>
+    </footer>
+    <dialog class="image-dialog" aria-label="Vista ampliada del producto">
+      <button class="dialog-close" aria-label="Cerrar vista ampliada">Cerrar <span aria-hidden="true">×</span></button>
+      <img alt="" /><p></p>
+    </dialog>
+    <script>
+      import '../scripts/products';
+    </script>
+  </body>
+</html>

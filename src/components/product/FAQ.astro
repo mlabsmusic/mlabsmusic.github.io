@@ -1,0 +1,4 @@
+---
+const { items } = Astro.props as { items: { question: string; answer: string }[] };
+---
+<section class="faq-section wrap" id="preguntas"><div><p class="eyebrow">ANTES DE EMPEZAR</p><h2>Buenas preguntas.<br />Respuestas claras.</h2></div><div class="faq-list">{items.map(item => <details><summary>{item.question}<span aria-hidden="true">+</span></summary><p>{item.answer}</p></details>)}</div></section>

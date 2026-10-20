@@ -28,26 +28,37 @@ async function loginAsTestDj(page, next = '/workspace') {
 }
 
 test.describe('public routes', () => {
-  test('home renders company positioning and app portfolio', async ({ page }) => {
+  test('home presents Platform and DJ Copilot with a working widget demonstration', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByRole('heading', { name: /Software para operar música/i })).toBeVisible();
-    await expect(page.locator('.nav > .button.primary')).toHaveText(/Iniciar sesi[oó]n/i);
-    await expect(page.locator('.nav > .button.primary')).toHaveAttribute('href', '/login');
-    await expect(page.locator('.hero-actions .button.primary')).toHaveAttribute('href', '/demo');
-    await expect(page.locator('.hero-actions').getByRole('link', { name: /Ver portfolio/i })).toBeVisible();
-    await expect(page.getByRole('img', { name: /Interfaz actual de MLABS Recordpool/i })).toBeVisible();
-    await expect(page.getByRole('heading', { name: /empresa de software especializada en música/i })).toBeVisible();
-    await expect(page.getByRole('heading', { name: /Apps, webs y herramientas que estamos construyendo/i })).toBeVisible();
-    await expect(page.locator('.portfolio-app-card')).toHaveCount(7);
-    await expect(page.getByRole('heading', { name: /MLABS Recordpool/i })).toBeVisible();
-    await expect(page.getByRole('heading', { name: /FolderToTunes/i })).toBeVisible();
-    await expect(page.getByRole('heading', { name: /Nightstage/i })).toBeVisible();
-    await expect(page.getByRole('heading', { name: /Marques Edition/i })).toBeVisible();
-    await expect(page.getByRole('heading', { name: /Construimos herramientas prácticas/i })).toBeVisible();
-    await expect(page.locator('.service-line-card')).toHaveCount(3);
-    await expect(page.getByRole('heading', { name: /Primero entendemos el flujo musical/i })).toBeVisible();
-    await expect(page.locator('.company-process-steps .step')).toHaveCount(3);
-    await expect(page.locator('.home-footer').getByRole('link', { name: /Hablar de un proyecto/i })).toHaveAttribute('href', /mailto:info@mlabsmusic.com/);
+    await expect(page.getByRole('heading', { name: /Menos ventanas.*Más música/s })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Descubre Platform', exact: true })).toHaveAttribute('href', '/platform/');
+    await expect(page.getByRole('link', { name: 'Conoce DJ Copilot', exact: true })).toHaveAttribute('href', '/dj-copilot/');
+    await expect(page.getByRole('heading', { name: /Nightstage/ })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Marques Edition/ })).toBeVisible();
+    await page.getByRole('tab', { name: 'Curveball', exact: true }).click();
+    await expect(page.locator('.widget-results')).toContainText('Hips Don’t Lie');
+    await page.getByRole('tab', { name: 'Armonía', exact: true }).click();
+    await expect(page.locator('.widget-results')).toContainText('Moscow Mule');
+    await page.getByRole('button', { name: 'Minimizar widget' }).click();
+    await expect(page.locator('#widget-body')).toBeHidden();
+    await page.getByRole('button', { name: 'Expandir widget' }).click();
+    await expect(page.locator('#widget-body')).toBeVisible();
+    await expect(page.locator('.widget-demo-caption')).toContainText('datos de ejemplo');
+    await expectNoHorizontalOverflow(page);
+  });
+
+  test('Platform tool tabs, keyboard navigation and image zoom remain in sync', async ({ page }) => {
+    await page.goto('/platform/#herramientas');
+    await page.getByRole('tab', { name: 'Limitador', exact: true }).click();
+    await expect(page.locator('#panel-limiter')).toBeVisible();
+    await expect(page.locator('#panel-library')).toBeHidden();
+    await page.getByRole('link', { name: 'Ampliar Limitador', exact: true }).click();
+    await expect(page.getByRole('dialog')).toBeVisible();
+    await page.getByRole('button', { name: 'Cerrar vista ampliada' }).click();
+    await expect(page.getByRole('dialog')).toBeHidden();
+    await page.getByRole('tab', { name: 'Limitador', exact: true }).press('ArrowLeft');
+    await expect(page.getByRole('tab', { name: 'Ecualizador', exact: true })).toHaveAttribute('aria-selected', 'true');
+    await expect(page.locator('#panel-equalizer')).toBeVisible();
     await expectNoHorizontalOverflow(page);
   });
 
@@ -127,13 +138,13 @@ test.describe('public routes', () => {
   });
 
   test('mobile navigation opens and closes cleanly', async ({ page, isMobile }) => {
-    test.skip(!isMobile, 'Solo aplica a movil');
+    test.skip(!isMobile, 'Solo aplica a móvil');
     await page.goto('/');
-    await page.getByRole('button', { name: /Abrir menu/i }).click();
-    const navPortfolioLink = page.locator('#primaryMenu').getByRole('link', { name: 'Portfolio' });
-    await expect(navPortfolioLink).toBeVisible();
-    await page.getByRole('button', { name: /Cerrar menu/i }).click();
-    await expect(navPortfolioLink).not.toBeVisible();
+    await page.getByRole('button', { name: 'Abrir menú', exact: true }).click();
+    const platform = page.locator('#product-menu').getByRole('link', { name: 'Platform', exact: true });
+    await expect(platform).toBeVisible();
+    await page.getByRole('button', { name: 'Cerrar menú', exact: true }).click();
+    await expect(platform).toBeHidden();
   });
 });
 

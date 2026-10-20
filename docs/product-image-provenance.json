@@ -1,0 +1,107 @@
+[
+  {
+    "asset": "/assets/products/platform-apps.jpg",
+    "source": "work/web-launch-evidence/platform-apps.png",
+    "type": "Real native application capture; JPEG encoding for web"
+  },
+  {
+    "asset": "/assets/products/platform-library.jpg",
+    "source": "work/web-launch-evidence/platform-library.png",
+    "type": "Real native application capture; JPEG encoding for web"
+  },
+  {
+    "asset": "/assets/products/platform-playlists.jpg",
+    "source": "work/web-launch-evidence/platform-playlists.png",
+    "type": "Real native application capture; JPEG encoding for web"
+  },
+  {
+    "asset": "/assets/products/equalizer.jpg",
+    "source": "work/web-launch-evidence/platform-equalizer.png",
+    "type": "Real native application capture; JPEG encoding for web"
+  },
+  {
+    "asset": "/assets/products/channel.jpg",
+    "source": "work/web-launch-evidence/rekordbox-channel.png",
+    "type": "Real native application capture; JPEG encoding for web"
+  },
+  {
+    "asset": "/assets/products/limiter.jpg",
+    "source": "work/web-launch-evidence/rekordbox-limiter.png",
+    "type": "Real native application capture; JPEG encoding for web"
+  },
+  {
+    "asset": "/assets/products/copilot.jpg",
+    "source": "outputs/MLABSDJCopilot/Research/soak-rekordbox/preview25-widget.png",
+    "type": "Real native application capture; JPEG encoding for web"
+  },
+  {
+    "asset": "/assets/products/audio-devices.jpg",
+    "source": "work/web-launch-evidence/audio-current-settings.png",
+    "type": "Real native application capture; JPEG encoding for web"
+  },
+  {
+    "asset": "/assets/products/rekordbox-playing.jpg",
+    "source": "work/web-launch-evidence/rekordbox-playing.png",
+    "type": "Real application capture; no audio or private accounts embedded"
+  },
+  {
+    "asset": "/assets/products/rekordbox-audio-config.jpg",
+    "source": "work/web-launch-evidence/rekordbox-audio-config.png",
+    "type": "Real application capture; no audio or private accounts embedded"
+  },
+  {
+    "asset": "/assets/products/audio-current-settings.jpg",
+    "source": "work/web-launch-evidence/audio-current-settings.png",
+    "type": "Real application capture; no audio or private accounts embedded"
+  },
+  {
+    "asset": "/assets/products/app-folders.jpg",
+    "source": "work/web-launch-evidence/app-folders.png",
+    "type": "Real application capture; no audio or private accounts embedded"
+  },
+  {
+    "asset": "/assets/products/app-duplicates.jpg",
+    "source": "work/web-launch-evidence/app-duplicates.png",
+    "type": "Real application capture; no audio or private accounts embedded"
+  },
+  {
+    "asset": "/assets/products/app-session-generator.jpg",
+    "source": "work/web-launch-evidence/app-session-generator.png",
+    "type": "Real application capture; no audio or private accounts embedded"
+  },
+  {
+    "asset": "/assets/products/app-logoconta.jpg",
+    "source": "work/web-launch-evidence/app-logoconta.png",
+    "type": "Real application capture; no audio or private accounts embedded"
+  },
+  {
+    "asset": "/assets/products/app-history.jpg",
+    "source": "work/web-launch-evidence/app-history.png",
+    "type": "Real application capture; no audio or private accounts embedded"
+  },
+  {
+    "asset": "/assets/products/rekordbox-channel.jpg",
+    "source": "work/web-launch-evidence/rekordbox-channel.png",
+    "type": "Real application capture; no audio or private accounts embedded"
+  },
+  {
+    "asset": "/assets/products/rekordbox-limiter.jpg",
+    "source": "work/web-launch-evidence/rekordbox-limiter.png",
+    "type": "Real application capture; no audio or private accounts embedded"
+  },
+  {
+    "asset": "/assets/products/rekordbox-routing.mp4",
+    "source": "work/web-launch-evidence/live-route-frames/frames.json",
+    "type": "Real native screenshots encoded with original capture timing; silent video"
+  },
+  {
+    "asset": "/assets/products/rekordbox-limiter.mp4",
+    "source": "work/web-launch-evidence/live-limiter-frames/frames.json",
+    "type": "Real native screenshots encoded with original capture timing; silent video"
+  },
+  {
+    "asset": "/assets/products/mac-output-choice.jpg",
+    "source": "work/web-launch-evidence/mac-sound-settings.png",
+    "type": "Real macOS screenshot cropped to Output tab and speaker row; excludes account sidebar and unrelated selected virtual device. No settings changed."
+  }
+]

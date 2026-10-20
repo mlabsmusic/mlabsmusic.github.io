@@ -1,6 +1,9 @@
-const CACHE_NAME = 'mlabs-music-v19';
+const CACHE_NAME = 'mlabs-music-v21';
 const APP_SHELL = [
   '/',
+  '/guia-mac/',
+  '/platform/',
+  '/dj-copilot/',
   '/djs/',
   '/workspace/',
   '/login/',

@@ -1,0 +1,12 @@
+---
+const { limiter = false, showGuide = true } = Astro.props;
+---
+<div class="real-proof" data-reveal>
+  <div class="proof-heading"><span class="proof-badge"><i class="live-dot"></i> PRUEBA REAL EN MACOS</span><p>Rekordbox reproduce. M Channel recibe y procesa.</p></div>
+  <div class="proof-grid">
+    <figure><a class="screen-frame" href="/assets/products/rekordbox-playing.jpg" data-zoom data-caption="Rekordbox reproduciendo durante la prueba de M Channel" aria-label="Ampliar Rekordbox en reproducción"><img src="/assets/products/rekordbox-playing.jpg" width="2000" height="1278" alt="Rekordbox reproduciendo una canción real durante la prueba" loading="lazy" /><span class="zoom-label">Ver Rekordbox <span aria-hidden="true">↗</span></span></a><figcaption><b>01 · La música sale de Rekordbox.</b> Pista cargada, reproducción y formas de onda visibles.</figcaption></figure>
+    <figure><video class="proof-video" controls muted playsinline preload="none" poster={limiter ? '/assets/products/rekordbox-limiter.jpg' : '/assets/products/rekordbox-channel.jpg'} aria-label={limiter ? 'Grabación real del limitador procesando el audio de Rekordbox, sin sonido' : 'Grabación real de la matriz recibiendo audio de Rekordbox, sin sonido'}><source src={limiter ? '/assets/products/rekordbox-limiter.mp4' : '/assets/products/rekordbox-routing.mp4'} type="video/mp4" /><a href={limiter ? '/assets/products/rekordbox-limiter.mp4' : '/assets/products/rekordbox-routing.mp4'}>Ver la grabación</a></video><figcaption><b>{limiter ? '02 · El limitador actúa sobre la señal.' : '02 · La señal recorre M Channel.'}</b> Pulsa reproducir para ver los medidores de la prueba. Vídeo sin sonido.</figcaption></figure>
+  </div>
+  {limiter && <div class="proof-reading"><span>UNA LECTURA DE LA PRUEBA</span><dl><div><dt>Entra</dt><dd>−11,1 <small>dBFS</small></dd></div><div><dt>Sale</dt><dd>−18,0 <small>dBFS</small></dd></div><div><dt>Se reduce</dt><dd>6,9 <small>dB</small></dd></div></dl><p>Valores registrados durante la reproducción. La señal digital no mide los decibelios de la sala.</p></div>}
+  {showGuide && <a class="text-link" href="/guia-mac/">Configura tu Mac paso a paso <span aria-hidden="true">→</span></a>}
+</div>
