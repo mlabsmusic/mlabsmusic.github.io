@@ -90,18 +90,18 @@
     "type": "Real application capture; no audio or private accounts embedded"
   },
   {
-    "asset": "/assets/products/rekordbox-routing.mp4",
-    "source": "work/web-launch-evidence/live-route-frames/frames.json",
-    "type": "Real native screenshots encoded with original capture timing; silent video"
-  },
-  {
-    "asset": "/assets/products/rekordbox-limiter.mp4",
-    "source": "work/web-launch-evidence/live-limiter-frames/frames.json",
-    "type": "Real native screenshots encoded with original capture timing; silent video"
-  },
-  {
     "asset": "/assets/products/mac-output-choice.jpg",
     "source": "work/web-launch-evidence/mac-sound-settings.png",
     "type": "Real macOS screenshot cropped to Output tab and speaker row; excludes account sidebar and unrelated selected virtual device. No settings changed."
+  },
+  {
+    "asset": "/assets/products/rekordbox-routing.gif",
+    "source": "work/web-launch-evidence/live-route-frames/frames.json",
+    "type": "Real native capture encoded as an infinite GIF loop at 960px and 8fps. No invented meters or audio track."
+  },
+  {
+    "asset": "/assets/products/rekordbox-limiter.gif",
+    "source": "work/web-launch-evidence/live-limiter-frames/frames.json",
+    "type": "Real native capture encoded as an infinite GIF loop at 960px and 8fps. No invented meters or audio track."
   }
 ]

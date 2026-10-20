@@ -1,14 +1,14 @@
 export const appCatalog = [
   {
     name: 'MLABS Music Platform', slug: 'mlabs-music-platform',
-    description: 'Biblioteca, playlists, apps y audio en una plataforma para macOS.',
-    icon: 'M', category: 'Plataforma para DJs', stage: 'En desarrollo',
-    audience: 'DJs y bibliotecas locales', image: '/assets/products/platform-apps.jpg',
+    description: 'La plataforma para DJs y músicos: aplicaciones conectadas para organizar, preparar y trabajar el sonido.',
+    icon: 'M', category: 'Plataforma musical', stage: 'En desarrollo',
+    audience: 'DJs y músicos', image: '/assets/products/platform-apps.jpg',
     launch_url: '/platform/', link_label: 'Conocer Platform',
   },
   {
     name: 'MLABS Music DJ Copilot', slug: 'mlabs-music-dj-copilot',
-    description: 'Widget de sugerencias desde tu biblioteca local de Rekordbox, con BPM, tonalidad y preescucha.',
+    description: 'Aplicación de MLABS Music Platform para explorar tu biblioteca de Rekordbox desde un widget, con BPM, tonalidad y preescucha.',
     icon: 'MC', category: 'Widget DJ', stage: 'En desarrollo',
     audience: 'DJs con Rekordbox', image: '/assets/products/copilot.jpg',
     launch_url: '/dj-copilot/', link_label: 'Conocer DJ Copilot',

@@ -28,11 +28,12 @@ async function loginAsTestDj(page, next = '/workspace') {
 }
 
 test.describe('public routes', () => {
-  test('home presents Platform and DJ Copilot with a working widget demonstration', async ({ page }) => {
+  test('home presents one music platform with its applications', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByRole('heading', { name: /Menos ventanas.*Más música/s })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Descubre Platform', exact: true })).toHaveAttribute('href', '/platform/');
-    await expect(page.getByRole('link', { name: 'Conoce DJ Copilot', exact: true })).toHaveAttribute('href', '/dj-copilot/');
+    await expect(page.getByRole('heading', { name: /Tu música.*Más posibilidades/s })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Descubre la plataforma', exact: true })).toHaveAttribute('href', '/platform/');
+    await expect(page.getByRole('link', { name: 'Explora sus apps', exact: true })).toHaveAttribute('href', '/platform/#herramientas');
+    await page.locator('.music-roots summary').click();
     await expect(page.getByRole('heading', { name: /Nightstage/ })).toBeVisible();
     await expect(page.getByRole('heading', { name: /Marques Edition/ })).toBeVisible();
     await page.getByRole('tab', { name: 'Curveball', exact: true }).click();

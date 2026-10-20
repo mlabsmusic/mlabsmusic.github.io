@@ -5,6 +5,27 @@ document.documentElement.classList.add('js');
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 gsap.registerPlugin(ScrollTrigger);
 
+// Recorded GIFs animate only while visible and respect the user's motion preference.
+document.querySelectorAll<HTMLElement>('[data-animated-proof]').forEach(figure => {
+  const picture = figure.querySelector<HTMLImageElement>('[data-motion-src]');
+  const control = figure.querySelector<HTMLButtonElement>('[data-motion-toggle]');
+  if (!picture || !control || !('IntersectionObserver' in window)) return;
+  let visible = false;
+  let paused = false;
+  function update() {
+    const playing = visible && !paused && !reduced.matches;
+    const source = playing ? picture!.dataset.motionSrc : picture!.dataset.stillSrc;
+    if (source && picture!.getAttribute('src') !== source) picture!.src = source;
+    control!.hidden = reduced.matches;
+    control!.textContent = paused ? 'Reanudar animación' : 'Pausar animación';
+  }
+  control.addEventListener('click', () => { paused = !paused; update(); });
+  reduced.addEventListener('change', update);
+  const observer = new IntersectionObserver(entries => { visible = entries[0].isIntersecting; update(); }, { threshold: .05 });
+  observer.observe(figure);
+  update();
+});
+
 // Native scrolling remains in charge. Animation only follows its progress.
 const motion = gsap.matchMedia();
 motion.add({ desktop: '(min-width: 761px)', mobile: '(max-width: 760px)', reduce: '(prefers-reduced-motion: reduce)' }, context => {
