@@ -1,14 +1,16 @@
 ---
 const { limiter = false, showGuide = true } = Astro.props;
-const animation = limiter ? '/assets/products/rekordbox-limiter.gif' : '/assets/products/rekordbox-routing.gif';
-const still = limiter ? '/assets/products/rekordbox-limiter.jpg' : '/assets/products/rekordbox-channel.jpg';
+const views = [
+  { animation: '/assets/products/rekordbox-routing.gif', still: '/assets/products/rekordbox-channel.jpg', width: 960, height: 614, alt: 'M Channel: la fuente Rekordbox envía audio por la matriz hasta el limitador y el monitor', title: '01 · Rekordbox entra en M Channel.', text: 'Sigue la fuente Rekordbox por los canales hasta el paso del limitador.', zoom: 'Ampliar la matriz' },
+  { animation: '/assets/products/rekordbox-limiter.gif', still: '/assets/products/rekordbox-limiter.jpg', width: 960, height: 740, alt: 'Limitador de M Channel: entrada, salida y reducción del audio procedente de Rekordbox', title: '02 · El limitador procesa esa ruta.', text: 'Consulta la señal de entrada, la salida limitada y cuánto se reduce.', zoom: 'Ampliar el limitador' },
+];
 ---
-<div class="real-proof" data-reveal>
-  <div class="proof-heading"><span class="proof-badge"><i class="live-dot"></i> PRUEBA REAL EN MACOS</span><p>Rekordbox reproduce. M Channel recibe y procesa.</p></div>
+<div class="real-proof" id="flujo-audio" data-reveal>
+  <div class="proof-heading"><span class="proof-badge"><i class="live-dot"></i> PRUEBA REAL EN MACOS</span><p>Rekordbox → M Channel → Limitador → Monitores</p></div>
   <div class="proof-grid">
-    <figure><a class="screen-frame" href="/assets/products/rekordbox-playing.jpg" data-zoom data-caption="Rekordbox reproduciendo durante la prueba de M Channel" aria-label="Ampliar Rekordbox en reproducción"><img src="/assets/products/rekordbox-playing.jpg" width="2000" height="1278" alt="Rekordbox reproduciendo una canción real durante la prueba" loading="lazy" /><span class="zoom-label">Ver Rekordbox <span aria-hidden="true">↗</span></span></a><figcaption><b>01 · La música sale de Rekordbox.</b> Pista cargada, reproducción y formas de onda visibles.</figcaption></figure>
-    <figure data-animated-proof><img class="proof-animation" src={still} data-still-src={still} data-motion-src={animation} width="960" height="740" alt={limiter ? 'Captura real animada del limitador procesando la señal de Rekordbox' : 'Captura real animada de los medidores de M Channel con Rekordbox como fuente'} loading="lazy" /><figcaption><b>{limiter ? '02 · El limitador actúa sobre la señal.' : '02 · La señal recorre M Channel.'}</b> Animación en bucle de una prueba real con Rekordbox.<button class="proof-motion-toggle" type="button" data-motion-toggle hidden>Pausar animación</button></figcaption></figure>
+    {views.map(view => <figure data-animated-proof><a href={view.still} data-zoom data-caption={view.alt} aria-label={view.zoom}><img class="proof-animation" src={view.still} data-still-src={view.still} data-motion-src={view.animation} width={view.width} height={view.height} alt={view.alt} loading="lazy" /></a><figcaption><b>{view.title}</b>{view.text}<div class="proof-caption-actions"><button class="proof-motion-toggle" type="button" data-motion-toggle hidden>Pausar animación</button><a class="text-link" href={view.still} data-zoom data-caption={view.alt}>{view.zoom} <span aria-hidden="true">↗</span></a></div></figcaption></figure>)}
   </div>
+  <p class="proof-recorded-note">Dos vistas grabadas de la misma ruta de audio, en bucle.</p>
   {limiter && <div class="proof-reading"><span>UNA LECTURA DE LA PRUEBA</span><dl><div><dt>Entra</dt><dd>−11,1 <small>dBFS</small></dd></div><div><dt>Sale</dt><dd>−18,0 <small>dBFS</small></dd></div><div><dt>Se reduce</dt><dd>6,9 <small>dB</small></dd></div></dl><p>Valores registrados durante la reproducción. La señal digital no mide los decibelios de la sala.</p></div>}
   {showGuide && <a class="text-link" href="/guia-mac/">Configura tu Mac paso a paso <span aria-hidden="true">→</span></a>}
 </div>
