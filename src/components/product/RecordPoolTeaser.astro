@@ -1,0 +1,19 @@
+---
+import { recordPoolCreators } from '../../data/recordPoolCreators';
+---
+<section class="record-pool-section dark-section" id="record-pool" aria-labelledby="record-pool-title">
+  <div class="wrap">
+    <div class="pool-heading" data-reveal>
+      <div><p class="eyebrow">MLABS MUSIC RECORD POOL</p><h2 id="record-pool-title">Lo estamos creando.<br /><span>Desde la cabina.</span></h2></div>
+      <div class="pool-intro"><span class="pool-coming">Próximamente</span><p>Estamos desarrollando nuestro Record Pool junto a DJs de la escena de Madrid. Su experiencia y criterio musical darán forma a esta nueva parte de MLABS Music.</p></div>
+    </div>
+    <p class="pool-lineup-label" data-reveal>DJs que participan en su creación</p>
+    <div class="pool-lineup">
+      {recordPoolCreators.map((dj, index) => <figure class="pool-creator" data-reveal>
+        <div class="pool-portrait"><img src={dj.image} width="720" height="900" alt={dj.name} loading="lazy" decoding="async" style={`object-position:${dj.focus}`} /><span class="pool-position" aria-hidden="true">0{index + 1}</span></div>
+        <figcaption><h3>{dj.name}</h3><span>CREACIÓN DEL RECORD POOL</span></figcaption>
+      </figure>)}
+    </div>
+    <div class="pool-footer"><p>Un nuevo proyecto de la plataforma.<br />En desarrollo. Próximamente.</p><a class="text-link" href="mailto:info@mlabsmusic.com?subject=MLABS%20Music%20Record%20Pool">Hablemos del Record Pool <span aria-hidden="true">↗</span></a></div>
+  </div>
+</section>
